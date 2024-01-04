@@ -1,7 +1,7 @@
 import time
 import win32print
 import winreg
-buffer_size=1024
+buffer_size=5120
 def get_printer_ip(printer_name,client_socket):
     try:
         # Open the registry key where printer port information is stored

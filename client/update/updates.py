@@ -1,6 +1,6 @@
 import time
 import win32com.client
-buffer_size=1024
+buffer_size=5120
 
 def download_and_install_updates(updates_to_install,client_socket):
     # Create a Windows Update Agent object

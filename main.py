@@ -1,56 +1,25 @@
-import queue
 import socket
 import json
 import csv
-import signal
 import threading
+import time
+from threading import Thread
+import signal
 import sys
-import client
-# Define the server IP and port
-server_address = ('localhost', 44452)
-
-# Create a socket object
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-# Bind the socket to the server address and port
-server_socket.bind(server_address)
-
-# Listen for incoming connections
-server_socket.listen(5)
-print("Server is listening for incoming connections...")
-
-# Lock for thread synchronization
-connected_clients_lock = threading.Lock()
-client_states = {}
-# Dictionary to store connected clients and their sockets
+import client_obj as obj
+from rich import *
+import rsa
+buffer=5120
 connected_clients = {}
-client_threads = {}
-input_queue = queue.Queue()
-def sigint_handler(sig, frame):
-    print("\nCtrl+C received. Stopping the server...")
-    global server_socket
-    for client_id, client_socket in connected_clients.items():
-        client_socket.close()
-    server_socket.close()
-    sys.exit(0)
-
-def list_connected_clients():
-    print("Connected Clients:")
-    for client_id, _ in connected_clients.items():
-        print(f"Client ID: {client_id}")
-
-def send_command_to_all_clients(command):
-    for client_id, client_socket in connected_clients.items():
-        try:
-            client_socket.send(command.encode())
-            print(f"Sent '{command}' to Client {client_id}")
-        except Exception as e:
-            print(f"Failed to send command to Client {client_id}: {e}")
-def hardware_info(client_socket):
+def send_msg(message,socket,public_key):
+    socket.send(rsa.encrypt(message.encode(), public_key))
+def rcv_msg(socket,private_key):
+    rsa.decrypt(socket.recv(1024), private_key).decode()
+def hardware_info(client_socket,private_key):
     print("Gathering hardware information")
     try:
         # Receive data from the client
-        data = client_socket.recv(1024).decode()
+        data = rcv_msg(client_socket,private_key)
         print("Received data from client")
 
         # Parse the received JSON data
@@ -77,49 +46,53 @@ def hardware_info(client_socket):
         print(f"An error occurred: {e}")
 
 
-def switch_client():
-    print("Active Clients:")
 
-    # Acquire the lock to ensure exclusive access to the connected_clients dictionary
-    with connected_clients_lock:
-        for client_id, thread in connected_clients.items():
-            print(f"Client {client_id}")
+def list_connected_clients():
+    print("Connected Clients:")
+    for client_id, _ in connected_clients.items():
+        print(f"Client ID: {client_id}")
 
-    selected_client_id = int(input("Enter the client ID to switch to: "))
-    if selected_client_id in connected_clients:
-        client_thread = client_threads[selected_client_id]
-        input_queue.put(f"S{selected_client_id}")
-        client_thread.join()  # Wait for the client thread to complete the switch
-    else:
-        print(f"Invalid client ID: {selected_client_id}")
+def send_command_to_all_clients(command):
+    for client_id, client_socket in connected_clients.items():
+        try:
+            client_socket.send(command.decode('UTF-8'))
+            print(f"Sent '{command}' to Client {client_id}")
+        except Exception as e:
+            print(f"Failed to send command to Client {client_id}: {e}")
 
-# Counter to assign unique client IDs
-client_counter = 1
-def client_input_thread(client_socket, client_id):
+def switch_client(id):
+    for key, obj in connected_clients.items():
+        print(f"{obj.client_id}")
+    selectClient = input(f"Select client:")
+    returner = connected_clients[int(selectClient)]
+    client_input_thread(returner.sockett, returner.client_id, returner.publickey, private_key)
+    pass
+
+def client_input_thread(client_socket, client_id,public_key,private_key):
     try:
         while True:
-            option = input_queue.get()
+            option = input("Enter your option (1-Hardware) (2-Updates) (3-Printers): ")
             if option == '0':
-                client_socket.send(option.encode())  # Send the exit signal to the client
+                send_msg(option,client_socket,public_key)
                 break
             elif option == '1':
-                client_socket.send(option.encode())
-                hardware_info(client_socket)
+                send_msg(option,client_socket,public_key)
+                hardware_info(client_socket,private_key)
             elif option == '2':
-                client_socket.send(option.encode())
+                send_msg(option,client_socket,public_key)
                 while True:
-                    response = client_socket.recv(1024).decode()
+                    response = rcv_msg(client_socket,private_key)
                     if response != '0' and response != "rasp":
                         print(response)
                     elif response == "rasp":
                         data = input()
-                        client_socket.send(data.encode())
+                        send_msg(data,client_socket,public_key)
                     else:
                         break
             elif option == '3':
-                client_socket.send(option.encode())
+                send_msg(option,client_socket,public_key)
                 while True:
-                    response = client_socket.recv(1024).decode()
+                    response = rcv_msg(client_socket,private_key)
                     if response != '0':
                         print(response)
                     else:
@@ -136,65 +109,30 @@ def client_input_thread(client_socket, client_id):
     except ConnectionResetError:
             print(f"Client {client_id} has lost connection.")
             del connected_clients[client_id]  # Remove the client socket from the dictionary
-            del connected_clients[client_id]  # Remove the client thread from the dictionary
             client_socket.close()  # Close the client socket
     except Exception as e:
             print(f"An error occurred with client {client_id}: {e}")
-    finally:
-        print(f"Client {client_id} has disconnected.")
 
-def process_input():
-    while True:
-        try:
-            # Acquire the lock to ensure exclusive access to the connected_clients dictionary
-            with connected_clients_lock:
-                active_clients = [client_id for client_id, state in client_states.items() if state == 'active']
-                print("Active Clients:")
-                for client_id in active_clients:
-                    print(f"Client {client_id}")
-
-            selected_client_id = int(input("Enter the client ID to switch to: \n"))
-
-            # Check if selected_client_id is in the dictionary before accessing its value
-            if selected_client_id in client_states and client_states[selected_client_id] == 'active':
-                client_thread = client_threads[selected_client_id]
-                input_queue.put(f"S{selected_client_id}")
-                client_thread.join()  # Wait for the client thread to complete the switch
-            else:
-                print(f"Invalid or inactive client ID: {selected_client_id}")
-
-        except RuntimeError as e:
-            print(f"Error during iteration: {e}")
-
-
-input_thread_started = False
-
+public_key, private_key = rsa.newkeys(1024)
+server_address = ('localhost', 44452)
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket.bind(server_address)
+server_socket.listen(5)
+print("Server is listening for incoming connections...")
+client_counter = 1
 while True:
     try:
         client_socket, client_address = server_socket.accept()
         print(f"Accepted connection from {client_address}")
-
-        client_id = client_counter
+        client_socket.send(public_key.save_pkcs1("PEM"))
+        partner = rsa.PublicKey.load_pkcs1(client_socket.recv(buffer))
+        Client = obj.Client(client_counter, client_socket, partner)
+        connected_clients[client_counter] = Client
+        client_return = connected_clients[client_counter]
         client_counter += 1
-
-        # Start a thread to handle the client
-        try:
-            thread = threading.Thread(target=client_input_thread, args=(client_socket, client_id))
-            thread.daemon = True
-            thread.start()
-            connected_clients[client_id] = thread
-            print(f"Client {client_id} connected.")
-            print(f"Active Clients: {threading.active_count() - 2}")
-            if not input_thread_started:
-                input_thread = threading.Thread(target=process_input)
-                input_thread.daemon = True
-                input_thread.start()
-                input_thread_started = True
-
-        except Exception as e:
-            print(f"An error occurred with client {client_id}: {e}")
-
-
+        time.sleep(3)
+        threading.Thread(target=client_input_thread, args=(
+        client_return.sockett, client_return.client_id, client_return.publickey, private_key)).start()
     except KeyboardInterrupt:
         break
     except Exception as e:
@@ -203,8 +141,3 @@ while True:
 # Close the server socket when exiting
 server_socket.close()
 
-'''
-        finally:
-            client_socket.close()
-            del connected_clients[client_id]
-            print(f"Client {client_id} has disconnected.")'''

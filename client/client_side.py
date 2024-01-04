@@ -5,6 +5,9 @@ import socket
 import json
 from time import sleep
 import os
+import rsa
+public_key, private_key = rsa.newkeys(1024)
+partner=None
 recpassed=None
 if not os.path.exists("settings.json"):
     file = open('settings.json', 'a')
@@ -17,7 +20,11 @@ else:
 load = json.loads(file.read())
 host = load["ip"]
 port = int(load["port"])
-buffer_size=1024
+buffer_size=5120
+def send_msg(message,socket,public_key):
+    socket.send(rsa.encrypt(message.encode(), public_key))
+def rcv_msg(socket,private_key):
+    rsa.decrypt(socket.recv(buffer_size), private_key).decode()
 def reconnect(host,port):
     reconnect=True
     error=0
@@ -52,20 +59,23 @@ while True:
             # Attempt to connect to the server if not already connected
             client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             client_socket.connect((host,port))
+            partner = rsa.PublicKey.load_pkcs1(client_socket.recv(buffer_size))
+            client_socket.send(public_key.save_pkcs1("PEM"))
             connected = True
             print("Connected to the server")
         else:
             client_socket=recpassed
         while True:
-            rasp=client_socket.recv(buffer_size)
-            server_response = rasp.decode()
-            if not rasp== b'':
+            server_response = rcv_msg(client_socket,private_key)
+            rasp =server_response
+            print(rasp)
+            if not server_response == b'':
                 if server_response == '1':
-                    ps.execute_powershell_script(client_socket)
+                    ps.execute_powershell_script(client_socket,partner)
                 elif server_response == '2':
-                    updates.check_updates(client_socket)
+                    updates.check_updates(client_socket,partner)
                 elif server_response == '3':
-                    printer.list_installed_printers(client_socket)
+                    printer.list_installed_printers(client_socket,partner)
                 elif server_response == '0':
                     client_socket.close()
     except Exception as e:
