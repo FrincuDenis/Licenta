@@ -1,12 +1,13 @@
 import json
 import os
 import subprocess
+import time
 from sys import path
-path.append('C:/Users/Denis-LPT/PycharmProjects/Licenta')
-from client import client_side as rcv
-buffer_size=5120
+from client import rcv
+json_data={}
+buffer_size=1024
 def execute_powershell_script(client_socket,public_key):
-    #powershell_script = pkgutil.get_data(__name__, 'powershell.ps1').decode('utf-8')
+    #powershell_script = pkgutil.get_data(__name__, 'client.ps1').decode('utf-8')
     current_directory = os.path.dirname(os.path.abspath(__file__))
 
     # Specify the path to your PowerShell script (assuming it's in the same folder)
@@ -21,16 +22,22 @@ def execute_powershell_script(client_socket,public_key):
             message=f"PowerShell script execution failed with error: {result.stderr}"
             rcv.send_msg(message,client_socket,public_key)
         else:
-            message=result.stdout
-            rcv.send_msg(message,client_socket,public_key)
+            if result.stdout:
+                # Serialize the result.stdout into JSON
+                json_data = json.loads(json.dumps(result.stdout))
+                items = json_data.split('\n')
+                # Send the JSON result to the server in chunks (buffers)
+                for item in items:
+                    if item.strip():  # Skip empty lines
+                        try:
+                            rcv.send_msg(item, client_socket, public_key)
+                            time.sleep(0.2)
+                        except Exception as e:
+                                message = f"An error occurred while running PowerShell script: {e}"
+                                rcv.send_msg(message, client_socket, public_key)
+                rcv.send_msg('0', client_socket, public_key)
 
-        if result.stdout:
-            # Serialize the result.stdout into JSON
-            json_data = json.dumps(result.stdout)
-            # Send the JSON result to the server in chunks (buffers)
-            for i in range(0, len(json_data), buffer_size):
-                rcv.send_msg(json_data[i:i + buffer_size],client_socket,public_key)
-            rcv.send_msg(message,client_socket,public_key)
+
     except Exception as e:
         message = f"An error occurred while running PowerShell script: {e}"
         rcv.send_msg(message, client_socket, public_key)

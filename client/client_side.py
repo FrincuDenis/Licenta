@@ -5,6 +5,7 @@ import socket
 import json
 from time import sleep
 import os
+import rcv as r
 import rsa
 public_key, private_key = rsa.newkeys(1024)
 partner=None
@@ -21,38 +22,39 @@ load = json.loads(file.read())
 host = load["ip"]
 port = int(load["port"])
 buffer_size=5120
-def send_msg(message,socket,public_key):
-    socket.send(rsa.encrypt(message.encode(), public_key))
-def rcv_msg(socket,private_key):
-    rsa.decrypt(socket.recv(buffer_size), private_key).decode()
-def reconnect(host,port):
-    reconnect=True
-    error=0
-    attempts=0
+def reconnect(host, port):
+    partnerr=None
+    reconnect = True
+    error = 0
+    attempts = 0
     while reconnect:
         # set connection status and recreate socket
         connected = False
         clientSocket = socket.socket()
         print("connection lost... reconnecting")
-        while not connected :
+        while not connected:
             # attempt to reconnect, otherwise sleep for 2 seconds
             try:
                 print(f"Attempting {attempts} times from 5")
                 clientSocket.connect((host, port))
+                partnerr = rsa.PublicKey.load_pkcs1(clientSocket.recv(buffer_size))
+                clientSocket.send(public_key.save_pkcs1("PEM"))
                 connected = True
                 print("re-connection successful")
                 reconnect = False
             except socket.error:
-                attempts+=1
-                if attempts==5:
+                attempts += 1
+                if attempts == 5:
                     reconnect = False
-                    error=1
+                    error = 1
                     break
                 sleep(2)
-    if error==0:
-        return clientSocket
+    if error == 0:
+        return clientSocket,partnerr
     else:
         return False
+
+
 while True:
     try:
         if not recpassed:
@@ -64,20 +66,19 @@ while True:
             connected = True
             print("Connected to the server")
         else:
-            client_socket=recpassed
+            client_socket,partner =recpassed
         while True:
-            server_response = rcv_msg(client_socket,private_key)
-            rasp =server_response
-            print(rasp)
-            if not server_response == b'':
+            server_response = r.rcv_msg(client_socket, private_key)
+            if not server_response == '':
                 if server_response == '1':
-                    ps.execute_powershell_script(client_socket,partner)
+                    ps.execute_powershell_script(client_socket, partner)
                 elif server_response == '2':
-                    updates.check_updates(client_socket,partner)
+                    updates.check_updates(client_socket, partner)
                 elif server_response == '3':
-                    printer.list_installed_printers(client_socket,partner)
+                    printer.list_installed_printers(client_socket, partner)
                 elif server_response == '0':
                     client_socket.close()
+
     except Exception as e:
             print(f"An error occurred: {e}")
             recpassed=reconnect(host,port)
