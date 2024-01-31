@@ -18,12 +18,6 @@ def get_serial_number():
 
     return None
 
-
-# bundle_dir = getattr(sys, '_MEIPASS', os.path.abspath(os.path.dirname(__file__)))
-
-# Specify the path to your embedded PowerShell script
-# powershell_script = os.path.join(bundle_dir, "client.ps1")
-
 def hardware_info(client_socket,filename):
     print("Gathering hardware information")
     filename+='.csv'
