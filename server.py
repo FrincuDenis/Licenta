@@ -1,6 +1,5 @@
 import socket
 import socket
-
 import rsa
 
 public_key, private_key = rsa.newkeys(1024)
