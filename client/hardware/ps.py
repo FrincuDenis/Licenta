@@ -6,6 +6,7 @@ from sys import path
 from client import rcv
 json_data={}
 buffer_size=1024
+#functie pt client
 def execute_powershell_script(client_socket,public_key):
     #powershell_script = pkgutil.get_data(__name__, 'client.ps1').decode('utf-8')
     current_directory = os.path.dirname(os.path.abspath(__file__))
