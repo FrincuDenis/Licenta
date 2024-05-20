@@ -32,7 +32,10 @@ def is_psgallery_registered():
 
 
 def install_module(module_name):
-    command = f"Install-Module -Name {module_name} -Force -Confirm:$false"
+    if(module_name == "PSWindowsUpdate"):
+        command = f"Install-Module -Name {module_name} -Force "
+    else:
+        command = f"Install-PackageProvider -Name {module_name} -MinimumVersion 2.8.5.201 -Force"
     return run_powershell_command(command)
 
 
@@ -129,49 +132,99 @@ def main():
     ps = "PSWindowsUpdate"
     nu = "NuGet"
     try:
-        # Set execution policy to allow script execution
-        print("Setting execution policy...")
-        set_execution_policy()
-        print("Execution policy set successfully.")
-
-        if not is_module_installed(nu):
-            print(f"Module {nu} is not installed. Installing now...")
-            install_module(nu)
-            print(f"Module {nu} installed successfully.")
-        else:
-            print(f"Module {nu} is already installed.")
-
-        # Check if PSGallery is registered
-        if not is_psgallery_registered():
-            print("PSGallery is not registered. Registering now...")
-            register_psgallery()
-            print("PSGallery registered successfully.")
-        else:
-            print("PSGallery is already registered.")
-
-        # Check if PowerShellGet module is installed
-        if not is_module_installed("PowerShellGet"):
-            print("PowerShellGet module is not installed. Installing now...")
-            install_powershellget()
-            print("PowerShellGet module installed successfully.")
-        else:
-            print("PowerShellGet module is already installed.")
-
-        # Check if PSWindowsUpdate module is installed
         if not is_module_installed(ps):
+            print("Setting execution policy...")
+            set_execution_policy()
+            print("Execution policy set successfully.")
+            if not is_module_installed(nu):
+                print(f"Module {nu} is not installed. Installing now...")
+                install_module(nu)
+                print(f"Module {nu} installed successfully.")
+            else:
+                print(f"Module {nu} is already installed.")
+
+            # Check if PSGallery is registered
+            if not is_psgallery_registered():
+                print("PSGallery is not registered. Registering now...")
+                register_psgallery()
+                print("PSGallery registered successfully.")
+            else:
+                print("PSGallery is already registered.")
+
+            # Check if PowerShellGet module is installed
+            if not is_module_installed("PowerShellGet"):
+                print("PowerShellGet module is not installed. Installing now...")
+                install_powershellget()
+                print("PowerShellGet module installed successfully.")
+            else:
+                print("PowerShellGet module is already installed.")
             print(f"Module {ps} is not installed. Installing now...")
             install_module(ps)
             print(f"Module {ps} installed successfully.")
+            # Import the PSWindowsUpdate module
+            print(f"Importing module {ps}...")
+            import_module(ps)
+            print(f"Module {ps} imported successfully.")
         else:
             print(f"Module {ps} is already installed.")
+            # Perform the requested actions
+            if args.check_updates:
+                print("Checking for updates...")
+                updates = check_for_updates()
+                print(updates)
 
-        # Import the PSWindowsUpdate module
-        print(f"Importing module {ps}...")
-        import_module(ps)
-        print(f"Module {ps} imported successfully.")
+            if args.install_updates:
+                print("Installing updates...")
+                install_result = install_updates()
+                print(install_result)
 
-        # Perform the requested actions
-        # (remaining code is unchanged)
+            if args.hide_update:
+                print(f"Hiding update with KBArticleID: {args.hide_update}")
+                hide_update_result = hide_update(args.hide_update)
+                print(hide_update_result)
+
+            if args.schedule_update:
+                update_id, revision, hour, minute = args.schedule_update
+                print(f"Scheduling update installation at {hour}:{minute}...")
+                schedule_result = schedule_update_install(update_id, revision, hour, minute)
+                print(schedule_result)
+
+            if args.add_microsoft_update_service:
+                print("Registering Microsoft Update service as Service Manager...")
+                add_microsoft_update_service_result = add_microsoft_update_service()
+                print(add_microsoft_update_service_result)
+
+            if args.add_offline_sync_service:
+                file_path = args.add_offline_sync_service
+                print(f"Registering Offline Sync Service from file {file_path}...")
+                add_offline_sync_service_result = add_offline_sync_service(file_path)
+                print(add_offline_sync_service_result)
+
+            if args.get_update_history:
+                print("Getting Windows Update history...")
+                update_history = get_update_history()
+                print(update_history)
+
+            if args.get_update_history_24h:
+                print("Getting Windows Update history for the last 24 hours...")
+                update_history_last_24h = get_update_history_last_24h()
+                print(update_history_last_24h)
+
+            if args.uninstall_update:
+                print(f"Uninstalling update with KBArticleID: {args.uninstall_update}")
+                uninstall_update_result = uninstall_update(args.uninstall_update)
+                print(uninstall_update_result)
+
+            if args.get_update_settings:
+                print("Getting current Windows Update Client configuration...")
+                update_settings = get_update_settings()
+                print(update_settings)
+
+            if args.set_target_version:
+                product_version, target_version = args.set_target_version
+                print(f"Setting the target version for feature updates to {product_version} {target_version}...")
+                set_target_version_result = set_target_release_version(product_version, target_version)
+                print(set_target_version_result)
 
     except Exception as e:
         print(f"An error occurred: {e}")

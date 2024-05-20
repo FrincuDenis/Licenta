@@ -1,37 +1,17 @@
 import socket
 import threading
 import rsa
-
-def generate_keys():
-    (pub_key, priv_key) = rsa.generate_public_key(512)
-    with open('server_public_key.pem', 'wb') as f:
-        f.write(pub_key.export_key())
-    with open('server_private_key.pem', 'wb') as f:
-        f.write(priv_key.export_key())
-
-def load_keys():
-    with open('server_public_key.pem', 'rb') as f:
-        pub_key = rsa.import_key(f.read())
-    with open('server_private_key.pem', 'rb') as f:
-        priv_key = rsa.import_key(f.read())
-    return pub_key, priv_key
-
+from client import rcv as r
 def handle_client(client_socket):
-    pub_key, priv_key = load_keys()
-
+    public_key, private_key = rsa.newkeys(1024)
     # Trimiteți cheia publică a serverului către client
-    client_socket.sendall(pub_key.export_key())
-
+    client_socket.send(public_key.save_pkcs1("PEM"))
+    partner = client_socket.recv(1024)
     while True:
         try:
+            r.send_msg(b"macaroane", client_socket, private_key)
             # Primiți mesajul criptat de la client
-            encrypted_data = client_socket.recv(1024)
-            if not encrypted_data:
-                break
-
-            # Decriptați mesajul folosind cheia privată a serverului
-            decrypted_data = rsa.decrypt(encrypted_data, priv_key)
-            message = decrypted_data.decode('utf-8')
+            message=r.rcv_msg(client_socket, private_key)
 
             # Afișați mesajul primit de la client
             print(f"[CLIENT] {message}")
@@ -39,22 +19,15 @@ def handle_client(client_socket):
             # Solicitați input de la server
             server_input = input("Introduceți răspunsul: ")
 
-            # Criptați inputul de la server folosind cheia publică a clientului
-            # (trebuie să obțineți cheia publică a clientului de la client)
-            # ... (implementați codul pentru criptarea cu cheia publică a clientului)
-
-            # Trimiteți inputul criptat de la server către client
-            # ... (implementați codul pentru trimiterea datelor criptate)
-
+            # Criptați inputul de la client folosind cheia publică a serverului
+            r.send_msg(server_input, client_socket, partner)
         except:
             break
 
     client_socket.close()
 
 HOST = 'localhost'
-PORT = 8000
-
-generate_keys()  # Generați chei RSA dacă nu există deja
+PORT = 8001
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((HOST, PORT))

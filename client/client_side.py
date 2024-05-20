@@ -1,92 +1,100 @@
+import socket
+import json
+import os
+import time
+
+import rsa
+import wmi
+import rcv as r
 from hardware import ps
 from printer import printer
 from update import updates
-import socket
-import json
 from time import sleep
-import os
-import rcv as r
-import rsa
-public_key, private_key = rsa.newkeys(1024)
-partner=None
-recpassed=None
-if not os.path.exists("settings.json"):
-    file = open('settings.json', 'a')
-    ip = input("Enter IP Address: ")
-    port = input("Enter port:")
-    settingsW = {"ip": ip, "port": port}
-    file.write(json.dumps(settingsW))
-else:
-    file = open("settings.json", 'r')
-load = json.loads(file.read())
-host = load["ip"]
-port = int(load["port"])
-buffer_size=5120
-def reconnect(host, port):
-    partnerr=None
-    reconnect = True
-    error = 0
-    attempts = 0
-    while reconnect:
-        # set connection status and recreate socket
-        connected = False
-        clientSocket = socket.socket()
-        print("connection lost... reconnecting")
-        while not connected:
-            # attempt to reconnect, otherwise sleep for 2 seconds
-            try:
-                print(f"Attempting {attempts} times from 5")
-                clientSocket.connect((host, port))
-                partnerr = rsa.PublicKey.load_pkcs1(clientSocket.recv(buffer_size))
-                clientSocket.send(public_key.save_pkcs1("PEM"))
-                connected = True
-                print("re-connection successful")
-                reconnect = False
-            except socket.error:
-                attempts += 1
-                if attempts == 5:
-                    reconnect = False
-                    error = 1
-                    break
-                sleep(2)
-    if error == 0:
-        return clientSocket,partnerr
+
+buffer_size = 5120
+public_key, private_key = rsa.newkeys(2048)  # Increased key size for better security
+
+def get_hwid():
+    c = wmi.WMI()
+    hwid = None
+    for system in c.Win32_ComputerSystemProduct():
+        hwid = system.UUID
+    return hwid
+
+def load_settings():
+    if not os.path.exists("settings.json"):
+        ip = input("Enter IP Address: ")
+        port = input("Enter port:")
+        settings = {"ip": ip, "port": port}
+        with open('settings.json', 'w') as file:
+            json.dump(settings, file)
     else:
-        return False
+        with open("settings.json", 'r') as file:
+            settings = json.load(file)
+    return settings
 
-
-while True:
-    try:
-        if not recpassed:
-            # Attempt to connect to the server if not already connected
-            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            client_socket.connect((host,port))
-            partner = rsa.PublicKey.load_pkcs1(client_socket.recv(buffer_size))
+def reconnect(host, port):
+    attempts = 0
+    while attempts < 5:
+        try:
+            print(f"Connection lost... Attempting to reconnect ({attempts + 1}/5)")
+            client_socket = socket.socket()
+            client_socket.connect((host, port))
+            partner_public_key = rsa.PublicKey.load_pkcs1(client_socket.recv(buffer_size))
             client_socket.send(public_key.save_pkcs1("PEM"))
-            connected = True
-            print("Connected to the server")
-        else:
-            client_socket,partner =recpassed
-        while True:
-            server_response = r.rcv_msg(client_socket, private_key)
-            if not server_response == '':
-                if server_response == '1':
-                    ps.execute_powershell_script(client_socket, partner)
-                elif server_response == '2':
-                    updates.check_updates(client_socket, partner)
-                elif server_response == '3':
-                    printer.list_installed_printers(client_socket, partner)
-                elif server_response == '0':
-                    client_socket.close()
+            print("Reconnection successful")
+            return client_socket, partner_public_key
+        except socket.error:
+            attempts += 1
+            sleep(2)
+    print("Failed to reconnect after 5 attempts")
+    return None, None
 
-    except Exception as e:
-            print(f"An error occurred: {e}")
-            recpassed=reconnect(host,port)
-            if recpassed:
-                 pass
-            else:
-                print(f"Coudn't connect to the server!")
-                break
+settings = load_settings()
+host, port = settings['ip'], int(settings['port'])
+
+client_socket = None
+partner = None
+
+try:
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect((host, port))
+    partner = rsa.PublicKey.load_pkcs1(client_socket.recv(buffer_size))
+    client_socket.send(public_key.save_pkcs1("PEM"))
+    hwid = get_hwid()
+    r.send_msg(hwid, client_socket, partner)
+    print("Connected to the server")
+    time.sleep(10)
+    while True:
+        server_response = r.rcv_msg(client_socket, private_key)
+        if server_response == 'ping':
+            r.send_msg('pong', client_socket, partner)
+        elif server_response == '1':
+            ps.execute_powershell_script(client_socket, partner)
+        elif server_response == '2':
+            updates.check_updates(client_socket, partner)
+        elif server_response == '3':
+            printer.list_installed_printers(client_socket, partner)
+        elif server_response == '0':
+            break
+
+except socket.error as e:
+    print(f"Socket error occurred: {e}")
+    client_socket, partner = reconnect(host, port)
+    if client_socket is None:
+        print("Unable to reconnect and terminating.")
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+if client_socket:
+    client_socket.close()
+
+
 # Close the client socket when exiting
 client_socket.close()
-
+# TODO: 1.sa salvezi clienti in baza de date si sa fie identificati pe baza de hashului dat de HWID si sa aiba cheia publica
+#  2.sa poti selecta clienti ex: vreau sa selectez clientul 5
+#  3.sa poti executa o comanda simultan pe mai multi clienti pe toti odata sau sa alegi despartiti prin virgula ex: 2,3,10,24 sau all
+#  4.sa implementam sa putem rula mai multe comenzi ex: harware_info,update,printer etc
+#  5.in teste e un fisier consola pe ala il faci pt sa trimita catre client comenzi iar clientu sa execute comenzile in cmd:regedit;ipconfig,diskpart etc
+#   6. notificare update
