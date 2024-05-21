@@ -1,10 +1,44 @@
 import psutil
+import clr  # the pythonnet module
+import threading
+import time
 
+clr.AddReference(r'OpenHardwareMonitorLib')
+# e.g. clr.AddReference(r'OpenHardwareMonitor/OpenHardwareMonitorLib'), without .dll
+
+from OpenHardwareMonitor.Hardware import Computer
+
+# Initialize Computer object
+c = Computer()
+c.CPUEnabled = True  # get the Info about CPU
+c.GPUEnabled = True  # get the Info about GPU
+c.Open()
+
+def monitor_cpu():
+    while True:
+        for a in range(0, len(c.Hardware[0].Sensors)):
+            if "/amdcpu/0/power/0" in str(c.Hardware[0].Sensors[a].Identifier):
+                value = c.Hardware[0].Sensors[a].get_Value()
+                if value is not None:
+                    formatted_value = "{:.2f}".format(value)
+                    print(f"Cpu: {formatted_value}")
+                c.Hardware[0].Update()
+                time.sleep(3)  # Sleep to avoid busy-waiting
+
+def monitor_gpu():
+    while True:
+        for a in range(0, len(c.Hardware[1].Sensors)):
+            if "/atigpu/0/power/0" in str(c.Hardware[1].Sensors[a].Identifier):
+                value = c.Hardware[1].Sensors[a].get_Value()
+                if value is not None:
+                    formatted_value = "{:.2f}".format(value)
+                    print(f"Gpu: {formatted_value}")
+                c.Hardware[1].Update()
+                time.sleep(3)  # Sleep to avoid busy-waiting
 
 def get_cpu_usage():
     """Returns the current CPU usage percentage."""
     return psutil.cpu_percent(interval=1)
-
 
 def get_ram_usage():
     """Returns the current RAM usage."""

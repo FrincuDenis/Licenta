@@ -1,40 +1,47 @@
+import os
 import socket
+import csv
+from datetime import datetime, timedelta
 import threading
-import rsa
-from client import rcv as r
-def handle_client(client_socket):
-    public_key, private_key = rsa.newkeys(1024)
-    # Trimiteți cheia publică a serverului către client
-    client_socket.send(public_key.save_pkcs1("PEM"))
-    partner = client_socket.recv(1024)
-    while True:
-        try:
-            r.send_msg(b"macaroane", client_socket, private_key)
-            # Primiți mesajul criptat de la client
-            message=r.rcv_msg(client_socket, private_key)
+import time
+import shutil
 
-            # Afișați mesajul primit de la client
-            print(f"[CLIENT] {message}")
+# Define server parameters
+HOST = '127.0.0.1'  # localhost
+PORT = 65432  # Arbitrary non-privileged port
 
-            # Solicitați input de la server
-            server_input = input("Introduceți răspunsul: ")
+# Lock for thread-safe access to CSV file
+csv_lock = threading.Lock()
 
-            # Criptați inputul de la client folosind cheia publică a serverului
-            r.send_msg(server_input, client_socket, partner)
-        except:
-            break
 
-    client_socket.close()
+def handle_client(conn, addr):
+    print('Connected by', addr)
 
-HOST = 'localhost'
-PORT = 8001
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((HOST, PORT))
-server.listen(5)
 
-while True:
-    client_socket, address = server.accept()
-    print(f"[CONEXIUNE] Conectat la {address}")
-    client_thread = threading.Thread(target=handle_client, args=(client_socket,))
-    client_thread.start()
+    #print(f'Received and saved: Timestamp={timestamp}, CPU={cpu_value}, GPU={gpu_value}')
+
+    conn.close()
+
+
+
+
+
+def main():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
+        server_socket.bind((HOST, PORT))
+        server_socket.listen()
+
+        print('Server is listening...')
+
+        while True:
+            conn, addr = server_socket.accept()
+            client_thread = threading.Thread(target=handle_client, args=(conn, addr))
+            client_thread.start()
+
+
+if __name__ == '__main__':
+    server_thread = threading.Thread(target=main)
+    server_thread.start()
+    calculate_average()
+    server_thread.join()
