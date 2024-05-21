@@ -54,6 +54,7 @@ OS                  = {os_system} {os_release}
 print(output)
 
 '''
+import subprocess
 
 import wmi
 
@@ -91,22 +92,38 @@ def get_ip_addresses():
         print(f"Error retrieving IP addresses: {e}")
         return {}
 
+def get_drive_model():
+    c = wmi.WMI()
+    disks = c.Win32_DiskDrive()
+    partitions = []
+    for disk in disks:
+        # Get model information
+        model = disk.Model
+        partitions.append(model)
+        # Get partitions information
+
+
+    return partitions
 def get_drive_information():
     try:
         c = wmi.WMI()
 
         drives = c.Win32_LogicalDisk()
         drive_info = []
+        drive_model = get_drive_model()
         for drive in drives:
             drive_info.append({
                 "Drive": drive.Caption,
+                "Model": drive_model[0],
                 "TotalSizeGB": int(drive.Size) / (1024 ** 3),
                 "UsedSpaceGB": (int(drive.Size) - int(drive.FreeSpace)) / (1024 ** 3)
             })
+            drive_model.pop(0)
         return drive_info
     except Exception as e:
         print(f"Error retrieving drive information: {e}")
         return []
+
 
 def get_ram_information():
     try:
@@ -159,6 +176,25 @@ def get_gpu_information():
     except Exception as e:
         print(f"Error retrieving GPU information: {e}")
         return []
+def get_os_information():
+    try:
+        c = wmi.WMI()
+        os_info = c.Win32_OperatingSystem()[0]
+        return {
+            "Name": os_info.Caption.strip(),
+            "Version": os_info.Version,
+            "Architecture": os_info.OSArchitecture,
+            "InstallDate": os_info.InstallDate.split('.')[0]  # Remove milliseconds from InstallDate
+        }
+    except Exception as e:
+        print(f"Error retrieving OS information: {e}")
+        return {}
+
+# Get OS information
+
+
+# Print OS information
+
 
 # Get hardware information
 computer_name = get_computer_name()
@@ -168,6 +204,7 @@ drive_info = get_drive_information()
 ram_info = get_ram_information()
 cpu_info = get_cpu_information()
 gpu_info = get_gpu_information()
+os_info = get_os_information()
 # Print hardware information
 print(f"Computer Name: {computer_name}")
 print("MAC Addresses:")
@@ -180,6 +217,7 @@ for interface, ip_address in ip_addresses.items():
 print("\nDrive Information:")
 for drive in drive_info:
     print(f"  Drive: {drive['Drive']}")
+    print(f"    Model: {drive['Model']}")
     print(f"    Total Size: {drive['TotalSizeGB']:.2f} GB")
     print(f"    Used Space: {drive['UsedSpaceGB']:.2f} GB")
 
@@ -195,12 +233,16 @@ for cpu in cpu_info:
     print(f"  Max Clock Speed: {cpu['MaxClockSpeed']} MHz")
     print(f"  Number of Cores: {cpu['NumberOfCores']}")
     print("\nGPU Information:")
-    for gpu in gpu_info:
+for gpu in gpu_info:
         print(f"  Name: {gpu['Name']}")
         print(f"  Driver Version: {gpu['DriverVersion']}")
         print(f"  Adapter RAM: {gpu['AdapterRAM']:.2f} GB")
         print()
-
+print("\nOS Information:")
+print(f"  Name: {os_info['Name']}")
+print(f"  Version: {os_info['Version']}")
+print(f"  Architecture: {os_info['Architecture']}")
+print(f"  Install Date: {os_info['InstallDate']}")
 
 
 
