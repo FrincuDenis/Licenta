@@ -1,0 +1,54 @@
+{
+  "QPushButton": [
+    {
+      "name": "pushButton_2",
+      "icon": "Qss/icons/icons/feather/menu.png"
+    },
+    {
+      "name": "minimize_button",
+      "icon": "Qss/icons/icons/feather/window_minimize.png"
+    },
+    {
+      "name": "resize_button",
+      "icon": "Qss/icons/icons/font_awesome/regular/window-restore.png"
+    },
+    {
+      "name": "close_button",
+      "icon": "Qss/icons/icons/feather/window_close.png"
+    },
+    {
+      "name": "pushButton_6",
+      "icon": "Qss/icons/icons/feather/activity.png"
+    },
+    {
+      "name": "pushButton",
+      "icon": "Qss/icons/icons/feather/cpu.png"
+    },
+    {
+      "name": "pushButton_4",
+      "icon": "Qss/icons/icons/feather/zap.png"
+    },
+    {
+      "name": "pushButton_5",
+      "icon": "Qss/icons/icons/feather/monitor.png"
+    },
+    {
+      "name": "pushButton_7",
+      "icon": "Qss/icons/icons/feather/disc.png"
+    },
+    {
+      "name": "pushButton_8",
+      "icon": "Qss/icons/icons/font_awesome/solid/temperature-empty.png"
+    },
+    {
+      "name": "pushButton_9",
+      "icon": "Qss/icons/icons/font_awesome/solid/network-wired.png"
+    }
+  ],
+  "QLabel": [
+    {
+      "name": "title_icon",
+      "pixmap": "Qss/icons/icons/material_design/airplay.png"
+    }
+  ]
+}
