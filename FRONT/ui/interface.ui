@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>756</width>
-    <height>523</height>
+    <width>892</width>
+    <height>421</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,12 +22,34 @@
   <property name="styleSheet">
    <string notr="true">*{
 border: none;
-}</string>
+background-color:#1E1E1E;
+}
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item alignment="Qt::AlignmentFlag::AlignTop">
      <widget class="QFrame" name="header_frame">
+      <property name="styleSheet">
+       <string notr="true">*{
+background-color:#24374B;
+}</string>
+      </property>
       <property name="frameShape">
        <enum>QFrame::Shape::NoFrame</enum>
       </property>
@@ -35,6 +57,21 @@ border: none;
        <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QFrame" name="header_left">
          <property name="frameShape">
@@ -63,7 +100,7 @@ border: none;
            <widget class="QPushButton" name="pushButton_2">
             <property name="font">
              <font>
-              <family>ROG Fonts</family>
+              <family>Asus Rog</family>
               <pointsize>10</pointsize>
               <bold>true</bold>
              </font>
@@ -95,6 +132,21 @@ border: none;
           <enum>QFrame::Shadow::Raised</enum>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
            <widget class="QLabel" name="title_icon">
             <property name="maximumSize">
@@ -121,7 +173,7 @@ border: none;
            <widget class="QLabel" name="title">
             <property name="font">
              <font>
-              <family>ROG Fonts</family>
+              <family>Asus Rog</family>
               <pointsize>12</pointsize>
               <bold>true</bold>
              </font>
@@ -235,6 +287,11 @@ border: none;
        </property>
        <item alignment="Qt::AlignmentFlag::AlignLeft">
         <widget class="QFrame" name="left_main">
+         <property name="styleSheet">
+          <string notr="true">*{
+background-color:rgb(0, 85, 127);
+}</string>
+         </property>
          <property name="frameShape">
           <enum>QFrame::Shape::StyledPanel</enum>
          </property>
@@ -242,8 +299,40 @@ border: none;
           <enum>QFrame::Shadow::Raised</enum>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
            <widget class="QFrame" name="left_menu">
+            <property name="minimumSize">
+             <size>
+              <width>40</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>200</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">*{
+background-color:#24374B;
+}</string>
+            </property>
             <property name="frameShape">
              <enum>QFrame::Shape::StyledPanel</enum>
             </property>
@@ -251,8 +340,29 @@ border: none;
              <enum>QFrame::Shadow::Raised</enum>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
              <item alignment="Qt::AlignmentFlag::AlignTop">
               <widget class="QFrame" name="menu">
+               <property name="minimumSize">
+                <size>
+                 <width>210</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="frameShape">
                 <enum>QFrame::Shape::StyledPanel</enum>
                </property>
@@ -260,62 +370,82 @@ border: none;
                 <enum>QFrame::Shadow::Raised</enum>
                </property>
                <layout class="QGridLayout" name="gridLayout">
-                <item row="3" column="1">
+                <item row="3" column="1" alignment="Qt::AlignmentFlag::AlignLeft">
                  <widget class="QLabel" name="label_5">
+                  <property name="font">
+                   <font>
+                    <family>Asus Rog</family>
+                   </font>
+                  </property>
                   <property name="text">
                    <string>Activities</string>
                   </property>
+                  <property name="margin">
+                   <number>5</number>
+                  </property>
                  </widget>
                 </item>
-                <item row="0" column="1">
+                <item row="0" column="1" alignment="Qt::AlignmentFlag::AlignLeft">
                  <widget class="QLabel" name="label_2">
+                  <property name="font">
+                   <font>
+                    <family>Asus Rog</family>
+                   </font>
+                  </property>
                   <property name="text">
                    <string>CPU</string>
                   </property>
+                  <property name="margin">
+                   <number>5</number>
+                  </property>
                  </widget>
                 </item>
-                <item row="3" column="0">
-                 <widget class="QPushButton" name="pushButton_6">
+                <item row="6" column="1" alignment="Qt::AlignmentFlag::AlignLeft">
+                 <widget class="QLabel" name="label_8">
+                  <property name="font">
+                   <font>
+                    <family>Asus Rog</family>
+                   </font>
+                  </property>
                   <property name="text">
-                   <string/>
+                   <string>Network</string>
                   </property>
-                  <property name="icon">
-                   <iconset resource="../Qss/icons/_icons.qrc">
-                    <normaloff>:/feather/icons/feather/activity.png</normaloff>:/feather/icons/feather/activity.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>30</width>
-                    <height>30</height>
-                   </size>
+                  <property name="margin">
+                   <number>5</number>
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="0">
-                 <widget class="QPushButton" name="pushButton">
+                <item row="4" column="1" alignment="Qt::AlignmentFlag::AlignLeft">
+                 <widget class="QLabel" name="label_6">
+                  <property name="font">
+                   <font>
+                    <family>Asus Rog</family>
+                   </font>
+                  </property>
                   <property name="text">
-                   <string/>
+                   <string>Storage</string>
                   </property>
-                  <property name="icon">
-                   <iconset resource="../Qss/icons/_icons.qrc">
-                    <normaloff>:/feather/icons/feather/cpu.png</normaloff>:/feather/icons/feather/cpu.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>30</width>
-                    <height>30</height>
-                   </size>
+                  <property name="margin">
+                   <number>5</number>
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="1">
+                <item row="1" column="1" alignment="Qt::AlignmentFlag::AlignLeft">
                  <widget class="QLabel" name="label_3">
+                  <property name="font">
+                   <font>
+                    <family>Asus Rog</family>
+                   </font>
+                  </property>
                   <property name="text">
                    <string>Power</string>
                   </property>
+                  <property name="margin">
+                   <number>5</number>
+                  </property>
                  </widget>
                 </item>
-                <item row="1" column="0">
+                <item row="1" column="0" alignment="Qt::AlignmentFlag::AlignLeft">
                  <widget class="QPushButton" name="pushButton_4">
                   <property name="text">
                    <string/>
@@ -332,35 +462,14 @@ border: none;
                   </property>
                  </widget>
                 </item>
-                <item row="5" column="1">
-                 <widget class="QLabel" name="label_7">
-                  <property name="text">
-                   <string>Sensors</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="4" column="1">
-                 <widget class="QLabel" name="label_6">
-                  <property name="text">
-                   <string>Storage</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="1">
-                 <widget class="QLabel" name="label_4">
-                  <property name="text">
-                   <string>System Information</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QPushButton" name="pushButton_5">
+                <item row="6" column="0" alignment="Qt::AlignmentFlag::AlignLeft">
+                 <widget class="QPushButton" name="pushButton_9">
                   <property name="text">
                    <string/>
                   </property>
                   <property name="icon">
                    <iconset resource="../Qss/icons/_icons.qrc">
-                    <normaloff>:/feather/icons/feather/monitor.png</normaloff>:/feather/icons/feather/monitor.png</iconset>
+                    <normaloff>:/font_awesome_solid/icons/font_awesome/solid/network-wired.png</normaloff>:/font_awesome_solid/icons/font_awesome/solid/network-wired.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -370,14 +479,22 @@ border: none;
                   </property>
                  </widget>
                 </item>
-                <item row="6" column="1">
-                 <widget class="QLabel" name="label_8">
+                <item row="5" column="1" alignment="Qt::AlignmentFlag::AlignLeft">
+                 <widget class="QLabel" name="label_7">
+                  <property name="font">
+                   <font>
+                    <family>Asus Rog</family>
+                   </font>
+                  </property>
                   <property name="text">
-                   <string>Network</string>
+                   <string>Sensors</string>
+                  </property>
+                  <property name="margin">
+                   <number>5</number>
                   </property>
                  </widget>
                 </item>
-                <item row="4" column="0">
+                <item row="4" column="0" alignment="Qt::AlignmentFlag::AlignLeft">
                  <widget class="QPushButton" name="pushButton_7">
                   <property name="text">
                    <string/>
@@ -394,7 +511,73 @@ border: none;
                   </property>
                  </widget>
                 </item>
-                <item row="5" column="0">
+                <item row="0" column="0" alignment="Qt::AlignmentFlag::AlignLeft">
+                 <widget class="QPushButton" name="pushButton">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="../Qss/icons/_icons.qrc">
+                    <normaloff>:/feather/icons/feather/cpu.png</normaloff>:/feather/icons/feather/cpu.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>30</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1" alignment="Qt::AlignmentFlag::AlignLeft">
+                 <widget class="QLabel" name="label_4">
+                  <property name="font">
+                   <font>
+                    <family>Asus Rog</family>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>System Information</string>
+                  </property>
+                  <property name="margin">
+                   <number>5</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0" alignment="Qt::AlignmentFlag::AlignLeft">
+                 <widget class="QPushButton" name="pushButton_6">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="../Qss/icons/_icons.qrc">
+                    <normaloff>:/feather/icons/feather/activity.png</normaloff>:/feather/icons/feather/activity.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>30</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0" alignment="Qt::AlignmentFlag::AlignLeft">
+                 <widget class="QPushButton" name="pushButton_5">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="../Qss/icons/_icons.qrc">
+                    <normaloff>:/feather/icons/feather/monitor.png</normaloff>:/feather/icons/feather/monitor.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>30</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0" alignment="Qt::AlignmentFlag::AlignLeft">
                  <widget class="QPushButton" name="pushButton_8">
                   <property name="text">
                    <string/>
@@ -411,20 +594,32 @@ border: none;
                   </property>
                  </widget>
                 </item>
-                <item row="6" column="0">
-                 <widget class="QPushButton" name="pushButton_9">
+                <item row="7" column="0">
+                 <widget class="QPushButton" name="pushButton_10">
                   <property name="text">
                    <string/>
                   </property>
                   <property name="icon">
                    <iconset resource="../Qss/icons/_icons.qrc">
-                    <normaloff>:/font_awesome_solid/icons/font_awesome/solid/network-wired.png</normaloff>:/font_awesome_solid/icons/font_awesome/solid/network-wired.png</iconset>
+                    <normaloff>:/material_design/icons/material_design/person.png</normaloff>:/material_design/icons/material_design/person.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
                     <width>30</width>
                     <height>30</height>
                    </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="7" column="1">
+                 <widget class="QLabel" name="label_9">
+                  <property name="font">
+                   <font>
+                    <family>Asus Rog</family>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>List Clients</string>
                   </property>
                  </widget>
                 </item>
@@ -445,16 +640,53 @@ border: none;
          <property name="frameShadow">
           <enum>QFrame::Shadow::Raised</enum>
          </property>
+         <widget class="QStackedWidget" name="stackedWidget">
+          <property name="geometry">
+           <rect>
+            <x>-20</x>
+            <y>70</y>
+            <width>120</width>
+            <height>80</height>
+           </rect>
+          </property>
+          <widget class="QWidget" name="page"/>
+          <widget class="QWidget" name="page_2"/>
+         </widget>
         </widget>
        </item>
        <item>
         <widget class="QFrame" name="right_main">
+         <property name="styleSheet">
+          <string notr="true">*{
+background-color:#24374B;
+}</string>
+         </property>
          <property name="frameShape">
           <enum>QFrame::Shape::StyledPanel</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Shadow::Raised</enum>
          </property>
+         <widget class="QTreeWidget" name="treeWidget">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>60</y>
+            <width>256</width>
+            <height>192</height>
+           </rect>
+          </property>
+          <column>
+           <property name="text">
+            <string>FEAA</string>
+           </property>
+          </column>
+          <item>
+           <property name="text">
+            <string>Lab1</string>
+           </property>
+          </item>
+         </widget>
         </widget>
        </item>
       </layout>
@@ -475,6 +707,21 @@ border: none;
        <enum>QFrame::Shadow::Raised</enum>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QFrame" name="footer_left">
          <property name="frameShape">
