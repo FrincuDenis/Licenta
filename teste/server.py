@@ -1,47 +1,58 @@
-import os
-import socket
-import csv
-from datetime import datetime, timedelta
-import threading
-import time
-import shutil
+import sys
 
-# Define server parameters
-HOST = '127.0.0.1'  # localhost
-PORT = 65432  # Arbitrary non-privileged port
+from PySide6.QtGui import QPen, QColor
+from PySide6.QtWidgets import QWidget, QApplication, QProgressBar, QLabel, QHBoxLayout, QStyle
+from PySide6.QtCore import Qt
 
-# Lock for thread-safe access to CSV file
-csv_lock = threading.Lock()
+from PySide6.QtGui import QWidget, QPainter, QStyleOptionProgress
 
 
-def handle_client(conn, addr):
-    print('Connected by', addr)
+class RoundProgressBar(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.value = 0
+        self.maximum = 100
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        option = QStyleOptionProgress()
+        option.initFrom(self)
+        option.progress = self.value
+        option.maximum = self.maximum
+        option.rect = self.rect()
+        option.state |= QStyle.State_Active
+
+        # Adjust these values for size and color
+        progress_width = 5
+        progress_color = "#673AB7"
+
+        # Draw background circle
+        painter.setPen(Qt.NoPen)
+        painter.setBrush(QColor("#ddd"))
+        painter.drawEllipse(option.rect)
+
+        # Draw progress segment
+        painter.setPen(Qt.NoPen)
+        painter.setBrush(QColor(progress_color))
+        painter.drawPie(option.rect, 0, 360 * (self.value / self.maximum))
+
+        # Draw progress bar outline (optional)
+        pen = QPen(QColor(progress_color), progress_width)
+        painter.setPen(pen)
+        painter.drawEllipse(option.rect.adjusted(progress_width // 2, progress_width // 2, -progress_width // 2, -progress_width // 2))
+
+        self.style().drawControl(QStyle.Ctl_ProgressBar, option, painter)
 
 
+    def set_value(self, value):
+        self.value = value
+        self.update()
 
-    #print(f'Received and saved: Timestamp={timestamp}, CPU={cpu_value}, GPU={gpu_value}')
+    def set_maximum(self, maximum):
+        self.maximum = maximum
 
-    conn.close()
-
-
-
-
-
-def main():
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
-        server_socket.bind((HOST, PORT))
-        server_socket.listen()
-
-        print('Server is listening...')
-
-        while True:
-            conn, addr = server_socket.accept()
-            client_thread = threading.Thread(target=handle_client, args=(conn, addr))
-            client_thread.start()
-
-
-if __name__ == '__main__':
-    server_thread = threading.Thread(target=main)
-    server_thread.start()
-    calculate_average()
-    server_thread.join()
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = RoundProgressBar()
+    window.show()
+    sys.exit(app.exec())

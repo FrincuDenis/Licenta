@@ -8,7 +8,6 @@ import socket
 import threading
 import time
 import rsa
-from rich import print
 import db_connect as db
 from client import rcv as r
 csv_lock = threading.Lock()

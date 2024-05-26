@@ -2,7 +2,7 @@
   "ShowLogs": true,
   "QMainWindow": [
     {
-      "tittle": "RMM"
+      "tittle": "FRONT"
     }
   ],
   "QSettings": [
@@ -11,10 +11,10 @@
         {
           "CustomTheme": [
             {
-              "Background-color": "#808080",
+              "Background-color": "#000000",
               "Text-color": "#FFFFFF",
-              "Accent-color": "#0000FF",
-              "Icons-color": "#FFFFFF",
+              "Accent-color": "#FF0000",
+              "Icons-color": "#ffffff",
               "Theme-name": "Default-theme",
               "Default-Theme": true
             }
@@ -22,11 +22,42 @@
         }
       ],
       "AppSettings": {
-        "OrginizationName": "RMM",
-        "ApplicationName": "RMM Company",
-        "OrginizationDormain": "RMM.org"
+        "OrginizationName": "FRONT",
+        "ApplicationName": "FRONT Company",
+        "OrginizationDormain": "FRONT.org"
       }
     }
-  ],
-  "QtBinding": "PyQt6"
+  ], "QCustomSlideMenu": [{
+		"name": "left_main",
+		"defaultSize": [{
+			  "width": 60,
+			  "height": "parent"
+			}
+        ],
+		"collapsedSize": [{
+			  "width": 60,
+			  "height": "parent"
+			}
+        ],
+		"expandedSize": [{
+			  "width": 250,
+			  "height": "parent"
+			}
+        ],
+		"toggleButton": [{
+			  "buttonName": "menu_bt",
+			  "icons": [{
+				  "whenMenuIsCollapsed": ":/feather/icons/feather/menu.png",
+				  "whenMenuIsExpanded": ":/feather/icons/feather/chevron-left.png"
+				}
+            ]
+			}
+        ],
+		"menuTransitionAnimation": [{
+			  "animationDuration": 500,
+			  "animationEasingCurve": "Linear"
+			}
+        ]
+	}],
+  "QtBinding": "PySide6"
 }

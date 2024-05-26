@@ -1,7 +1,7 @@
 {
   "QPushButton": [
     {
-      "name": "pushButton_2",
+      "name": "menu_bt",
       "icon": "Qss/icons/icons/feather/menu.png"
     },
     {
@@ -17,38 +17,46 @@
       "icon": "Qss/icons/icons/feather/window_close.png"
     },
     {
-      "name": "pushButton_6",
-      "icon": "Qss/icons/icons/feather/activity.png"
-    },
-    {
-      "name": "pushButton",
-      "icon": "Qss/icons/icons/feather/cpu.png"
-    },
-    {
-      "name": "pushButton_4",
+      "name": "power",
       "icon": "Qss/icons/icons/feather/zap.png"
     },
     {
-      "name": "pushButton_5",
-      "icon": "Qss/icons/icons/feather/monitor.png"
+      "name": "Network",
+      "icon": "Qss/icons/icons/font_awesome/solid/network-wired.png"
     },
     {
-      "name": "pushButton_7",
+      "name": "Storage",
       "icon": "Qss/icons/icons/feather/disc.png"
     },
     {
-      "name": "pushButton_8",
+      "name": "CPU",
+      "icon": "Qss/icons/icons/feather/cpu.png"
+    },
+    {
+      "name": "Activities",
+      "icon": "Qss/icons/icons/feather/activity.png"
+    },
+    {
+      "name": "Sensors",
       "icon": "Qss/icons/icons/font_awesome/solid/temperature-empty.png"
     },
     {
-      "name": "pushButton_9",
-      "icon": "Qss/icons/icons/font_awesome/solid/network-wired.png"
+      "name": "Clientlist",
+      "icon": "Qss/icons/icons/material_design/person.png"
+    },
+    {
+      "name": "Sysinfo",
+      "icon": "Qss/icons/icons/feather/monitor.png"
+    },
+    {
+      "name": "pushButton_11",
+      "icon": "Qss/icons/icons/feather/search.png"
     }
   ],
   "QLabel": [
     {
       "name": "title_icon",
-      "pixmap": "Qss/icons/icons/material_design/airplay.png"
+      "pixmap": "Qss/icons/icons/material_design/important_devices.png"
     }
   ]
 }
