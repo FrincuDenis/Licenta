@@ -17,12 +17,12 @@
       "icon": "Qss/icons/icons/feather/window_close.png"
     },
     {
-      "name": "Network",
-      "icon": "Qss/icons/icons/font_awesome/solid/network-wired.png"
+      "name": "power",
+      "icon": "Qss/icons/icons/feather/zap.png"
     },
     {
-      "name": "Sensors",
-      "icon": "Qss/icons/icons/font_awesome/solid/temperature-empty.png"
+      "name": "Network",
+      "icon": "Qss/icons/icons/font_awesome/solid/network-wired.png"
     },
     {
       "name": "Storage",
@@ -33,24 +33,20 @@
       "icon": "Qss/icons/icons/feather/cpu.png"
     },
     {
-      "name": "power",
-      "icon": "Qss/icons/icons/feather/zap.png"
-    },
-    {
-      "name": "Sysinfo",
-      "icon": "Qss/icons/icons/feather/monitor.png"
-    },
-    {
       "name": "Activities",
       "icon": "Qss/icons/icons/feather/activity.png"
+    },
+    {
+      "name": "Sensors",
+      "icon": "Qss/icons/icons/font_awesome/solid/temperature-empty.png"
     },
     {
       "name": "Clientlist",
       "icon": "Qss/icons/icons/material_design/person.png"
     },
     {
-      "name": "Domain",
-      "icon": "Qss/icons/icons/material_design/domain.png"
+      "name": "Sysinfo",
+      "icon": "Qss/icons/icons/feather/monitor.png"
     },
     {
       "name": "pushButton_11",
