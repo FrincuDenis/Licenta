@@ -1,3 +1,8 @@
-2024-05-26 12:15:40,756 - INFO - ('Current icons color ', None, 'New icons color', '#ffffff')
-2024-05-26 12:15:40,758 - INFO - Generating icons for your theme, please wait. This may take long
-2024-05-26 12:15:41,014 - INFO - ('DONE: Current icons color ', '#ffffff')
+2024-05-27 14:00:53,308 - INFO - Checking icons for Default-theme theme. Icons color: #FFFFFF
+2024-05-27 14:00:53,592 - INFO - Checking icons for Default-theme theme. Icons color: #FFFFFF
+2024-05-27 14:00:53,874 - INFO - Checking icons for qt designer app.
+2024-05-27 14:00:54,149 - INFO - all icons have been checked and missing icons generated!
+2024-05-27 14:02:08,537 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-05-27 14:02:08,818 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-05-27 14:02:09,226 - INFO - Checking icons for qt designer app.
+2024-05-27 14:02:09,656 - INFO - all icons have been checked and missing icons generated!

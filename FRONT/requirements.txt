@@ -1,2 +1,2 @@
-PySide6
+PySide2
 QT-PyQt-PySide-Custom-Widgets
