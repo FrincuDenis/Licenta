@@ -569,7 +569,7 @@ background-color:#24374B;
           <item>
            <widget class="QStackedWidget" name="stackedWidget">
             <property name="currentIndex">
-             <number>7</number>
+             <number>5</number>
             </property>
             <widget class="QWidget" name="cpu_memory">
              <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -995,7 +995,7 @@ background-color:#24374B;
                 </property>
                 <layout class="QGridLayout" name="gridLayout_5">
                  <item row="3" column="1">
-                  <widget class="QLabel" name="label_36">
+                  <widget class="QLabel" name="avg_consumed">
                    <property name="font">
                     <font>
                      <family>Asus Rog</family>
@@ -1019,7 +1019,7 @@ background-color:#24374B;
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="QLabel" name="label_35">
+                  <widget class="QLabel" name="cpu_consume">
                    <property name="font">
                     <font>
                      <family>Asus Rog</family>
@@ -1031,7 +1031,7 @@ background-color:#24374B;
                   </widget>
                  </item>
                  <item row="1" column="1">
-                  <widget class="QLabel" name="label_41">
+                  <widget class="QLabel" name="igpu_consume">
                    <property name="font">
                     <font>
                      <family>Asus Rog</family>
@@ -1067,7 +1067,7 @@ background-color:#24374B;
                   </widget>
                  </item>
                  <item row="0" column="1">
-                  <widget class="QLabel" name="label_34">
+                  <widget class="QLabel" name="gpu_consume">
                    <property name="font">
                     <font>
                      <family>Asus Rog</family>
@@ -1091,7 +1091,7 @@ background-color:#24374B;
                   </widget>
                  </item>
                  <item row="0" column="2" rowspan="4">
-                  <widget class="spiralProgressBar" name="widget" native="true"/>
+                  <widget class="spiralProgressBar" name="power_progress" native="true"/>
                  </item>
                 </layout>
                </widget>
@@ -1131,7 +1131,7 @@ background-color:#24374B;
                </widget>
               </item>
               <item>
-               <widget class="QTableWidget" name="tableWidget_2">
+               <widget class="QTableWidget" name="storageTable">
                 <column>
                  <property name="text">
                   <string>Device</string>
@@ -1145,6 +1145,16 @@ background-color:#24374B;
                 <column>
                  <property name="text">
                   <string>Mount Point</string>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Asus Rog</family>
+                  </font>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Drive type</string>
                  </property>
                  <property name="font">
                   <font>
@@ -1194,7 +1204,7 @@ background-color:#24374B;
                 </column>
                 <column>
                  <property name="text">
-                  <string>New Column</string>
+                  <string>Free Storage</string>
                  </property>
                  <property name="font">
                   <font>
@@ -1204,12 +1214,17 @@ background-color:#24374B;
                 </column>
                 <column>
                  <property name="text">
-                  <string>Free Storage</string>
+                  <string>Used Storage</string>
                  </property>
                  <property name="font">
                   <font>
                    <family>Asus Rog</family>
                   </font>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string/>
                  </property>
                 </column>
                </widget>
@@ -1291,7 +1306,7 @@ background-color:#24374B;
                      <number>0</number>
                     </property>
                     <item>
-                     <widget class="QLineEdit" name="lineEdit">
+                     <widget class="QLineEdit" name="activity_search">
                       <property name="font">
                        <font>
                         <family>Asus Rog</family>
@@ -1545,7 +1560,7 @@ background-color:#24374B;
                </widget>
               </item>
               <item>
-               <widget class="QTableWidget" name="tableWidget_3">
+               <widget class="QTableWidget" name="sensors_table">
                 <column>
                  <property name="text">
                   <string>Sensor Name</string>
@@ -1558,7 +1573,7 @@ background-color:#24374B;
                 </column>
                 <column>
                  <property name="text">
-                  <string>Current Value</string>
+                  <string>Min Value</string>
                  </property>
                  <property name="font">
                   <font>
@@ -1568,7 +1583,7 @@ background-color:#24374B;
                 </column>
                 <column>
                  <property name="text">
-                  <string>Min Value</string>
+                  <string>Current Value</string>
                  </property>
                  <property name="font">
                   <font>
@@ -2273,7 +2288,7 @@ background-color:#24374B;
                     </font>
                    </property>
                    <property name="text">
-                    <string>System Uptime</string>
+                    <string>System time</string>
                    </property>
                   </widget>
                  </item>
@@ -2656,7 +2671,7 @@ background-color:#24374B;
  </customwidgets>
  <resources>
   <include location="../Qss/icons/_icons.qrc"/>
-  <include location="FRONT/Qss/icons/_icons.qrc"/>
+  <include location="../Qss/icons/_icons.qrc"/>
  </resources>
  <connections/>
 </ui>
