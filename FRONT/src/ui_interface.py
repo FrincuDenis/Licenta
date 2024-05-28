@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'new_interface.ui'
+## Form generated from reading UI file 'interfacekqkPJR.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -15,8 +15,7 @@ from PySide2.QtWidgets import *
 from Custom_Widgets.QCustomSlideMenu import QCustomSlideMenu
 from PySide2extn.RoundProgressBar import roundProgressBar
 from PySide2extn.SpiralProgressBar import spiralProgressBar
-from Custom_Widgets.Theme import QPushButton
-from Custom_Widgets.Theme import QLabel
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -153,124 +152,39 @@ class Ui_MainWindow(object):
         self.left_main.setObjectName(u"left_main")
         self.verticalLayout_18 = QVBoxLayout(self.left_main)
         self.verticalLayout_18.setObjectName(u"verticalLayout_18")
+        self.verticalLayout_18.setContentsMargins(0, 0, 0, 0)
         self.menu = QFrame(self.left_main)
         self.menu.setObjectName(u"menu")
         self.menu.setMinimumSize(QSize(210, 0))
         self.menu.setFrameShape(QFrame.NoFrame)
         self.gridLayout = QGridLayout(self.menu)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.Network = QPushButton(self.menu)
-        self.Network.setObjectName(u"Network")
-        icon4 = QIcon()
-        icon4.addFile(u":/font_awesome_solid/icons/font_awesome/solid/network-wired.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.Network.setIcon(icon4)
-        self.Network.setIconSize(QSize(30, 30))
-
-        self.gridLayout.addWidget(self.Network, 8, 0, 1, 1)
-
+        self.gridLayout.setContentsMargins(0, -1, -1, -1)
         self.Sensors = QPushButton(self.menu)
         self.Sensors.setObjectName(u"Sensors")
-        icon5 = QIcon()
-        icon5.addFile(u":/font_awesome_solid/icons/font_awesome/solid/temperature-empty.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.Sensors.setIcon(icon5)
+        icon4 = QIcon()
+        icon4.addFile(u":/font_awesome_solid/icons/font_awesome/solid/temperature-empty.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.Sensors.setIcon(icon4)
         self.Sensors.setIconSize(QSize(30, 30))
 
-        self.gridLayout.addWidget(self.Sensors, 7, 0, 1, 1)
-
-        self.label_2 = QLabel(self.menu)
-        self.label_2.setObjectName(u"label_2")
-        font2 = QFont()
-        font2.setFamily(u"Asus Rog")
-        self.label_2.setFont(font2)
-        self.label_2.setMargin(5)
-
-        self.gridLayout.addWidget(self.label_2, 2, 1, 1, 1)
-
-        self.Storage = QPushButton(self.menu)
-        self.Storage.setObjectName(u"Storage")
-        icon6 = QIcon()
-        icon6.addFile(u":/feather/icons/feather/disc.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.Storage.setIcon(icon6)
-        self.Storage.setIconSize(QSize(30, 30))
-
-        self.gridLayout.addWidget(self.Storage, 6, 0, 1, 1)
-
-        self.CPU = QPushButton(self.menu)
-        self.CPU.setObjectName(u"CPU")
-        icon7 = QIcon()
-        icon7.addFile(u":/feather/icons/feather/cpu.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.CPU.setIcon(icon7)
-        self.CPU.setIconSize(QSize(30, 30))
-
-        self.gridLayout.addWidget(self.CPU, 2, 0, 1, 1)
-
-        self.label_9 = QLabel(self.menu)
-        self.label_9.setObjectName(u"label_9")
-        self.label_9.setFont(font2)
-
-        self.gridLayout.addWidget(self.label_9, 0, 1, 1, 1)
-
-        self.label_3 = QLabel(self.menu)
-        self.label_3.setObjectName(u"label_3")
-        self.label_3.setFont(font2)
-        self.label_3.setMargin(5)
-
-        self.gridLayout.addWidget(self.label_3, 3, 1, 1, 1)
-
-        self.power = QPushButton(self.menu)
-        self.power.setObjectName(u"power")
-        icon8 = QIcon()
-        icon8.addFile(u":/feather/icons/feather/zap.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.power.setIcon(icon8)
-        self.power.setIconSize(QSize(30, 30))
-
-        self.gridLayout.addWidget(self.power, 3, 0, 1, 1)
-
-        self.Sysinfo = QPushButton(self.menu)
-        self.Sysinfo.setObjectName(u"Sysinfo")
-        icon9 = QIcon()
-        icon9.addFile(u":/feather/icons/feather/monitor.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.Sysinfo.setIcon(icon9)
-        self.Sysinfo.setIconSize(QSize(30, 30))
-
-        self.gridLayout.addWidget(self.Sysinfo, 4, 0, 1, 1)
-
-        self.label_5 = QLabel(self.menu)
-        self.label_5.setObjectName(u"label_5")
-        self.label_5.setFont(font2)
-        self.label_5.setMargin(5)
-
-        self.gridLayout.addWidget(self.label_5, 5, 1, 1, 1)
-
-        self.label_8 = QLabel(self.menu)
-        self.label_8.setObjectName(u"label_8")
-        self.label_8.setFont(font2)
-        self.label_8.setMargin(5)
-
-        self.gridLayout.addWidget(self.label_8, 8, 1, 1, 1)
-
-        self.label_7 = QLabel(self.menu)
-        self.label_7.setObjectName(u"label_7")
-        self.label_7.setFont(font2)
-        self.label_7.setMargin(5)
-
-        self.gridLayout.addWidget(self.label_7, 7, 1, 1, 1)
-
-        self.label_6 = QLabel(self.menu)
-        self.label_6.setObjectName(u"label_6")
-        self.label_6.setFont(font2)
-        self.label_6.setMargin(5)
-
-        self.gridLayout.addWidget(self.label_6, 6, 1, 1, 1)
+        self.gridLayout.addWidget(self.Sensors, 7, 0, 1, 1, Qt.AlignLeft)
 
         self.Activities = QPushButton(self.menu)
         self.Activities.setObjectName(u"Activities")
-        icon10 = QIcon()
-        icon10.addFile(u":/feather/icons/feather/activity.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.Activities.setIcon(icon10)
+        icon5 = QIcon()
+        icon5.addFile(u":/feather/icons/feather/activity.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.Activities.setIcon(icon5)
         self.Activities.setIconSize(QSize(30, 30))
 
-        self.gridLayout.addWidget(self.Activities, 5, 0, 1, 1)
+        self.gridLayout.addWidget(self.Activities, 5, 0, 1, 1, Qt.AlignLeft)
+
+        self.label_9 = QLabel(self.menu)
+        self.label_9.setObjectName(u"label_9")
+        font2 = QFont()
+        font2.setFamily(u"ROG Fonts")
+        self.label_9.setFont(font2)
+
+        self.gridLayout.addWidget(self.label_9, 0, 1, 1, 1)
 
         self.label_4 = QLabel(self.menu)
         self.label_4.setObjectName(u"label_4")
@@ -279,32 +193,128 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.label_4, 4, 1, 1, 1)
 
-        self.Clientlist = QPushButton(self.menu)
-        self.Clientlist.setObjectName(u"Clientlist")
-        icon11 = QIcon()
-        icon11.addFile(u":/material_design/icons/material_design/person.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.Clientlist.setIcon(icon11)
-        self.Clientlist.setIconSize(QSize(30, 30))
-
-        self.gridLayout.addWidget(self.Clientlist, 0, 0, 1, 1)
-
-        self.Domain = QPushButton(self.menu)
-        self.Domain.setObjectName(u"Domain")
-        icon12 = QIcon()
-        icon12.addFile(u":/material_design/icons/material_design/domain.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.Domain.setIcon(icon12)
-        self.Domain.setIconSize(QSize(32, 32))
-
-        self.gridLayout.addWidget(self.Domain, 1, 0, 1, 1)
-
         self.label_23 = QLabel(self.menu)
         self.label_23.setObjectName(u"label_23")
         self.label_23.setFont(font2)
 
         self.gridLayout.addWidget(self.label_23, 1, 1, 1, 1)
 
+        self.Clientlist = QPushButton(self.menu)
+        self.Clientlist.setObjectName(u"Clientlist")
+        icon6 = QIcon()
+        icon6.addFile(u":/material_design/icons/material_design/person.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.Clientlist.setIcon(icon6)
+        self.Clientlist.setIconSize(QSize(30, 30))
 
-        self.verticalLayout_18.addWidget(self.menu)
+        self.gridLayout.addWidget(self.Clientlist, 0, 0, 1, 1, Qt.AlignLeft)
+
+        self.label_6 = QLabel(self.menu)
+        self.label_6.setObjectName(u"label_6")
+        self.label_6.setFont(font2)
+        self.label_6.setMargin(5)
+
+        self.gridLayout.addWidget(self.label_6, 6, 1, 1, 1)
+
+        self.label_7 = QLabel(self.menu)
+        self.label_7.setObjectName(u"label_7")
+        self.label_7.setFont(font2)
+        self.label_7.setMargin(5)
+
+        self.gridLayout.addWidget(self.label_7, 7, 1, 1, 1)
+
+        self.label_3 = QLabel(self.menu)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setFont(font2)
+        self.label_3.setMargin(5)
+
+        self.gridLayout.addWidget(self.label_3, 3, 1, 1, 1)
+
+        self.CPU = QPushButton(self.menu)
+        self.CPU.setObjectName(u"CPU")
+        icon7 = QIcon()
+        icon7.addFile(u":/feather/icons/feather/cpu.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.CPU.setIcon(icon7)
+        self.CPU.setIconSize(QSize(30, 30))
+
+        self.gridLayout.addWidget(self.CPU, 2, 0, 1, 1, Qt.AlignLeft)
+
+        self.label_5 = QLabel(self.menu)
+        self.label_5.setObjectName(u"label_5")
+        self.label_5.setFont(font2)
+        self.label_5.setMargin(5)
+
+        self.gridLayout.addWidget(self.label_5, 5, 1, 1, 1)
+
+        self.Domain = QPushButton(self.menu)
+        self.Domain.setObjectName(u"Domain")
+        icon8 = QIcon()
+        icon8.addFile(u":/material_design/icons/material_design/domain.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.Domain.setIcon(icon8)
+        self.Domain.setIconSize(QSize(32, 32))
+
+        self.gridLayout.addWidget(self.Domain, 1, 0, 1, 1, Qt.AlignLeft)
+
+        self.Sysinfo = QPushButton(self.menu)
+        self.Sysinfo.setObjectName(u"Sysinfo")
+        icon9 = QIcon()
+        icon9.addFile(u":/feather/icons/feather/monitor.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.Sysinfo.setIcon(icon9)
+        self.Sysinfo.setIconSize(QSize(30, 30))
+
+        self.gridLayout.addWidget(self.Sysinfo, 4, 0, 1, 1, Qt.AlignLeft)
+
+        self.label_18 = QLabel(self.menu)
+        self.label_18.setObjectName(u"label_18")
+        self.label_18.setFont(font2)
+
+        self.gridLayout.addWidget(self.label_18, 8, 1, 1, 1)
+
+        self.power = QPushButton(self.menu)
+        self.power.setObjectName(u"power")
+        icon10 = QIcon()
+        icon10.addFile(u":/feather/icons/feather/zap.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.power.setIcon(icon10)
+        self.power.setIconSize(QSize(30, 30))
+
+        self.gridLayout.addWidget(self.power, 3, 0, 1, 1, Qt.AlignLeft)
+
+        self.Storage = QPushButton(self.menu)
+        self.Storage.setObjectName(u"Storage")
+        icon11 = QIcon()
+        icon11.addFile(u":/feather/icons/feather/disc.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.Storage.setIcon(icon11)
+        self.Storage.setIconSize(QSize(30, 30))
+
+        self.gridLayout.addWidget(self.Storage, 6, 0, 1, 1, Qt.AlignLeft)
+
+        self.label_2 = QLabel(self.menu)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setFont(font2)
+        self.label_2.setMargin(5)
+
+        self.gridLayout.addWidget(self.label_2, 2, 1, 1, 1)
+
+        self.Network = QPushButton(self.menu)
+        self.Network.setObjectName(u"Network")
+        icon12 = QIcon()
+        icon12.addFile(u":/font_awesome_solid/icons/font_awesome/solid/network-wired.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.Network.setIcon(icon12)
+        self.Network.setIconSize(QSize(30, 30))
+
+        self.gridLayout.addWidget(self.Network, 8, 0, 1, 1, Qt.AlignLeft)
+
+        self.label_8 = QLabel(self.menu)
+        self.label_8.setObjectName(u"label_8")
+        self.label_8.setEnabled(False)
+        font3 = QFont()
+        font3.setFamily(u"Asus Rog")
+        self.label_8.setFont(font3)
+        self.label_8.setMargin(5)
+
+        self.gridLayout.addWidget(self.label_8, 8, 2, 1, 1)
+
+
+        self.verticalLayout_18.addWidget(self.menu, 0, Qt.AlignLeft)
 
 
         self.horizontalLayout_8.addWidget(self.left_main)
@@ -334,37 +344,37 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.cpu_per = QLabel(self.cpu_info)
         self.cpu_per.setObjectName(u"cpu_per")
-        self.cpu_per.setFont(font2)
+        self.cpu_per.setFont(font3)
 
         self.gridLayout_2.addWidget(self.cpu_per, 1, 1, 1, 1)
 
         self.label_11 = QLabel(self.cpu_info)
         self.label_11.setObjectName(u"label_11")
-        self.label_11.setFont(font2)
+        self.label_11.setFont(font3)
 
         self.gridLayout_2.addWidget(self.label_11, 1, 0, 1, 1)
 
         self.cpu_cont = QLabel(self.cpu_info)
         self.cpu_cont.setObjectName(u"cpu_cont")
-        self.cpu_cont.setFont(font2)
+        self.cpu_cont.setFont(font3)
 
         self.gridLayout_2.addWidget(self.cpu_cont, 0, 1, 1, 1)
 
         self.label_12 = QLabel(self.cpu_info)
         self.label_12.setObjectName(u"label_12")
-        self.label_12.setFont(font2)
+        self.label_12.setFont(font3)
 
         self.gridLayout_2.addWidget(self.label_12, 2, 0, 1, 1)
 
         self.cpu_main_core = QLabel(self.cpu_info)
         self.cpu_main_core.setObjectName(u"cpu_main_core")
-        self.cpu_main_core.setFont(font2)
+        self.cpu_main_core.setFont(font3)
 
         self.gridLayout_2.addWidget(self.cpu_main_core, 2, 1, 1, 1)
 
         self.label_10 = QLabel(self.cpu_info)
         self.label_10.setObjectName(u"label_10")
-        self.label_10.setFont(font2)
+        self.label_10.setFont(font3)
 
         self.gridLayout_2.addWidget(self.label_10, 0, 0, 1, 1)
 
@@ -386,37 +396,37 @@ class Ui_MainWindow(object):
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.total_ram = QLabel(self.ram_info)
         self.total_ram.setObjectName(u"total_ram")
-        self.total_ram.setFont(font2)
+        self.total_ram.setFont(font3)
 
         self.gridLayout_3.addWidget(self.total_ram, 0, 3, 1, 1)
 
         self.label_14 = QLabel(self.ram_info)
         self.label_14.setObjectName(u"label_14")
-        self.label_14.setFont(font2)
+        self.label_14.setFont(font3)
 
         self.gridLayout_3.addWidget(self.label_14, 0, 2, 1, 1, Qt.AlignLeft)
 
         self.label_16 = QLabel(self.ram_info)
         self.label_16.setObjectName(u"label_16")
-        self.label_16.setFont(font2)
+        self.label_16.setFont(font3)
 
         self.gridLayout_3.addWidget(self.label_16, 1, 2, 1, 1, Qt.AlignLeft)
 
         self.available_ram = QLabel(self.ram_info)
         self.available_ram.setObjectName(u"available_ram")
-        self.available_ram.setFont(font2)
+        self.available_ram.setFont(font3)
 
         self.gridLayout_3.addWidget(self.available_ram, 1, 3, 1, 1)
 
         self.label_13 = QLabel(self.ram_info)
         self.label_13.setObjectName(u"label_13")
-        self.label_13.setFont(font2)
+        self.label_13.setFont(font3)
 
         self.gridLayout_3.addWidget(self.label_13, 4, 2, 1, 1, Qt.AlignLeft)
 
         self.used_ram = QLabel(self.ram_info)
         self.used_ram.setObjectName(u"used_ram")
-        self.used_ram.setFont(font2)
+        self.used_ram.setFont(font3)
 
         self.gridLayout_3.addWidget(self.used_ram, 2, 3, 1, 1)
 
@@ -428,25 +438,25 @@ class Ui_MainWindow(object):
 
         self.ram_usage = QLabel(self.ram_info)
         self.ram_usage.setObjectName(u"ram_usage")
-        self.ram_usage.setFont(font2)
+        self.ram_usage.setFont(font3)
 
         self.gridLayout_3.addWidget(self.ram_usage, 4, 3, 1, 1)
 
         self.label_15 = QLabel(self.ram_info)
         self.label_15.setObjectName(u"label_15")
-        self.label_15.setFont(font2)
+        self.label_15.setFont(font3)
 
         self.gridLayout_3.addWidget(self.label_15, 2, 2, 1, 1, Qt.AlignLeft)
 
         self.label_17 = QLabel(self.ram_info)
         self.label_17.setObjectName(u"label_17")
-        self.label_17.setFont(font2)
+        self.label_17.setFont(font3)
 
         self.gridLayout_3.addWidget(self.label_17, 3, 2, 1, 1)
 
         self.free_ram = QLabel(self.ram_info)
         self.free_ram.setObjectName(u"free_ram")
-        self.free_ram.setFont(font2)
+        self.free_ram.setFont(font3)
 
         self.gridLayout_3.addWidget(self.free_ram, 3, 3, 1, 1)
 
@@ -478,49 +488,49 @@ class Ui_MainWindow(object):
         self.gridLayout_4.setObjectName(u"gridLayout_4")
         self.label_25 = QLabel(self.Battery)
         self.label_25.setObjectName(u"label_25")
-        self.label_25.setFont(font2)
+        self.label_25.setFont(font3)
 
         self.gridLayout_4.addWidget(self.label_25, 0, 0, 1, 1)
 
         self.label_27 = QLabel(self.Battery)
         self.label_27.setObjectName(u"label_27")
-        self.label_27.setFont(font2)
+        self.label_27.setFont(font3)
 
         self.gridLayout_4.addWidget(self.label_27, 2, 0, 1, 1)
 
         self.label_26 = QLabel(self.Battery)
         self.label_26.setObjectName(u"label_26")
-        self.label_26.setFont(font2)
+        self.label_26.setFont(font3)
 
         self.gridLayout_4.addWidget(self.label_26, 1, 0, 1, 1)
 
         self.battery_status = QLabel(self.Battery)
         self.battery_status.setObjectName(u"battery_status")
-        self.battery_status.setFont(font2)
+        self.battery_status.setFont(font3)
 
         self.gridLayout_4.addWidget(self.battery_status, 0, 1, 1, 1)
 
         self.battery_plugged = QLabel(self.Battery)
         self.battery_plugged.setObjectName(u"battery_plugged")
-        self.battery_plugged.setFont(font2)
+        self.battery_plugged.setFont(font3)
 
         self.gridLayout_4.addWidget(self.battery_plugged, 3, 1, 1, 1)
 
         self.label_37 = QLabel(self.Battery)
         self.label_37.setObjectName(u"label_37")
-        self.label_37.setFont(font2)
+        self.label_37.setFont(font3)
 
         self.gridLayout_4.addWidget(self.label_37, 3, 0, 1, 1)
 
         self.battery_time_left = QLabel(self.Battery)
         self.battery_time_left.setObjectName(u"battery_time_left")
-        self.battery_time_left.setFont(font2)
+        self.battery_time_left.setFont(font3)
 
         self.gridLayout_4.addWidget(self.battery_time_left, 2, 1, 1, 1)
 
         self.battery_charge = QLabel(self.Battery)
         self.battery_charge.setObjectName(u"battery_charge")
-        self.battery_charge.setFont(font2)
+        self.battery_charge.setFont(font3)
 
         self.gridLayout_4.addWidget(self.battery_charge, 1, 1, 1, 1)
 
@@ -541,49 +551,49 @@ class Ui_MainWindow(object):
         self.gridLayout_5.setObjectName(u"gridLayout_5")
         self.avg_consumed = QLabel(self.Consumed)
         self.avg_consumed.setObjectName(u"avg_consumed")
-        self.avg_consumed.setFont(font2)
+        self.avg_consumed.setFont(font3)
 
         self.gridLayout_5.addWidget(self.avg_consumed, 3, 1, 1, 1)
 
         self.label_32 = QLabel(self.Consumed)
         self.label_32.setObjectName(u"label_32")
-        self.label_32.setFont(font2)
+        self.label_32.setFont(font3)
 
         self.gridLayout_5.addWidget(self.label_32, 2, 0, 1, 1)
 
         self.cpu_consume = QLabel(self.Consumed)
         self.cpu_consume.setObjectName(u"cpu_consume")
-        self.cpu_consume.setFont(font2)
+        self.cpu_consume.setFont(font3)
 
         self.gridLayout_5.addWidget(self.cpu_consume, 2, 1, 1, 1)
 
         self.igpu_consume = QLabel(self.Consumed)
         self.igpu_consume.setObjectName(u"igpu_consume")
-        self.igpu_consume.setFont(font2)
+        self.igpu_consume.setFont(font3)
 
         self.gridLayout_5.addWidget(self.igpu_consume, 1, 1, 1, 1)
 
         self.label_31 = QLabel(self.Consumed)
         self.label_31.setObjectName(u"label_31")
-        self.label_31.setFont(font2)
+        self.label_31.setFont(font3)
 
         self.gridLayout_5.addWidget(self.label_31, 0, 0, 1, 1)
 
         self.label_40 = QLabel(self.Consumed)
         self.label_40.setObjectName(u"label_40")
-        self.label_40.setFont(font2)
+        self.label_40.setFont(font3)
 
         self.gridLayout_5.addWidget(self.label_40, 1, 0, 1, 1)
 
         self.gpu_consume = QLabel(self.Consumed)
         self.gpu_consume.setObjectName(u"gpu_consume")
-        self.gpu_consume.setFont(font2)
+        self.gpu_consume.setFont(font3)
 
         self.gridLayout_5.addWidget(self.gpu_consume, 0, 1, 1, 1)
 
         self.label_33 = QLabel(self.Consumed)
         self.label_33.setObjectName(u"label_33")
-        self.label_33.setFont(font2)
+        self.label_33.setFont(font3)
 
         self.gridLayout_5.addWidget(self.label_33, 3, 0, 1, 1)
 
@@ -604,12 +614,12 @@ class Ui_MainWindow(object):
         self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
         self.label_57 = QLabel(self.storage)
         self.label_57.setObjectName(u"label_57")
-        font3 = QFont()
-        font3.setFamily(u"Asus Rog")
-        font3.setPointSize(12)
-        font3.setBold(False)
-        font3.setWeight(50)
-        self.label_57.setFont(font3)
+        font4 = QFont()
+        font4.setFamily(u"Asus Rog")
+        font4.setPointSize(12)
+        font4.setBold(False)
+        font4.setWeight(50)
+        self.label_57.setFont(font4)
 
         self.verticalLayout_9.addWidget(self.label_57)
 
@@ -617,35 +627,36 @@ class Ui_MainWindow(object):
         if (self.storageTable.columnCount() < 10):
             self.storageTable.setColumnCount(10)
         __qtablewidgetitem = QTableWidgetItem()
-        __qtablewidgetitem.setFont(font2);
+        __qtablewidgetitem.setFont(font3);
         self.storageTable.setHorizontalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
-        __qtablewidgetitem1.setFont(font2);
+        __qtablewidgetitem1.setFont(font3);
         self.storageTable.setHorizontalHeaderItem(1, __qtablewidgetitem1)
         __qtablewidgetitem2 = QTableWidgetItem()
-        __qtablewidgetitem2.setFont(font2);
+        __qtablewidgetitem2.setFont(font3);
         self.storageTable.setHorizontalHeaderItem(2, __qtablewidgetitem2)
         __qtablewidgetitem3 = QTableWidgetItem()
-        __qtablewidgetitem3.setFont(font2);
+        __qtablewidgetitem3.setFont(font3);
         self.storageTable.setHorizontalHeaderItem(3, __qtablewidgetitem3)
         __qtablewidgetitem4 = QTableWidgetItem()
-        __qtablewidgetitem4.setFont(font2);
+        __qtablewidgetitem4.setFont(font3);
         self.storageTable.setHorizontalHeaderItem(4, __qtablewidgetitem4)
         __qtablewidgetitem5 = QTableWidgetItem()
-        __qtablewidgetitem5.setFont(font2);
+        __qtablewidgetitem5.setFont(font3);
         self.storageTable.setHorizontalHeaderItem(5, __qtablewidgetitem5)
         __qtablewidgetitem6 = QTableWidgetItem()
-        __qtablewidgetitem6.setFont(font2);
+        __qtablewidgetitem6.setFont(font3);
         self.storageTable.setHorizontalHeaderItem(6, __qtablewidgetitem6)
         __qtablewidgetitem7 = QTableWidgetItem()
-        __qtablewidgetitem7.setFont(font2);
+        __qtablewidgetitem7.setFont(font3);
         self.storageTable.setHorizontalHeaderItem(7, __qtablewidgetitem7)
         __qtablewidgetitem8 = QTableWidgetItem()
-        __qtablewidgetitem8.setFont(font2);
+        __qtablewidgetitem8.setFont(font3);
         self.storageTable.setHorizontalHeaderItem(8, __qtablewidgetitem8)
         __qtablewidgetitem9 = QTableWidgetItem()
         self.storageTable.setHorizontalHeaderItem(9, __qtablewidgetitem9)
         self.storageTable.setObjectName(u"storageTable")
+        self.storageTable.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
         self.verticalLayout_9.addWidget(self.storageTable)
 
@@ -678,7 +689,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_12.setContentsMargins(0, 0, 0, 0)
         self.activity_search = QLineEdit(self.frame_5)
         self.activity_search.setObjectName(u"activity_search")
-        self.activity_search.setFont(font2)
+        self.activity_search.setFont(font3)
 
         self.horizontalLayout_12.addWidget(self.activity_search)
 
@@ -707,31 +718,32 @@ class Ui_MainWindow(object):
         if (self.tableWidget.columnCount() < 8):
             self.tableWidget.setColumnCount(8)
         __qtablewidgetitem10 = QTableWidgetItem()
-        __qtablewidgetitem10.setFont(font2);
+        __qtablewidgetitem10.setFont(font3);
         self.tableWidget.setHorizontalHeaderItem(0, __qtablewidgetitem10)
         __qtablewidgetitem11 = QTableWidgetItem()
-        __qtablewidgetitem11.setFont(font2);
+        __qtablewidgetitem11.setFont(font3);
         self.tableWidget.setHorizontalHeaderItem(1, __qtablewidgetitem11)
         __qtablewidgetitem12 = QTableWidgetItem()
-        __qtablewidgetitem12.setFont(font2);
+        __qtablewidgetitem12.setFont(font3);
         self.tableWidget.setHorizontalHeaderItem(2, __qtablewidgetitem12)
         __qtablewidgetitem13 = QTableWidgetItem()
-        __qtablewidgetitem13.setFont(font2);
+        __qtablewidgetitem13.setFont(font3);
         self.tableWidget.setHorizontalHeaderItem(3, __qtablewidgetitem13)
         __qtablewidgetitem14 = QTableWidgetItem()
-        __qtablewidgetitem14.setFont(font2);
+        __qtablewidgetitem14.setFont(font3);
         self.tableWidget.setHorizontalHeaderItem(4, __qtablewidgetitem14)
         __qtablewidgetitem15 = QTableWidgetItem()
-        __qtablewidgetitem15.setFont(font2);
+        __qtablewidgetitem15.setFont(font3);
         self.tableWidget.setHorizontalHeaderItem(5, __qtablewidgetitem15)
         __qtablewidgetitem16 = QTableWidgetItem()
-        __qtablewidgetitem16.setFont(font2);
+        __qtablewidgetitem16.setFont(font3);
         self.tableWidget.setHorizontalHeaderItem(6, __qtablewidgetitem16)
         __qtablewidgetitem17 = QTableWidgetItem()
-        __qtablewidgetitem17.setFont(font2);
+        __qtablewidgetitem17.setFont(font3);
         self.tableWidget.setHorizontalHeaderItem(7, __qtablewidgetitem17)
         self.tableWidget.setObjectName(u"tableWidget")
-        self.tableWidget.setFont(font2)
+        self.tableWidget.setFont(font3)
+        self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
         self.verticalLayout_7.addWidget(self.tableWidget)
 
@@ -747,25 +759,25 @@ class Ui_MainWindow(object):
         self.horizontalLayout_13.setContentsMargins(0, 10, 0, 0)
         self.pushButton_12 = QPushButton(self.frame_4)
         self.pushButton_12.setObjectName(u"pushButton_12")
-        self.pushButton_12.setFont(font2)
+        self.pushButton_12.setFont(font3)
 
         self.horizontalLayout_13.addWidget(self.pushButton_12)
 
         self.pushButton_13 = QPushButton(self.frame_4)
         self.pushButton_13.setObjectName(u"pushButton_13")
-        self.pushButton_13.setFont(font2)
+        self.pushButton_13.setFont(font3)
 
         self.horizontalLayout_13.addWidget(self.pushButton_13)
 
         self.pushButton_14 = QPushButton(self.frame_4)
         self.pushButton_14.setObjectName(u"pushButton_14")
-        self.pushButton_14.setFont(font2)
+        self.pushButton_14.setFont(font3)
 
         self.horizontalLayout_13.addWidget(self.pushButton_14)
 
         self.pushButton_15 = QPushButton(self.frame_4)
         self.pushButton_15.setObjectName(u"pushButton_15")
-        self.pushButton_15.setFont(font2)
+        self.pushButton_15.setFont(font3)
 
         self.horizontalLayout_13.addWidget(self.pushButton_15)
 
@@ -786,26 +798,25 @@ class Ui_MainWindow(object):
         self.verticalLayout_8.addWidget(self.title_sensor)
 
         self.sensors_table = QTableWidget(self.sensors)
-        if (self.sensors_table.columnCount() < 6):
-            self.sensors_table.setColumnCount(6)
+        if (self.sensors_table.columnCount() < 5):
+            self.sensors_table.setColumnCount(5)
         __qtablewidgetitem18 = QTableWidgetItem()
-        __qtablewidgetitem18.setFont(font2);
+        __qtablewidgetitem18.setFont(font3);
         self.sensors_table.setHorizontalHeaderItem(0, __qtablewidgetitem18)
         __qtablewidgetitem19 = QTableWidgetItem()
-        __qtablewidgetitem19.setFont(font2);
+        __qtablewidgetitem19.setFont(font3);
         self.sensors_table.setHorizontalHeaderItem(1, __qtablewidgetitem19)
         __qtablewidgetitem20 = QTableWidgetItem()
-        __qtablewidgetitem20.setFont(font2);
+        __qtablewidgetitem20.setFont(font3);
         self.sensors_table.setHorizontalHeaderItem(2, __qtablewidgetitem20)
         __qtablewidgetitem21 = QTableWidgetItem()
-        __qtablewidgetitem21.setFont(font2);
+        __qtablewidgetitem21.setFont(font3);
         self.sensors_table.setHorizontalHeaderItem(3, __qtablewidgetitem21)
         __qtablewidgetitem22 = QTableWidgetItem()
-        __qtablewidgetitem22.setFont(font2);
+        __qtablewidgetitem22.setFont(font3);
         self.sensors_table.setHorizontalHeaderItem(4, __qtablewidgetitem22)
-        __qtablewidgetitem23 = QTableWidgetItem()
-        self.sensors_table.setHorizontalHeaderItem(5, __qtablewidgetitem23)
         self.sensors_table.setObjectName(u"sensors_table")
+        self.sensors_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
         self.verticalLayout_8.addWidget(self.sensors_table)
 
@@ -821,7 +832,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 279, 592))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 776, 1076))
         self.verticalLayout_11 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_11.setSpacing(20)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
@@ -839,26 +850,28 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_13.addWidget(self.label_60)
 
-        self.tableWidget_5 = QTableWidget(self.frame_6)
-        if (self.tableWidget_5.columnCount() < 5):
-            self.tableWidget_5.setColumnCount(5)
+        self.stats_table = QTableWidget(self.frame_6)
+        if (self.stats_table.columnCount() < 5):
+            self.stats_table.setColumnCount(5)
+        __qtablewidgetitem23 = QTableWidgetItem()
+        self.stats_table.setHorizontalHeaderItem(0, __qtablewidgetitem23)
         __qtablewidgetitem24 = QTableWidgetItem()
-        self.tableWidget_5.setHorizontalHeaderItem(0, __qtablewidgetitem24)
+        __qtablewidgetitem24.setFont(font3);
+        self.stats_table.setHorizontalHeaderItem(1, __qtablewidgetitem24)
         __qtablewidgetitem25 = QTableWidgetItem()
-        __qtablewidgetitem25.setFont(font2);
-        self.tableWidget_5.setHorizontalHeaderItem(1, __qtablewidgetitem25)
+        __qtablewidgetitem25.setFont(font3);
+        self.stats_table.setHorizontalHeaderItem(2, __qtablewidgetitem25)
         __qtablewidgetitem26 = QTableWidgetItem()
-        __qtablewidgetitem26.setFont(font2);
-        self.tableWidget_5.setHorizontalHeaderItem(2, __qtablewidgetitem26)
+        __qtablewidgetitem26.setFont(font3);
+        self.stats_table.setHorizontalHeaderItem(3, __qtablewidgetitem26)
         __qtablewidgetitem27 = QTableWidgetItem()
-        __qtablewidgetitem27.setFont(font2);
-        self.tableWidget_5.setHorizontalHeaderItem(3, __qtablewidgetitem27)
-        __qtablewidgetitem28 = QTableWidgetItem()
-        __qtablewidgetitem28.setFont(font2);
-        self.tableWidget_5.setHorizontalHeaderItem(4, __qtablewidgetitem28)
-        self.tableWidget_5.setObjectName(u"tableWidget_5")
+        __qtablewidgetitem27.setFont(font3);
+        self.stats_table.setHorizontalHeaderItem(4, __qtablewidgetitem27)
+        self.stats_table.setObjectName(u"stats_table")
+        self.stats_table.setMinimumSize(QSize(0, 200))
+        self.stats_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
-        self.verticalLayout_13.addWidget(self.tableWidget_5)
+        self.verticalLayout_13.addWidget(self.stats_table)
 
 
         self.verticalLayout_11.addWidget(self.frame_6)
@@ -876,39 +889,41 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_14.addWidget(self.label_61)
 
-        self.tableWidget_6 = QTableWidget(self.frame_7)
-        if (self.tableWidget_6.columnCount() < 9):
-            self.tableWidget_6.setColumnCount(9)
+        self.IO_counters_table = QTableWidget(self.frame_7)
+        if (self.IO_counters_table.columnCount() < 9):
+            self.IO_counters_table.setColumnCount(9)
+        __qtablewidgetitem28 = QTableWidgetItem()
+        __qtablewidgetitem28.setFont(font3);
+        self.IO_counters_table.setHorizontalHeaderItem(0, __qtablewidgetitem28)
         __qtablewidgetitem29 = QTableWidgetItem()
-        __qtablewidgetitem29.setFont(font2);
-        self.tableWidget_6.setHorizontalHeaderItem(0, __qtablewidgetitem29)
+        __qtablewidgetitem29.setFont(font3);
+        self.IO_counters_table.setHorizontalHeaderItem(1, __qtablewidgetitem29)
         __qtablewidgetitem30 = QTableWidgetItem()
-        __qtablewidgetitem30.setFont(font2);
-        self.tableWidget_6.setHorizontalHeaderItem(1, __qtablewidgetitem30)
+        __qtablewidgetitem30.setFont(font3);
+        self.IO_counters_table.setHorizontalHeaderItem(2, __qtablewidgetitem30)
         __qtablewidgetitem31 = QTableWidgetItem()
-        __qtablewidgetitem31.setFont(font2);
-        self.tableWidget_6.setHorizontalHeaderItem(2, __qtablewidgetitem31)
+        __qtablewidgetitem31.setFont(font3);
+        self.IO_counters_table.setHorizontalHeaderItem(3, __qtablewidgetitem31)
         __qtablewidgetitem32 = QTableWidgetItem()
-        __qtablewidgetitem32.setFont(font2);
-        self.tableWidget_6.setHorizontalHeaderItem(3, __qtablewidgetitem32)
+        __qtablewidgetitem32.setFont(font3);
+        self.IO_counters_table.setHorizontalHeaderItem(4, __qtablewidgetitem32)
         __qtablewidgetitem33 = QTableWidgetItem()
-        __qtablewidgetitem33.setFont(font2);
-        self.tableWidget_6.setHorizontalHeaderItem(4, __qtablewidgetitem33)
+        __qtablewidgetitem33.setFont(font3);
+        self.IO_counters_table.setHorizontalHeaderItem(5, __qtablewidgetitem33)
         __qtablewidgetitem34 = QTableWidgetItem()
-        __qtablewidgetitem34.setFont(font2);
-        self.tableWidget_6.setHorizontalHeaderItem(5, __qtablewidgetitem34)
+        __qtablewidgetitem34.setFont(font3);
+        self.IO_counters_table.setHorizontalHeaderItem(6, __qtablewidgetitem34)
         __qtablewidgetitem35 = QTableWidgetItem()
-        __qtablewidgetitem35.setFont(font2);
-        self.tableWidget_6.setHorizontalHeaderItem(6, __qtablewidgetitem35)
+        __qtablewidgetitem35.setFont(font3);
+        self.IO_counters_table.setHorizontalHeaderItem(7, __qtablewidgetitem35)
         __qtablewidgetitem36 = QTableWidgetItem()
-        __qtablewidgetitem36.setFont(font2);
-        self.tableWidget_6.setHorizontalHeaderItem(7, __qtablewidgetitem36)
-        __qtablewidgetitem37 = QTableWidgetItem()
-        __qtablewidgetitem37.setFont(font2);
-        self.tableWidget_6.setHorizontalHeaderItem(8, __qtablewidgetitem37)
-        self.tableWidget_6.setObjectName(u"tableWidget_6")
+        __qtablewidgetitem36.setFont(font3);
+        self.IO_counters_table.setHorizontalHeaderItem(8, __qtablewidgetitem36)
+        self.IO_counters_table.setObjectName(u"IO_counters_table")
+        self.IO_counters_table.setMinimumSize(QSize(0, 200))
+        self.IO_counters_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
-        self.verticalLayout_14.addWidget(self.tableWidget_6)
+        self.verticalLayout_14.addWidget(self.IO_counters_table)
 
 
         self.verticalLayout_11.addWidget(self.frame_7)
@@ -926,30 +941,32 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_15.addWidget(self.label_62)
 
-        self.tableWidget_7 = QTableWidget(self.frame_8)
-        if (self.tableWidget_7.columnCount() < 6):
-            self.tableWidget_7.setColumnCount(6)
+        self.addresses_table = QTableWidget(self.frame_8)
+        if (self.addresses_table.columnCount() < 6):
+            self.addresses_table.setColumnCount(6)
+        __qtablewidgetitem37 = QTableWidgetItem()
+        __qtablewidgetitem37.setFont(font3);
+        self.addresses_table.setHorizontalHeaderItem(0, __qtablewidgetitem37)
         __qtablewidgetitem38 = QTableWidgetItem()
-        __qtablewidgetitem38.setFont(font2);
-        self.tableWidget_7.setHorizontalHeaderItem(0, __qtablewidgetitem38)
+        __qtablewidgetitem38.setFont(font3);
+        self.addresses_table.setHorizontalHeaderItem(1, __qtablewidgetitem38)
         __qtablewidgetitem39 = QTableWidgetItem()
-        __qtablewidgetitem39.setFont(font2);
-        self.tableWidget_7.setHorizontalHeaderItem(1, __qtablewidgetitem39)
+        __qtablewidgetitem39.setFont(font3);
+        self.addresses_table.setHorizontalHeaderItem(2, __qtablewidgetitem39)
         __qtablewidgetitem40 = QTableWidgetItem()
-        __qtablewidgetitem40.setFont(font2);
-        self.tableWidget_7.setHorizontalHeaderItem(2, __qtablewidgetitem40)
+        __qtablewidgetitem40.setFont(font3);
+        self.addresses_table.setHorizontalHeaderItem(3, __qtablewidgetitem40)
         __qtablewidgetitem41 = QTableWidgetItem()
-        __qtablewidgetitem41.setFont(font2);
-        self.tableWidget_7.setHorizontalHeaderItem(3, __qtablewidgetitem41)
+        __qtablewidgetitem41.setFont(font3);
+        self.addresses_table.setHorizontalHeaderItem(4, __qtablewidgetitem41)
         __qtablewidgetitem42 = QTableWidgetItem()
-        __qtablewidgetitem42.setFont(font2);
-        self.tableWidget_7.setHorizontalHeaderItem(4, __qtablewidgetitem42)
-        __qtablewidgetitem43 = QTableWidgetItem()
-        __qtablewidgetitem43.setFont(font2);
-        self.tableWidget_7.setHorizontalHeaderItem(5, __qtablewidgetitem43)
-        self.tableWidget_7.setObjectName(u"tableWidget_7")
+        __qtablewidgetitem42.setFont(font3);
+        self.addresses_table.setHorizontalHeaderItem(5, __qtablewidgetitem42)
+        self.addresses_table.setObjectName(u"addresses_table")
+        self.addresses_table.setMinimumSize(QSize(0, 200))
+        self.addresses_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
-        self.verticalLayout_15.addWidget(self.tableWidget_7)
+        self.verticalLayout_15.addWidget(self.addresses_table)
 
 
         self.verticalLayout_11.addWidget(self.frame_8)
@@ -967,33 +984,35 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_16.addWidget(self.label_63)
 
-        self.tableWidget_8 = QTableWidget(self.frame_9)
-        if (self.tableWidget_8.columnCount() < 7):
-            self.tableWidget_8.setColumnCount(7)
+        self.connections_table = QTableWidget(self.frame_9)
+        if (self.connections_table.columnCount() < 7):
+            self.connections_table.setColumnCount(7)
+        __qtablewidgetitem43 = QTableWidgetItem()
+        __qtablewidgetitem43.setFont(font3);
+        self.connections_table.setHorizontalHeaderItem(0, __qtablewidgetitem43)
         __qtablewidgetitem44 = QTableWidgetItem()
-        __qtablewidgetitem44.setFont(font2);
-        self.tableWidget_8.setHorizontalHeaderItem(0, __qtablewidgetitem44)
+        __qtablewidgetitem44.setFont(font3);
+        self.connections_table.setHorizontalHeaderItem(1, __qtablewidgetitem44)
         __qtablewidgetitem45 = QTableWidgetItem()
-        __qtablewidgetitem45.setFont(font2);
-        self.tableWidget_8.setHorizontalHeaderItem(1, __qtablewidgetitem45)
+        __qtablewidgetitem45.setFont(font3);
+        self.connections_table.setHorizontalHeaderItem(2, __qtablewidgetitem45)
         __qtablewidgetitem46 = QTableWidgetItem()
-        __qtablewidgetitem46.setFont(font2);
-        self.tableWidget_8.setHorizontalHeaderItem(2, __qtablewidgetitem46)
+        __qtablewidgetitem46.setFont(font3);
+        self.connections_table.setHorizontalHeaderItem(3, __qtablewidgetitem46)
         __qtablewidgetitem47 = QTableWidgetItem()
-        __qtablewidgetitem47.setFont(font2);
-        self.tableWidget_8.setHorizontalHeaderItem(3, __qtablewidgetitem47)
+        __qtablewidgetitem47.setFont(font3);
+        self.connections_table.setHorizontalHeaderItem(4, __qtablewidgetitem47)
         __qtablewidgetitem48 = QTableWidgetItem()
-        __qtablewidgetitem48.setFont(font2);
-        self.tableWidget_8.setHorizontalHeaderItem(4, __qtablewidgetitem48)
+        __qtablewidgetitem48.setFont(font3);
+        self.connections_table.setHorizontalHeaderItem(5, __qtablewidgetitem48)
         __qtablewidgetitem49 = QTableWidgetItem()
-        __qtablewidgetitem49.setFont(font2);
-        self.tableWidget_8.setHorizontalHeaderItem(5, __qtablewidgetitem49)
-        __qtablewidgetitem50 = QTableWidgetItem()
-        __qtablewidgetitem50.setFont(font2);
-        self.tableWidget_8.setHorizontalHeaderItem(6, __qtablewidgetitem50)
-        self.tableWidget_8.setObjectName(u"tableWidget_8")
+        __qtablewidgetitem49.setFont(font3);
+        self.connections_table.setHorizontalHeaderItem(6, __qtablewidgetitem49)
+        self.connections_table.setObjectName(u"connections_table")
+        self.connections_table.setMinimumSize(QSize(0, 200))
+        self.connections_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
-        self.verticalLayout_16.addWidget(self.tableWidget_8)
+        self.verticalLayout_16.addWidget(self.connections_table)
 
 
         self.verticalLayout_11.addWidget(self.frame_9)
@@ -1022,79 +1041,79 @@ class Ui_MainWindow(object):
 
         self.system_date = QLabel(self.frame)
         self.system_date.setObjectName(u"system_date")
-        self.system_date.setFont(font2)
+        self.system_date.setFont(font3)
 
         self.gridLayout_6.addWidget(self.system_date, 4, 4, 1, 1)
 
         self.label_51 = QLabel(self.frame)
         self.label_51.setObjectName(u"label_51")
-        self.label_51.setFont(font2)
+        self.label_51.setFont(font3)
 
         self.gridLayout_6.addWidget(self.label_51, 3, 3, 1, 1)
 
         self.system_version = QLabel(self.frame)
         self.system_version.setObjectName(u"system_version")
-        self.system_version.setFont(font2)
+        self.system_version.setFont(font3)
 
         self.gridLayout_6.addWidget(self.system_version, 3, 2, 1, 1)
 
         self.label_47 = QLabel(self.frame)
         self.label_47.setObjectName(u"label_47")
-        self.label_47.setFont(font2)
+        self.label_47.setFont(font3)
 
         self.gridLayout_6.addWidget(self.label_47, 4, 0, 1, 1)
 
         self.label_44 = QLabel(self.frame)
         self.label_44.setObjectName(u"label_44")
-        self.label_44.setFont(font2)
+        self.label_44.setFont(font3)
 
         self.gridLayout_6.addWidget(self.label_44, 2, 0, 1, 1, Qt.AlignLeft)
 
         self.system_time = QLabel(self.frame)
         self.system_time.setObjectName(u"system_time")
-        self.system_time.setFont(font2)
+        self.system_time.setFont(font3)
 
         self.gridLayout_6.addWidget(self.system_time, 4, 2, 1, 1)
 
         self.label_50 = QLabel(self.frame)
         self.label_50.setObjectName(u"label_50")
-        self.label_50.setFont(font2)
+        self.label_50.setFont(font3)
 
         self.gridLayout_6.addWidget(self.label_50, 2, 3, 1, 1)
 
         self.system_processor = QLabel(self.frame)
         self.system_processor.setObjectName(u"system_processor")
-        self.system_processor.setFont(font2)
+        self.system_processor.setFont(font3)
 
         self.gridLayout_6.addWidget(self.system_processor, 2, 4, 1, 1)
 
         self.label_45 = QLabel(self.frame)
         self.label_45.setObjectName(u"label_45")
-        self.label_45.setFont(font2)
+        self.label_45.setFont(font3)
 
         self.gridLayout_6.addWidget(self.label_45, 3, 0, 1, 1)
 
         self.system_system = QLabel(self.frame)
         self.system_system.setObjectName(u"system_system")
-        self.system_system.setFont(font2)
+        self.system_system.setFont(font3)
 
         self.gridLayout_6.addWidget(self.system_system, 1, 0, 1, 1)
 
         self.system_machine = QLabel(self.frame)
         self.system_machine.setObjectName(u"system_machine")
-        self.system_machine.setFont(font2)
+        self.system_machine.setFont(font3)
 
         self.gridLayout_6.addWidget(self.system_machine, 3, 4, 1, 1)
 
         self.label_52 = QLabel(self.frame)
         self.label_52.setObjectName(u"label_52")
-        self.label_52.setFont(font2)
+        self.label_52.setFont(font3)
 
         self.gridLayout_6.addWidget(self.label_52, 4, 3, 1, 1)
 
         self.system_platform = QLabel(self.frame)
         self.system_platform.setObjectName(u"system_platform")
-        self.system_platform.setFont(font2)
+        self.system_platform.setFont(font3)
 
         self.gridLayout_6.addWidget(self.system_platform, 2, 2, 1, 1)
 
@@ -1110,23 +1129,24 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.label_59 = QLabel(self.clientslist)
         self.label_59.setObjectName(u"label_59")
-        self.label_59.setFont(font3)
+        self.label_59.setFont(font4)
 
         self.verticalLayout_5.addWidget(self.label_59)
 
         self.tableWidget_4 = QTableWidget(self.clientslist)
         if (self.tableWidget_4.columnCount() < 3):
             self.tableWidget_4.setColumnCount(3)
+        __qtablewidgetitem50 = QTableWidgetItem()
+        __qtablewidgetitem50.setFont(font3);
+        self.tableWidget_4.setHorizontalHeaderItem(0, __qtablewidgetitem50)
         __qtablewidgetitem51 = QTableWidgetItem()
-        __qtablewidgetitem51.setFont(font2);
-        self.tableWidget_4.setHorizontalHeaderItem(0, __qtablewidgetitem51)
+        __qtablewidgetitem51.setFont(font3);
+        self.tableWidget_4.setHorizontalHeaderItem(1, __qtablewidgetitem51)
         __qtablewidgetitem52 = QTableWidgetItem()
-        __qtablewidgetitem52.setFont(font2);
-        self.tableWidget_4.setHorizontalHeaderItem(1, __qtablewidgetitem52)
-        __qtablewidgetitem53 = QTableWidgetItem()
-        __qtablewidgetitem53.setFont(font2);
-        self.tableWidget_4.setHorizontalHeaderItem(2, __qtablewidgetitem53)
+        __qtablewidgetitem52.setFont(font3);
+        self.tableWidget_4.setHorizontalHeaderItem(2, __qtablewidgetitem52)
         self.tableWidget_4.setObjectName(u"tableWidget_4")
+        self.tableWidget_4.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
         self.verticalLayout_5.addWidget(self.tableWidget_4)
 
@@ -1139,7 +1159,8 @@ class Ui_MainWindow(object):
 
         self.right_main = QFrame(self.main_body_frame)
         self.right_main.setObjectName(u"right_main")
-        self.right_main.setMinimumSize(QSize(200, 200))
+        self.right_main.setMinimumSize(QSize(0, 200))
+        self.right_main.setMaximumSize(QSize(0, 16777215))
         self.right_main.setStyleSheet(u"*{\n"
 "background-color:#24374B;\n"
 "}")
@@ -1150,10 +1171,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_17.setContentsMargins(0, 0, 0, 0)
         self.treeWidget = QTreeWidget(self.right_main)
         __qtreewidgetitem = QTreeWidgetItem()
-        __qtreewidgetitem.setFont(0, font2);
+        __qtreewidgetitem.setFont(0, font3);
         self.treeWidget.setHeaderItem(__qtreewidgetitem)
         __qtreewidgetitem1 = QTreeWidgetItem(self.treeWidget)
-        __qtreewidgetitem1.setFont(0, font2);
+        __qtreewidgetitem1.setFont(0, font3);
         QTreeWidgetItem(__qtreewidgetitem1)
         QTreeWidgetItem(__qtreewidgetitem1)
         QTreeWidgetItem(__qtreewidgetitem1)
@@ -1201,7 +1222,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.label = QLabel(self.footer_left)
         self.label.setObjectName(u"label")
-        self.label.setFont(font2)
+        self.label.setFont(font3)
 
         self.horizontalLayout_5.addWidget(self.label)
 
@@ -1237,7 +1258,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(5)
+        self.stackedWidget.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1251,24 +1272,25 @@ class Ui_MainWindow(object):
         self.minimize_button.setText("")
         self.resize_button.setText("")
         self.close_button.setText("")
-        self.Network.setText("")
         self.Sensors.setText("")
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"CPU", None))
-        self.Storage.setText("")
-        self.CPU.setText("")
-        self.label_9.setText(QCoreApplication.translate("MainWindow", u"List Clients", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Power", None))
-        self.power.setText("")
-        self.Sysinfo.setText("")
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Activities", None))
-        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Network", None))
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Sensors", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Storage", None))
         self.Activities.setText("")
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"List Clients", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"System Information", None))
-        self.Clientlist.setText("")
-        self.Domain.setText("")
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"Domain", None))
+        self.Clientlist.setText("")
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Storage", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Sensors", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Power", None))
+        self.CPU.setText("")
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Activities", None))
+        self.Domain.setText("")
+        self.Sysinfo.setText("")
+        self.label_18.setText(QCoreApplication.translate("MainWindow", u"Network", None))
+        self.power.setText("")
+        self.Storage.setText("")
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"CPU", None))
+        self.Network.setText("")
+        self.label_8.setText("")
         self.cpu_per.setText(QCoreApplication.translate("MainWindow", u"N/A", None))
         self.label_11.setText(QCoreApplication.translate("MainWindow", u"CPU Load", None))
         self.cpu_cont.setText(QCoreApplication.translate("MainWindow", u"N/A", None))
@@ -1361,60 +1383,60 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem21 = self.sensors_table.horizontalHeaderItem(4)
         ___qtablewidgetitem21.setText(QCoreApplication.translate("MainWindow", u"AVG Value", None));
         self.label_60.setText(QCoreApplication.translate("MainWindow", u"Stats", None))
-        ___qtablewidgetitem22 = self.tableWidget_5.horizontalHeaderItem(1)
+        ___qtablewidgetitem22 = self.stats_table.horizontalHeaderItem(1)
         ___qtablewidgetitem22.setText(QCoreApplication.translate("MainWindow", u"IS UP", None));
-        ___qtablewidgetitem23 = self.tableWidget_5.horizontalHeaderItem(2)
+        ___qtablewidgetitem23 = self.stats_table.horizontalHeaderItem(2)
         ___qtablewidgetitem23.setText(QCoreApplication.translate("MainWindow", u"DUPLEX", None));
-        ___qtablewidgetitem24 = self.tableWidget_5.horizontalHeaderItem(3)
+        ___qtablewidgetitem24 = self.stats_table.horizontalHeaderItem(3)
         ___qtablewidgetitem24.setText(QCoreApplication.translate("MainWindow", u"SPEED", None));
-        ___qtablewidgetitem25 = self.tableWidget_5.horizontalHeaderItem(4)
+        ___qtablewidgetitem25 = self.stats_table.horizontalHeaderItem(4)
         ___qtablewidgetitem25.setText(QCoreApplication.translate("MainWindow", u"MTU", None));
         self.label_61.setText(QCoreApplication.translate("MainWindow", u"Network IO Counters", None))
-        ___qtablewidgetitem26 = self.tableWidget_6.horizontalHeaderItem(0)
+        ___qtablewidgetitem26 = self.IO_counters_table.horizontalHeaderItem(0)
         ___qtablewidgetitem26.setText(QCoreApplication.translate("MainWindow", u"Adapter", None));
-        ___qtablewidgetitem27 = self.tableWidget_6.horizontalHeaderItem(1)
+        ___qtablewidgetitem27 = self.IO_counters_table.horizontalHeaderItem(1)
         ___qtablewidgetitem27.setText(QCoreApplication.translate("MainWindow", u"BYTES SEND", None));
-        ___qtablewidgetitem28 = self.tableWidget_6.horizontalHeaderItem(2)
+        ___qtablewidgetitem28 = self.IO_counters_table.horizontalHeaderItem(2)
         ___qtablewidgetitem28.setText(QCoreApplication.translate("MainWindow", u"BYTES RECEIVED", None));
-        ___qtablewidgetitem29 = self.tableWidget_6.horizontalHeaderItem(3)
+        ___qtablewidgetitem29 = self.IO_counters_table.horizontalHeaderItem(3)
         ___qtablewidgetitem29.setText(QCoreApplication.translate("MainWindow", u"PACKETS SEND", None));
-        ___qtablewidgetitem30 = self.tableWidget_6.horizontalHeaderItem(4)
+        ___qtablewidgetitem30 = self.IO_counters_table.horizontalHeaderItem(4)
         ___qtablewidgetitem30.setText(QCoreApplication.translate("MainWindow", u"PACKETS RECEIVED", None));
-        ___qtablewidgetitem31 = self.tableWidget_6.horizontalHeaderItem(5)
+        ___qtablewidgetitem31 = self.IO_counters_table.horizontalHeaderItem(5)
         ___qtablewidgetitem31.setText(QCoreApplication.translate("MainWindow", u"ERR IN", None));
-        ___qtablewidgetitem32 = self.tableWidget_6.horizontalHeaderItem(6)
+        ___qtablewidgetitem32 = self.IO_counters_table.horizontalHeaderItem(6)
         ___qtablewidgetitem32.setText(QCoreApplication.translate("MainWindow", u"ERR OUT", None));
-        ___qtablewidgetitem33 = self.tableWidget_6.horizontalHeaderItem(7)
+        ___qtablewidgetitem33 = self.IO_counters_table.horizontalHeaderItem(7)
         ___qtablewidgetitem33.setText(QCoreApplication.translate("MainWindow", u"DROP IN", None));
-        ___qtablewidgetitem34 = self.tableWidget_6.horizontalHeaderItem(8)
+        ___qtablewidgetitem34 = self.IO_counters_table.horizontalHeaderItem(8)
         ___qtablewidgetitem34.setText(QCoreApplication.translate("MainWindow", u"DROP OUT", None));
         self.label_62.setText(QCoreApplication.translate("MainWindow", u"Network Addresses", None))
-        ___qtablewidgetitem35 = self.tableWidget_7.horizontalHeaderItem(0)
+        ___qtablewidgetitem35 = self.addresses_table.horizontalHeaderItem(0)
         ___qtablewidgetitem35.setText(QCoreApplication.translate("MainWindow", u"Adaptor", None));
-        ___qtablewidgetitem36 = self.tableWidget_7.horizontalHeaderItem(1)
+        ___qtablewidgetitem36 = self.addresses_table.horizontalHeaderItem(1)
         ___qtablewidgetitem36.setText(QCoreApplication.translate("MainWindow", u"FAMILY", None));
-        ___qtablewidgetitem37 = self.tableWidget_7.horizontalHeaderItem(2)
+        ___qtablewidgetitem37 = self.addresses_table.horizontalHeaderItem(2)
         ___qtablewidgetitem37.setText(QCoreApplication.translate("MainWindow", u"ADDRESS", None));
-        ___qtablewidgetitem38 = self.tableWidget_7.horizontalHeaderItem(3)
+        ___qtablewidgetitem38 = self.addresses_table.horizontalHeaderItem(3)
         ___qtablewidgetitem38.setText(QCoreApplication.translate("MainWindow", u"NETMASK", None));
-        ___qtablewidgetitem39 = self.tableWidget_7.horizontalHeaderItem(4)
+        ___qtablewidgetitem39 = self.addresses_table.horizontalHeaderItem(4)
         ___qtablewidgetitem39.setText(QCoreApplication.translate("MainWindow", u"New Column", None));
-        ___qtablewidgetitem40 = self.tableWidget_7.horizontalHeaderItem(5)
+        ___qtablewidgetitem40 = self.addresses_table.horizontalHeaderItem(5)
         ___qtablewidgetitem40.setText(QCoreApplication.translate("MainWindow", u"PTP", None));
         self.label_63.setText(QCoreApplication.translate("MainWindow", u"Network Connections", None))
-        ___qtablewidgetitem41 = self.tableWidget_8.horizontalHeaderItem(0)
+        ___qtablewidgetitem41 = self.connections_table.horizontalHeaderItem(0)
         ___qtablewidgetitem41.setText(QCoreApplication.translate("MainWindow", u"FD", None));
-        ___qtablewidgetitem42 = self.tableWidget_8.horizontalHeaderItem(1)
+        ___qtablewidgetitem42 = self.connections_table.horizontalHeaderItem(1)
         ___qtablewidgetitem42.setText(QCoreApplication.translate("MainWindow", u"FAMILY", None));
-        ___qtablewidgetitem43 = self.tableWidget_8.horizontalHeaderItem(2)
+        ___qtablewidgetitem43 = self.connections_table.horizontalHeaderItem(2)
         ___qtablewidgetitem43.setText(QCoreApplication.translate("MainWindow", u"FAMILY", None));
-        ___qtablewidgetitem44 = self.tableWidget_8.horizontalHeaderItem(3)
+        ___qtablewidgetitem44 = self.connections_table.horizontalHeaderItem(3)
         ___qtablewidgetitem44.setText(QCoreApplication.translate("MainWindow", u"LADDR", None));
-        ___qtablewidgetitem45 = self.tableWidget_8.horizontalHeaderItem(4)
+        ___qtablewidgetitem45 = self.connections_table.horizontalHeaderItem(4)
         ___qtablewidgetitem45.setText(QCoreApplication.translate("MainWindow", u"RADDR", None));
-        ___qtablewidgetitem46 = self.tableWidget_8.horizontalHeaderItem(5)
+        ___qtablewidgetitem46 = self.connections_table.horizontalHeaderItem(5)
         ___qtablewidgetitem46.setText(QCoreApplication.translate("MainWindow", u"STATUS", None));
-        ___qtablewidgetitem47 = self.tableWidget_8.horizontalHeaderItem(6)
+        ___qtablewidgetitem47 = self.connections_table.horizontalHeaderItem(6)
         ___qtablewidgetitem47.setText(QCoreApplication.translate("MainWindow", u"PID", None));
         self.label_42.setText(QCoreApplication.translate("MainWindow", u"System information", None))
         self.system_date.setText(QCoreApplication.translate("MainWindow", u"N/A", None))

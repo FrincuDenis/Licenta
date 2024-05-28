@@ -30,12 +30,12 @@
   ], "QCustomSlideMenu": [{
 		"name": "left_main",
 		"defaultSize": [{
-			  "width": 60,
+			  "width": 40,
 			  "height": "parent"
 			}
         ],
 		"collapsedSize": [{
-			  "width": 60,
+			  "width": 40,
 			  "height": "parent"
 			}
         ],

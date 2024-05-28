@@ -260,7 +260,19 @@ background-color:#24374B;
        <item>
         <widget class="QCustomSlideMenu" name="left_main" native="true">
          <layout class="QVBoxLayout" name="verticalLayout_18">
-          <item>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item alignment="Qt::AlignLeft">
            <widget class="QFrame" name="menu">
             <property name="minimumSize">
              <size>
@@ -272,24 +284,10 @@ background-color:#24374B;
              <enum>QFrame::NoFrame</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout">
-             <item row="8" column="0">
-              <widget class="QPushButton" name="Network">
-               <property name="text">
-                <string />
-               </property>
-               <property name="icon">
-                <iconset resource="../Qss/icons/_icons.qrc">
-                 <normaloff>:/font_awesome_solid/icons/font_awesome/solid/network-wired.png</normaloff>:/font_awesome_solid/icons/font_awesome/solid/network-wired.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="7" column="0">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <item row="7" column="0" alignment="Qt::AlignLeft">
               <widget class="QPushButton" name="Sensors">
                <property name="text">
                 <string />
@@ -306,177 +304,7 @@ background-color:#24374B;
                </property>
               </widget>
              </item>
-             <item row="2" column="1">
-              <widget class="QLabel" name="label_2">
-               <property name="font">
-                <font>
-                 <family>Asus Rog</family>
-                </font>
-               </property>
-               <property name="text">
-                <string>CPU</string>
-               </property>
-               <property name="margin">
-                <number>5</number>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="0">
-              <widget class="QPushButton" name="Storage">
-               <property name="text">
-                <string />
-               </property>
-               <property name="icon">
-                <iconset resource="../Qss/icons/_icons.qrc">
-                 <normaloff>:/feather/icons/feather/disc.png</normaloff>:/feather/icons/feather/disc.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QPushButton" name="CPU">
-               <property name="text">
-                <string />
-               </property>
-               <property name="icon">
-                <iconset resource="../Qss/icons/_icons.qrc">
-                 <normaloff>:/feather/icons/feather/cpu.png</normaloff>:/feather/icons/feather/cpu.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLabel" name="label_9">
-               <property name="font">
-                <font>
-                 <family>Asus Rog</family>
-                </font>
-               </property>
-               <property name="text">
-                <string>List Clients</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QLabel" name="label_3">
-               <property name="font">
-                <font>
-                 <family>Asus Rog</family>
-                </font>
-               </property>
-               <property name="text">
-                <string>Power</string>
-               </property>
-               <property name="margin">
-                <number>5</number>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QPushButton" name="power">
-               <property name="text">
-                <string />
-               </property>
-               <property name="icon">
-                <iconset resource="../Qss/icons/_icons.qrc">
-                 <normaloff>:/feather/icons/feather/zap.png</normaloff>:/feather/icons/feather/zap.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QPushButton" name="Sysinfo">
-               <property name="text">
-                <string />
-               </property>
-               <property name="icon">
-                <iconset resource="../Qss/icons/_icons.qrc">
-                 <normaloff>:/feather/icons/feather/monitor.png</normaloff>:/feather/icons/feather/monitor.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="1">
-              <widget class="QLabel" name="label_5">
-               <property name="font">
-                <font>
-                 <family>Asus Rog</family>
-                </font>
-               </property>
-               <property name="text">
-                <string>Activities</string>
-               </property>
-               <property name="margin">
-                <number>5</number>
-               </property>
-              </widget>
-             </item>
-             <item row="8" column="1">
-              <widget class="QLabel" name="label_8">
-               <property name="font">
-                <font>
-                 <family>Asus Rog</family>
-                </font>
-               </property>
-               <property name="text">
-                <string>Network</string>
-               </property>
-               <property name="margin">
-                <number>5</number>
-               </property>
-              </widget>
-             </item>
-             <item row="7" column="1">
-              <widget class="QLabel" name="label_7">
-               <property name="font">
-                <font>
-                 <family>Asus Rog</family>
-                </font>
-               </property>
-               <property name="text">
-                <string>Sensors</string>
-               </property>
-               <property name="margin">
-                <number>5</number>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="1">
-              <widget class="QLabel" name="label_6">
-               <property name="font">
-                <font>
-                 <family>Asus Rog</family>
-                </font>
-               </property>
-               <property name="text">
-                <string>Storage</string>
-               </property>
-               <property name="margin">
-                <number>5</number>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="0">
+             <item row="5" column="0" alignment="Qt::AlignLeft">
               <widget class="QPushButton" name="Activities">
                <property name="text">
                 <string />
@@ -493,11 +321,23 @@ background-color:#24374B;
                </property>
               </widget>
              </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="label_9">
+               <property name="font">
+                <font>
+                 <family>ROG Fonts</family>
+                </font>
+               </property>
+               <property name="text">
+                <string>List Clients</string>
+               </property>
+              </widget>
+             </item>
              <item row="4" column="1">
               <widget class="QLabel" name="label_4">
                <property name="font">
                 <font>
-                 <family>Asus Rog</family>
+                 <family>ROG Fonts</family>
                 </font>
                </property>
                <property name="text">
@@ -508,7 +348,19 @@ background-color:#24374B;
                </property>
               </widget>
              </item>
-             <item row="0" column="0">
+             <item row="1" column="1">
+              <widget class="QLabel" name="label_23">
+               <property name="font">
+                <font>
+                 <family>ROG Fonts</family>
+                </font>
+               </property>
+               <property name="text">
+                <string>Domain</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0" alignment="Qt::AlignLeft">
               <widget class="QPushButton" name="Clientlist">
                <property name="text">
                 <string />
@@ -525,7 +377,84 @@ background-color:#24374B;
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
+             <item row="6" column="1">
+              <widget class="QLabel" name="label_6">
+               <property name="font">
+                <font>
+                 <family>ROG Fonts</family>
+                </font>
+               </property>
+               <property name="text">
+                <string>Storage</string>
+               </property>
+               <property name="margin">
+                <number>5</number>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="1">
+              <widget class="QLabel" name="label_7">
+               <property name="font">
+                <font>
+                 <family>ROG Fonts</family>
+                </font>
+               </property>
+               <property name="text">
+                <string>Sensors</string>
+               </property>
+               <property name="margin">
+                <number>5</number>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLabel" name="label_3">
+               <property name="font">
+                <font>
+                 <family>ROG Fonts</family>
+                </font>
+               </property>
+               <property name="text">
+                <string>Power</string>
+               </property>
+               <property name="margin">
+                <number>5</number>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0" alignment="Qt::AlignLeft">
+              <widget class="QPushButton" name="CPU">
+               <property name="text">
+                <string />
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/feather/icons/feather/cpu.png</normaloff>:/feather/icons/feather/cpu.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QLabel" name="label_5">
+               <property name="font">
+                <font>
+                 <family>ROG Fonts</family>
+                </font>
+               </property>
+               <property name="text">
+                <string>Activities</string>
+               </property>
+               <property name="margin">
+                <number>5</number>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0" alignment="Qt::AlignLeft">
               <widget class="QPushButton" name="Domain">
                <property name="text">
                 <string />
@@ -542,15 +471,116 @@ background-color:#24374B;
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
-              <widget class="QLabel" name="label_23">
+             <item row="4" column="0" alignment="Qt::AlignLeft">
+              <widget class="QPushButton" name="Sysinfo">
+               <property name="text">
+                <string />
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/feather/icons/feather/monitor.png</normaloff>:/feather/icons/feather/monitor.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="1">
+              <widget class="QLabel" name="label_18">
+               <property name="font">
+                <font>
+                 <family>ROG Fonts</family>
+                </font>
+               </property>
+               <property name="text">
+                <string>Network</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0" alignment="Qt::AlignLeft">
+              <widget class="QPushButton" name="power">
+               <property name="text">
+                <string />
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/feather/icons/feather/zap.png</normaloff>:/feather/icons/feather/zap.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0" alignment="Qt::AlignLeft">
+              <widget class="QPushButton" name="Storage">
+               <property name="text">
+                <string />
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/feather/icons/feather/disc.png</normaloff>:/feather/icons/feather/disc.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLabel" name="label_2">
+               <property name="font">
+                <font>
+                 <family>ROG Fonts</family>
+                </font>
+               </property>
+               <property name="text">
+                <string>CPU</string>
+               </property>
+               <property name="margin">
+                <number>5</number>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0" alignment="Qt::AlignLeft">
+              <widget class="QPushButton" name="Network">
+               <property name="text">
+                <string />
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/font_awesome_solid/icons/font_awesome/solid/network-wired.png</normaloff>:/font_awesome_solid/icons/font_awesome/solid/network-wired.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="2">
+              <widget class="QLabel" name="label_8">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="font">
                 <font>
                  <family>Asus Rog</family>
                 </font>
                </property>
                <property name="text">
-                <string>Domain</string>
+                <string />
+               </property>
+               <property name="margin">
+                <number>5</number>
                </property>
               </widget>
              </item>
@@ -569,7 +599,7 @@ background-color:#24374B;
           <item>
            <widget class="QStackedWidget" name="stackedWidget">
             <property name="currentIndex">
-             <number>5</number>
+             <number>3</number>
             </property>
             <widget class="QWidget" name="cpu_memory">
              <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1132,6 +1162,9 @@ background-color:#24374B;
               </item>
               <item>
                <widget class="QTableWidget" name="storageTable">
+                <property name="editTriggers">
+                 <set>QAbstractItemView::NoEditTriggers</set>
+                </property>
                 <column>
                  <property name="text">
                   <string>Device</string>
@@ -1368,6 +1401,9 @@ background-color:#24374B;
                      <family>Asus Rog</family>
                     </font>
                    </property>
+                   <property name="editTriggers">
+                    <set>QAbstractItemView::NoEditTriggers</set>
+                   </property>
                    <column>
                     <property name="text">
                      <string>Process ID</string>
@@ -1561,6 +1597,9 @@ background-color:#24374B;
               </item>
               <item>
                <widget class="QTableWidget" name="sensors_table">
+                <property name="editTriggers">
+                 <set>QAbstractItemView::NoEditTriggers</set>
+                </property>
                 <column>
                  <property name="text">
                   <string>Sensor Name</string>
@@ -1611,11 +1650,6 @@ background-color:#24374B;
                   </font>
                  </property>
                 </column>
-                <column>
-                 <property name="text">
-                  <string />
-                 </property>
-                </column>
                </widget>
               </item>
              </layout>
@@ -1647,8 +1681,8 @@ background-color:#24374B;
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>279</width>
-                   <height>592</height>
+                   <width>776</width>
+                   <height>1076</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -1704,7 +1738,16 @@ background-color:#24374B;
                       </widget>
                      </item>
                      <item>
-                      <widget class="QTableWidget" name="tableWidget_5">
+                      <widget class="QTableWidget" name="stats_table">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>200</height>
+                        </size>
+                       </property>
+                       <property name="editTriggers">
+                        <set>QAbstractItemView::NoEditTriggers</set>
+                       </property>
                        <column>
                         <property name="text">
                          <string />
@@ -1792,7 +1835,16 @@ background-color:#24374B;
                       </widget>
                      </item>
                      <item>
-                      <widget class="QTableWidget" name="tableWidget_6">
+                      <widget class="QTableWidget" name="IO_counters_table">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>200</height>
+                        </size>
+                       </property>
+                       <property name="editTriggers">
+                        <set>QAbstractItemView::NoEditTriggers</set>
+                       </property>
                        <column>
                         <property name="text">
                          <string>Adapter</string>
@@ -1925,7 +1977,16 @@ background-color:#24374B;
                       </widget>
                      </item>
                      <item>
-                      <widget class="QTableWidget" name="tableWidget_7">
+                      <widget class="QTableWidget" name="addresses_table">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>200</height>
+                        </size>
+                       </property>
+                       <property name="editTriggers">
+                        <set>QAbstractItemView::NoEditTriggers</set>
+                       </property>
                        <column>
                         <property name="text">
                          <string>Adaptor</string>
@@ -2028,7 +2089,16 @@ background-color:#24374B;
                       </widget>
                      </item>
                      <item>
-                      <widget class="QTableWidget" name="tableWidget_8">
+                      <widget class="QTableWidget" name="connections_table">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>200</height>
+                        </size>
+                       </property>
+                       <property name="editTriggers">
+                        <set>QAbstractItemView::NoEditTriggers</set>
+                       </property>
                        <column>
                         <property name="text">
                          <string>FD</string>
@@ -2343,6 +2413,9 @@ background-color:#24374B;
               </item>
               <item>
                <widget class="QTableWidget" name="tableWidget_4">
+                <property name="editTriggers">
+                 <set>QAbstractItemView::NoEditTriggers</set>
+                </property>
                 <column>
                  <property name="text">
                   <string>New Column</string>
@@ -2386,8 +2459,14 @@ background-color:#24374B;
         <widget class="QFrame" name="right_main">
          <property name="minimumSize">
           <size>
-           <width>200</width>
+           <width>0</width>
            <height>200</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>0</width>
+           <height>16777215</height>
           </size>
          </property>
          <property name="styleSheet">
