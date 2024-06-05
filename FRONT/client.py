@@ -2,6 +2,8 @@ import shutil
 import socket
 import sys
 import json
+import threading
+
 import psutil
 import time
 import platform
@@ -62,14 +64,14 @@ class Client:
 
             # Prepare CPU percentage data to send to the server
             cpu_data = {
+                "core_count": core,
+                "cpu_percentage": cpu_per,
+                "main_core_count": cpu_main_core,
                 "total_ram": total_ram,
                 "available_ram": available_ram,
                 "ram_usage": ram_usage,
                 "used_ram": used_ram,
                 "ram_free": ram_free,
-                "core_count": core,
-                "cpu_percentage": cpu_per,
-                "main_core_count": cpu_main_core
             }
 
             # Send CPU percentage data to the server
@@ -116,7 +118,6 @@ class Client:
                 "igpu_power": total_igpu_power,
                 "dgpu_power": total_dgpu_power
             }
-
             # Send power consumption data to the server
             self.send_data(power_data,'0')
 
@@ -194,6 +195,13 @@ class Client:
                 "free_space": f"{disk_usage.free / (1024 ** 3):.2f} GB",
                 "used_space": f"{disk_usage.used / (1024 ** 3):.2f} GB"
             }
+            if sys.platform.startswith('linux'):
+                storage_info["maxfile"] = str(x.maxfile)
+                storage_info["maxpath"] = str(x.maxpath)
+            else:
+                platform_msg = f"Function not available on {platforms.get(sys.platform, 'this platform')}"
+                storage_info["maxfile"] = platform_msg
+                storage_info["maxpath"] = platform_msg
             storage_data.append(storage_info)
 
         self.send_data(storage_data,'0')
@@ -245,9 +253,9 @@ class Client:
                 'speed': stats.speed,
                 'mtu': stats.mtu
             })
-        self.send_data(if_stats_data,'if_stats')
-
-        # Send network I/O counters
+        self.send_data(if_stats_data,'0')
+        # Send network connections
+    def io(self):
         io_counters_data = {}
         for interface, counters in psutil.net_io_counters(pernic=True).items():
             io_counters_data[interface] = {
@@ -260,7 +268,9 @@ class Client:
                 'dropin': counters.dropin,
                 'dropout': counters.dropout
             }
-        self.send_data(io_counters_data,'io_counters')
+        self.send_data(io_counters_data, '0')
+
+    def if_addr(self):
         if_addrs_data = {}
         for interface, addrs in psutil.net_if_addrs().items():
             if_addrs_data[interface] = []
@@ -272,8 +282,9 @@ class Client:
                     'broadcast': addr.broadcast,
                     'ptp': addr.ptp
                 })
-        self.send_data(if_addrs_data, 'if_addrs')
-        # Send network connections
+        self.send_data(if_addrs_data, '0')
+
+    def connects(self):
         connections_data = []
         for conn in psutil.net_connections():
             connections_data.append({
@@ -285,8 +296,7 @@ class Client:
                 'status': conn.status,
                 'pid': conn.pid
             })
-        self.send_data(connections_data, 'connections')
-
+        self.send_data(connections_data, '0')
     def handle_server_request(self, command):
         if command == "cpu_ram":
             self.cpu_ram()
@@ -304,16 +314,25 @@ class Client:
             self.storage_info()
         elif command == "sensor_data":
             self.sensor_data()
+        elif command == "io":
+            self.io()
+        elif command == "if_addr":
+            self.if_addr()
+        elif command == "connects":
+             self.connects()
         else:
             print(f"Unknown command: {command}")
+        #self.client_socket.close()
 
     # Modify start() method to receive commands from server
     def start(self):
         self.connect()
         while True:
-            command = self.client_socket.recv(4096).decode()
-            if command:
-                self.handle_server_request(command)
+            commands = self.client_socket.recv(4096).decode().split(";")
+            for command in commands:
+                if command:
+                    threading.Thread(target=self.handle_server_request, args=(command,)).start()
+
 if __name__ == "__main__":
     client = Client("localhost", 8080)
     client.start()
