@@ -113,7 +113,7 @@ class MainWindow(QMainWindow):
         self.show()
         #self.power()
         #self.cpu_ram()
-        self.system_info()
+        #self.system_info()
         self.psutil_thread()
         #self.processes()
         #self.storage()
@@ -170,20 +170,20 @@ class MainWindow(QMainWindow):
         processes_worker.signals.progress.connect(self.progress_fn)
         self.threadpool.start(processes_worker)
 
-        
+
         storage_worker=Worker(self.storage, args=(), kwargs={})
         storage_worker.signals.result.connect(self.print_output)
         storage_worker.signals.finished.connect(self.thread_complete)
         storage_worker.signals.progress.connect(self.progress_fn)
         self.threadpool.start(storage_worker)
       
-        '''
+        
         sensor_worker=Worker(self.sensor, args=(), kwargs={})
         sensor_worker.signals.result.connect(self.print_output)
         sensor_worker.signals.finished.connect(self.thread_complete)
         sensor_worker.signals.progress.connect(self.progress_fn)
         self.threadpool.start(sensor_worker)
-        '''
+        
         network_worker=Worker(self.update_network_info)
         network_worker.signals.result.connect(self.print_output)
         network_worker.signals.finished.connect(self.thread_complete)
@@ -348,7 +348,7 @@ class MainWindow(QMainWindow):
                     else:
                         self.ui.battery_status.setText("Fully Charged")
                     self.ui.battery_plugged.setText("No")
-                self.ui.battery_usage.rpb_setValue(battery.percentage)
+                self.ui.battery_usage.rpb_setValue(battery.percent)
             time.sleep(1)
 
     def secs2hours(selfself,secs):
@@ -371,42 +371,44 @@ class MainWindow(QMainWindow):
 #               NU FUNCTIONEAZA                     #
 #####################################################
     def processes(self,progress_callback):
-        current_pids = set(psutil.pids())
-        existing_pids = set()
+        while True:
+            current_pids = set(psutil.pids())
+            existing_pids = set()
 
-        # Update existing processes
-        for row in range(self.ui.tableWidget.rowCount()):
-            pid_item = self.ui.tableWidget.item(row, 0)
-            if pid_item is None:
-                continue
-            pid = int(pid_item.text())
-            existing_pids.add(pid)
-            if pid in current_pids:
+            # Update existing processes
+            for row in range(self.ui.tableWidget.rowCount()):
+                pid_item = self.ui.tableWidget.item(row, 0)
+                if pid_item is None:
+                    continue
+                pid = int(pid_item.text())
+                existing_pids.add(pid)
+                if pid in current_pids:
+                    try:
+                        process = psutil.Process(pid)
+                        self.ui.tableWidget.item(row, 1).setText(process.name())
+                        self.ui.tableWidget.item(row, 2).setText(process.status())
+                        self.ui.tableWidget.item(row, 3).setText(
+                            datetime.datetime.utcfromtimestamp(process.create_time()).strftime('%Y-%m-%d %H:%M:%S'))
+                    except Exception as e:
+                        print(e)
+
+            # Add new processes
+            new_pids = current_pids - existing_pids
+            for pid in new_pids:
+                rowPosition = self.ui.tableWidget.rowCount()
+                self.ui.tableWidget.insertRow(rowPosition)
                 try:
                     process = psutil.Process(pid)
-                    self.ui.tableWidget.item(row, 1).setText(process.name())
-                    self.ui.tableWidget.item(row, 2).setText(process.status())
-                    self.ui.tableWidget.item(row, 3).setText(
-                        datetime.datetime.utcfromtimestamp(process.create_time()).strftime('%Y-%m-%d %H:%M:%S'))
+                    self.create_table_widget(rowPosition, 0, str(process.pid), "tableWidget")
+                    self.create_table_widget(rowPosition, 1, process.name(), "tableWidget")
+                    self.create_table_widget(rowPosition, 2, process.status(), "tableWidget")
+                    self.create_table_widget(rowPosition, 3,
+                                             datetime.datetime.utcfromtimestamp(process.create_time()).strftime(
+                                                 '%Y-%m-%d %H:%M:%S'), "tableWidget")
+                    self.add_buttons(rowPosition)
                 except Exception as e:
                     print(e)
-
-        # Add new processes
-        new_pids = current_pids - existing_pids
-        for pid in new_pids:
-            rowPosition = self.ui.tableWidget.rowCount()
-            self.ui.tableWidget.insertRow(rowPosition)
-            try:
-                process = psutil.Process(pid)
-                self.create_table_widget(rowPosition, 0, str(process.pid), "tableWidget")
-                self.create_table_widget(rowPosition, 1, process.name(), "tableWidget")
-                self.create_table_widget(rowPosition, 2, process.status(), "tableWidget")
-                self.create_table_widget(rowPosition, 3,
-                                         datetime.datetime.utcfromtimestamp(process.create_time()).strftime(
-                                             '%Y-%m-%d %H:%M:%S'), "tableWidget")
-                self.add_buttons(rowPosition)
-            except Exception as e:
-                print(e)
+            time.sleep(10)
 
     def findName(self):
         name = self.ui.activity_search.text().lower()
@@ -587,7 +589,7 @@ class MainWindow(QMainWindow):
             self.update_net_io_counters()
             self.update_net_if_addrs()
             self.update_net_connections()
-            time.sleep(1)
+            time.sleep(10)
 
 
     def update_net_if_stats(self):
