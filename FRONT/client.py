@@ -60,6 +60,7 @@ class Client:
 
             core = psutil.cpu_count()
             cpu_per = psutil.cpu_percent()
+
             cpu_main_core = psutil.cpu_count(logical=False)
 
             # Prepare CPU percentage data to send to the server
@@ -298,31 +299,32 @@ class Client:
             })
         self.send_data(connections_data, '0')
     def handle_server_request(self, command):
-        if command == "cpu_ram":
-            self.cpu_ram()
-        elif command == "power":
-            self.power()
-        elif command == "battery":
-            self.battery()
-        elif command == "system_info":
-            self.system_info()
-        elif command == "processes":
-            self.processes()
-        elif command == "network_data":
-            self.network_data()
-        elif command == "storage_info":
-            self.storage_info()
-        elif command == "sensor_data":
-            self.sensor_data()
-        elif command == "io":
-            self.io()
-        elif command == "if_addr":
-            self.if_addr()
-        elif command == "connects":
-             self.connects()
-        else:
-            print(f"Unknown command: {command}")
-        #self.client_socket.close()
+            if command == "cpu_ram":
+                self.cpu_ram()
+            elif command == "power":
+                self.power()
+            elif command == "battery":
+                self.battery()
+            elif command == "system_info":
+                self.system_info()
+            elif command == "processes":
+                self.processes()
+            elif command == "network_data":
+                self.network_data()
+            elif command == "storage_info":
+                self.storage_info()
+            elif command == "sensor_data":
+                self.sensor_data()
+            elif command == "io":
+                self.io()
+            elif command == "if_addr":
+                self.if_addr()
+            elif command == "connects":
+                 self.connects()
+            elif command == "shutdown":
+                self.client_socket.close()
+            else:
+                print(f"Unknown command: {command}")
 
     # Modify start() method to receive commands from server
     def start(self):

@@ -44,6 +44,8 @@ class Server:
                 self.client_socket.sendall(b"if_addr")
             elif command == "11":
                 self.client_socket.sendall(b"connects")
+            elif command == "12":
+                self.client_socket.sendall(b"shutdown")
             print(f"Command sent to client.{command}")
 
     def receive_chunks(self, client_socket):

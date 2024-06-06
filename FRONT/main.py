@@ -2,6 +2,7 @@
 ## QT GUI BY SPINN TV(YOUTUBE)
 ########################################################################
 import datetime
+import pdb
 import json
 ########################################################################
 ## IMPORTS
@@ -13,7 +14,7 @@ import sys
 import time
 import traceback
 from json import JSONDecodeError
-
+import debugpy
 from server import Server
 ########################################################################
 # IMPORT GUI FILE
@@ -25,7 +26,7 @@ import psutil
 from multiprocessing import cpu_count
 import clr  # the pythonnet module
 from time import sleep
-
+import faulthandler
 clr.AddReference("LibreHardwareMonitorLib")
 from LibreHardwareMonitor import Hardware
 ########################################################################
@@ -42,16 +43,39 @@ platforms = {
     'win32': 'Windows',
 }
 
-
+sleep=1.5
 ########################################################################
 ## MAIN WINDOW CLASS
 ########################################################################
+
+
+class ProcessWorkerSignals(QObject):
+    result = Signal(object)
+
+class ProcessWorker(QRunnable):
+    def __init__(self, process_info):
+        super(ProcessWorker, self).__init__()
+        self.process_info = process_info
+        self.signals = ProcessWorkerSignals()
+
+    @Slot()
+    def run(self):
+        try:
+            pid = int(self.process_info["pid"])
+            name = self.process_info["name"]
+            status = self.process_info["status"]
+            create_time = self.process_info["create_time"]
+            result_data = (pid, name, status, create_time)
+            self.signals.result.emit(result_data)
+        except Exception as e:
+            traceback.print_exc()
+            self.signals.error.emit((type(e), e, traceback.format_exc()))
+
 class WorkerSignals(QObject):
     finished = Signal()
     error = Signal(tuple)
     result = Signal(object)
     progress = Signal(int)
-
 
 class Worker(QRunnable):
     def __init__(self, function, args=(), kwargs=None):
@@ -61,12 +85,15 @@ class Worker(QRunnable):
         self.kwargs = kwargs or {}
         self.signals = WorkerSignals()
         self.kwargs['progress_callback'] = self.signals.progress
+        self._stop_requested = False
+        self.kwargs['stop_requested'] = lambda: self._stop_requested
 
     @Slot()
     def run(self):
         try:
             result = self.function(*self.args, **self.kwargs)
         except Exception as e:
+            import traceback
             traceback.print_exc()
             self.signals.error.emit((type(e), e, traceback.format_exc()))
         else:
@@ -74,6 +101,29 @@ class Worker(QRunnable):
         finally:
             self.signals.finished.emit()
 
+    def stop(self):
+        self._stop_requested = True
+
+class NetworkWorkerSignals(QObject):
+    started = Signal()  # Semnal pentru a indica că lucrătorul a început
+    finished = Signal()  # Semnal pentru a indica că lucrătorul a terminat
+
+class NetworkWorker(QRunnable):
+    def __init__(self, server):
+        super().__init__()
+        self.server = server
+        self.signals = NetworkWorkerSignals()
+
+    def run(self):
+        self.server.start()
+        self.signals.started.emit()  # Emiterea semnalului pentru a indica că lucrătorul a început
+
+        while True:
+            # Aici poți face operațiuni de rețea periodice
+            # Exemplu: self.server.receive_chunks(self.server.return_client_socket())
+            time.sleep(1)  # Așteaptă 1 secundă între operații
+
+        self.signals.finished.emit()  # Emiterea semnalului pentru a indica că lucrătorul a terminat
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -81,6 +131,11 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.server = Server("localhost", 8080)
+        self.network_worker = NetworkWorker(self.server)
+        self.worker = Worker(self.response, args=(), kwargs={})
+        self.worker.signals.result.connect(self.print_output)
+        self.worker.signals.finished.connect(self.thread_complete)
+        self.worker.signals.progress.connect(self.progress_fn)
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.shadow = QGraphicsDropShadowEffect(self)
@@ -90,9 +145,8 @@ class MainWindow(QMainWindow):
         self.shadow.setColor(QColor(0, 92, 157, 550))
         self.ui.centralwidget.setGraphicsEffect(self.shadow)
         QSizeGrip(self.ui.size_grip)
-        # Connecting buttons to their respective methods
         self.ui.minimize_button.clicked.connect(self.showMinimized)
-        self.ui.close_button.clicked.connect(self.close)
+        self.ui.close_button.clicked.connect(self.closer)
         self.ui.resize_button.clicked.connect(self.restore_or_maximize_window)
         self.ui.CPU.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.cpu_memory))
         self.ui.power.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Power))
@@ -105,110 +159,75 @@ class MainWindow(QMainWindow):
         self.ui.Domain.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Domain_status))
         self.clickPosition = QPoint()
 
-        # Set mouse event handlers
         self.ui.header_frame.mousePressEvent = self.mousePressEvent
         self.ui.header_frame.mouseMoveEvent = self.moveWindow
         for w in self.ui.menu.findChildren(QPushButton):
             w.clicked.connect(self.applyButtonStyle)
-        ########################################################################
-        # APPLY JSON STYLESHEET
-        ########################################################################
+
         loadJsonStyle(self, self.ui, jsonFiles={
             "json-styles/style.json"
         })
 
-        #######################################################################
-        # SHOW WINDOW
-        #######################################################################
         self.threadpool = QThreadPool()
-        self.show()
-        self.psutil_thread()
+        self.network_worker.signals.started.connect(
+            self.start_worker)  # Conectează pornirea lucrătorului la semnalul de start al rețelei
+        self.threadpool.start(self.network_worker)
 
-        ########################################################################
-        # UPDATE APP SETTINGS LOADED FROM JSON STYLESHEET
-        # ITS IMPORTANT TO RUN THIS AFTER SHOWING THE WINDOW
-        # THIS PROCESS WILL RUN ON A SEPARATE THREAD WHEN GENERATING NEW ICONS
-        # TO PREVENT THE WINDOW FROM BEING UNRESPONSIVE
-        ########################################################################
         QAppSettings.updateAppSettings(self)
+    def start_worker(self):
+        self.threadpool.start(self.worker)
+    def response_test(self):
+            self.ready_semaphore.acquire()
+            self.system_info()
+            while True:
+                self.storage()
+                self.processes()
+                self.cpu_ram()
+                #time.sleep(0.5)
+                self.power()
+                #time.sleep(0.5)
+                self.battery()
+                #time.sleep(0.5)
+                self.update_net_if_stats()
+               # time.sleep(0.5)
+                self.update_net_io_counters()
+               # time.sleep(0.5)
+                self.update_net_if_addrs()
+               # time.sleep(0.5)
+                self.update_net_connections()
+               # time.sleep(0.5)
+                self.sensor()
 
-
-
-    def psutil_thread(self):
-
-        serv = Worker(self.server.start(), args=(), kwargs={})
-        serv.signals.result.connect(self.print_output)
-        serv.signals.finished.connect(self.thread_complete)
-
-        self.threadpool.start(serv)
-
-        worker = Worker(self.response, args=(), kwargs={})
-        worker.signals.result.connect(self.print_output)
-        worker.signals.finished.connect(self.thread_complete)
-        worker.signals.progress.connect(self.progress_fn)
-
-        self.threadpool.start(worker)
-        '''
-        battery_worker=Worker(self.battery, args=(), kwargs={})
-        battery_worker.signals.result.connect(self.print_output)
-        battery_worker.signals.finished.connect(self.thread_complete)
-        battery_worker.signals.progress.connect(self.progress_fn)
-        self.threadpool.start(battery_worker)
-
-        power_worker=Worker(self.power, args=(), kwargs={})
-        power_worker.signals.result.connect(self.print_output)
-        power_worker.signals.finished.connect(self.thread_complete)
-        power_worker.signals.progress.connect(self.progress_fn)
-        self.threadpool.start(power_worker)
-    
-        processes_worker=Worker(self.processes, args=(), kwargs={})
-        processes_worker.signals.result.connect(self.print_output)
-        processes_worker.signals.finished.connect(self.thread_complete)
-        processes_worker.signals.progress.connect(self.progress_fn)
-        self.threadpool.start(processes_worker)
-
-
-        storage_worker=Worker(self.storage, args=(), kwargs={})
-        storage_worker.signals.result.connect(self.print_output)
-        storage_worker.signals.finished.connect(self.thread_complete)
-        storage_worker.signals.progress.connect(self.progress_fn)
-        self.threadpool.start(storage_worker)
-      
-        
-        sensor_worker=Worker(self.sensor, args=(), kwargs={})
-        sensor_worker.signals.result.connect(self.print_output)
-        sensor_worker.signals.finished.connect(self.thread_complete)
-        sensor_worker.signals.progress.connect(self.progress_fn)
-        self.threadpool.start(sensor_worker)
-        
-        network_worker=Worker(self.update_network_info)
-        network_worker.signals.result.connect(self.print_output)
-        network_worker.signals.finished.connect(self.thread_complete)
-        network_worker.signals.progress.connect(self.progress_fn)
-        self.threadpool.start(network_worker)
-        '''
-
-    def response(self,progress_callback):
+    def response(self, progress_callback, stop_requested):
         self.system_info()
-        #self.storage()
-        while True:
+        while not stop_requested():
             self.cpu_ram()
-            time.sleep(0.5)
             self.power()
-            time.sleep(0.5)
             self.battery()
-            time.sleep(0.5)
-            self.update_net_if_stats()
-            time.sleep(0.5)
-            self.update_net_io_counters()
-            time.sleep(0.5)
-            self.update_net_if_addrs()
-            time.sleep(0.5)
-            self.update_net_connections()
-            time.sleep(0.5)
+            self.processes()
             self.sensor()
-            # time.sleep(0.5)
-            # self.processes()
+            self.storage()
+            self.update_net_if_stats()
+            self.update_net_io_counters()
+            self.update_net_if_addrs()
+            self.update_net_connections()
+            time.sleep(sleep)
+            if stop_requested():
+                break
+
+    def stop_worker(self):
+        if hasattr(self, 'worker'):
+            self.worker.stop()
+
+    def print_output(self, s):
+        print(s)
+
+    def thread_complete(self):
+        print("Thread completed")
+
+    def progress_fn(self, n):
+        print(f"Progress: {n}%")
+
     def cpu_ram(self):
             self.server.options("1")
             responsee = self.server.receive_chunks(self.server.return_client_socket())
@@ -332,48 +351,64 @@ class MainWindow(QMainWindow):
         except JSONDecodeError:
             print(JSONDecodeError)
             pass
-    #####################################################
-    #               NU FUNCTIONEAZA                     #
-    #####################################################
     def processes(self):
+        scroll_bar_value = self.ui.tableWidget.verticalScrollBar().value()
+
         self.server.options("5")
-        responsee = self.server.receive_chunks(self.server.return_client_socket())
-        responses = responsee.decode('utf-8')  # Decode the byte string
+        response = self.server.receive_chunks(self.server.return_client_socket())
+        responses = response.decode('utf-8')  # Decode the byte string
 
         try:
             process_data = json.loads(responses)  # Parse JSON data
             existing_pids = set()
 
-            # Update existing processes
             for row in range(self.ui.tableWidget.rowCount()):
                 pid_item = self.ui.tableWidget.item(row, 0)
                 if pid_item is None:
                     continue
                 pid = int(pid_item.text())
                 existing_pids.add(pid)
-                for process_info in process_data:
-                    if 'status' in process_info:
-                        if process_info["pid"] == str(pid):
-                            self.ui.tableWidget.item(row, 1).setText(process_info["name"])
-                            self.ui.tableWidget.item(row, 2).setText(process_info["status"])
-                            self.ui.tableWidget.item(row, 3).setText(process_info["create_time"])
-                            break
 
-            # Add new processes
             for process_info in process_data:
-                if 'status' in process_info:
-                    pid = int(process_info["pid"])
-                    if pid not in existing_pids:
-                        rowPosition = self.ui.tableWidget.rowCount()
-                        self.ui.tableWidget.insertRow(rowPosition)
-                        self.create_table_widget(rowPosition, 0, str(pid), "tableWidget")
-                        self.create_table_widget(rowPosition, 1, process_info["name"], "tableWidget")
-                        self.create_table_widget(rowPosition, 2, process_info["status"], "tableWidget")
-                        self.create_table_widget(rowPosition, 3, process_info["create_time"], "tableWidget")
-                        self.add_buttons(rowPosition)
-        except JSONDecodeError:
-            print(JSONDecodeError)
-            pass
+                if "pid" in process_info:
+                    worker = ProcessWorker(process_info)
+                    worker.signals.result.connect(self.update_table_widget)
+                    self.threadpool.start(worker)
+
+            # Remove processes that are not in the response
+            for row in range(self.ui.tableWidget.rowCount()):
+                pid_item = self.ui.tableWidget.item(row, 0)
+                if pid_item is None:
+                    continue
+                pid = int(pid_item.text())
+                if pid not in existing_pids:
+                    self.ui.tableWidget.removeRow(row)
+            self.ui.tableWidget.verticalScrollBar().setValue(scroll_bar_value)
+        except json.JSONDecodeError as e:
+            print(e)
+
+    def update_table_widget(self, result_data):
+        pid, name, status, create_time = result_data
+        for row in range(self.ui.tableWidget.rowCount()):
+            pid_item = self.ui.tableWidget.item(row, 0)
+            if pid_item is None:
+                continue
+            if int(pid_item.text()) == pid:
+                self.ui.tableWidget.item(row, 1).setText(name)
+                self.ui.tableWidget.item(row, 2).setText(status)
+                self.ui.tableWidget.item(row, 3).setText(create_time)
+                return
+
+        rowPosition = self.ui.tableWidget.rowCount()
+        self.ui.tableWidget.insertRow(rowPosition)
+        self.create_table_widget(rowPosition, 0, str(pid), "tableWidget")
+        self.create_table_widget(rowPosition, 1, name, "tableWidget")
+        self.create_table_widget(rowPosition, 2, status, "tableWidget")
+        self.create_table_widget(rowPosition, 3, create_time, "tableWidget")
+        self.add_buttons(rowPosition)
+
+    def handle_error(self, error):
+        print("Error:", error)
     def findName(self):
         name = self.ui.activity_search.text().lower()
         for row in range(self.ui.tableWidget.rowCount()):
@@ -426,6 +461,7 @@ class MainWindow(QMainWindow):
             print(f"Error killing process {process.pid}: {e}")
 
     def storage(self):
+        scroll_bar_value = self.ui.storageTable.verticalScrollBar().value()
         self.server.options("7")
         responsee = self.server.receive_chunks(self.server.return_client_socket())
         responses = responsee.decode('utf-8')  # Decode the byte string
@@ -451,22 +487,14 @@ class MainWindow(QMainWindow):
                     progressBar = QProgressBar(self.ui.storageTable)
                     progressBar.setObjectName(u"progressBar")
                     progressBar.setValue(full_disk)
-                    self.ui.storageTable.setCellWidget(row, 9, progressBar)
+               #     self.ui.storageTable.setCellWidget(row, 9, progressBar)
+            self.ui.storageTable.verticalScrollBar().setValue(scroll_bar_value)
         except JSONDecodeError:
             print(JSONDecodeError)
             pass
-    #####################################################
-    #               NU FUNCTIONEAZA                     #
-    #####################################################
-
-
-    def create_table_widget(self, rowPosition, columnPosition, text, tablename):
-        qtablewidgetitem = QTableWidgetItem()
-        getattr(self.ui, tablename).setItem(rowPosition, columnPosition, qtablewidgetitem)
-        qtablewidgetitem = getattr(self.ui, tablename).item(rowPosition, columnPosition)
-        qtablewidgetitem.setText(text)
 
     def sensor(self):
+            scroll_bar_value = self.ui.sensors_table.verticalScrollBar().value()
             self.server.options("6")
             responsee = self.server.receive_chunks(self.server.return_client_socket())
             responses = responsee.decode('utf-8')  # Decode the byte string
@@ -506,6 +534,7 @@ class MainWindow(QMainWindow):
                         self.create_table_widget(row, 3, f"{max_temp:.2f}", 'sensors_table')
                         self.create_table_widget(row, 4, f"{avg_temp:.2f}", 'sensors_table')
                         row+=1
+                self.ui.sensors_table.verticalScrollBar().setValue(scroll_bar_value)
             except Exception as e:
                 print(f"Error in monitoring loop: {e}")
                 pass
@@ -515,12 +544,13 @@ class MainWindow(QMainWindow):
     #######################################################
 
     def update_net_if_stats(self):
+        scroll_bar_value = self.ui.stats_table.verticalScrollBar().value()
         self.server.options("8")
         responsee = self.server.receive_chunks(self.server.return_client_socket())
         responses = responsee.decode('utf-8')  # Decode the byte string
         try:
             stats_infos = json.loads(responses)  # Parse JSON data
-            self.ui.storageTable.setRowCount(0)  # Clear the table
+            self.ui.stats_table.setRowCount(0)  # Clear the table
             for row, stats_info in enumerate(stats_infos):
                 if "interface" in stats_info:
                     self.ui.stats_table.insertRow(row)
@@ -529,16 +559,18 @@ class MainWindow(QMainWindow):
                     self.create_table_widget(row, 2, str(stats_info["duplex"]), "stats_table")
                     self.create_table_widget(row, 3, str(stats_info["speed"]), "stats_table")
                     self.create_table_widget(row, 4, str(stats_info["mtu"]), "stats_table")
+            self.ui.stats_table.verticalScrollBar().setValue(scroll_bar_value)
         except JSONDecodeError:
             print(JSONDecodeError)
             pass
     def update_net_io_counters(self):
+        scroll_bar_value = self.ui.IO_counters_table.verticalScrollBar().value()
         self.server.options("9")
         responsee = self.server.receive_chunks(self.server.return_client_socket())
         responses = responsee.decode('utf-8')  # Decode the byte string
         try:
             io_counters_data = json.loads(responses)  # Parse JSON data
-            self.ui.storageTable.setRowCount(0)  # Clear the table
+            self.ui.IO_counters_table.setRowCount(0)  # Clear the table
             for row, (interface, counters) in enumerate(io_counters_data.items()):
                 if "bytes_sent" in counters:
                     self.ui.IO_counters_table.insertRow(row)
@@ -551,10 +583,12 @@ class MainWindow(QMainWindow):
                     self.create_table_widget(row, 6, str(counters["errout"]), "IO_counters_table")
                     self.create_table_widget(row, 7, str(counters["dropin"]), "IO_counters_table")
                     self.create_table_widget(row, 8, str(counters["dropout"]), "IO_counters_table")
+            self.ui.IO_counters_table.verticalScrollBar().setValue(scroll_bar_value)
         except JSONDecodeError:
             print(JSONDecodeError)
             pass
     def update_net_if_addrs(self):
+        scroll_bar_value = self.ui.addresses_table.verticalScrollBar().value()
         self.server.options("10")
         responsee = self.server.receive_chunks(self.server.return_client_socket())
         responses = responsee.decode('utf-8')  # Decode the byte string
@@ -572,10 +606,12 @@ class MainWindow(QMainWindow):
                         self.create_table_widget(rowPosition, 3, str(addr["netmask"]), "addresses_table")
                         self.create_table_widget(rowPosition, 4, str(addr["broadcast"]), "addresses_table")
                         self.create_table_widget(rowPosition, 5, str(addr["ptp"]), "addresses_table")
+            self.ui.addresses_table.verticalScrollBar().setValue(scroll_bar_value)
         except JSONDecodeError:
             print(JSONDecodeError)
             pass
     def update_net_connections(self):
+        scroll_bar_value = self.ui.connections_table.verticalScrollBar().value()
         self.server.options("11")
         responsee = self.server.receive_chunks(self.server.return_client_socket())
         responses = responsee.decode('utf-8')  # Decode the byte string
@@ -592,9 +628,19 @@ class MainWindow(QMainWindow):
                     self.create_table_widget(row, 4, str(connection_info["raddr"]), "connections_table")
                     self.create_table_widget(row, 5, str(connection_info["status"]), "connections_table")
                     self.create_table_widget(row, 6, str(connection_info["pid"]), "connections_table")
+            self.ui.connections_table.verticalScrollBar().setValue(scroll_bar_value)
         except JSONDecodeError:
             print(JSONDecodeError)
             pass
+
+    #######################################################
+    #           NETWORK                                   #
+    #######################################################
+    def create_table_widget(self, rowPosition, columnPosition, text, tablename):
+        qtablewidgetitem = QTableWidgetItem()
+        getattr(self.ui, tablename).setItem(rowPosition, columnPosition, qtablewidgetitem)
+        qtablewidgetitem = getattr(self.ui, tablename).item(rowPosition, columnPosition)
+        qtablewidgetitem.setText(text)
 
     def applyButtonStyle(self):
         for w in self.ui.menu.findChildren(QPushButton):
@@ -614,6 +660,7 @@ class MainWindow(QMainWindow):
                 self.move(self.pos() + event.globalPos() - self.clickPosition)
                 self.clickPosition = event.globalPos()
                 event.accept()
+
     def print_output(self, s):
         print(s)
 
@@ -622,11 +669,15 @@ class MainWindow(QMainWindow):
 
     def progress_fn(self, i):
         print("%d%% done" % i)
-
+    def closer(self):
+        self.close()
+        self.server.options("12")
+        self.stop_worker()
 ########################################################################
 ## EXECUTE APP
 ########################################################################
 if __name__ == "__main__":
+    faulthandler.enable()
     app = QApplication(sys.argv)
     ########################################################################
     ## 
