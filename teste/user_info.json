@@ -1,0 +1,72 @@
+{
+    "abc": {
+        "Name": "abc",
+        "Full Name": "abc name" ,
+        "Comment": "abc descript",
+        "User's comment": "",
+        "Account active": "Yes",
+        "Account expires": "Never",
+        "Password last set": "6/11/2024 7:42:23 PM",
+        "Password expires": "7/23/2024 7:42:23 PM",
+        "Password changeable": "6/11/2024 7:42:23 PM",
+        "Password required": "Yes",
+        "Last logon": "Never",
+        "Local Group Memberships": "*Users"
+    },
+    "Administrator": {
+        "Name": "Administrator",
+        "Full Name": "",
+        "Comment": "Built-in account for administering the computer/domain",
+        "User's comment": "",
+        "Account active": "Yes",
+        "Account expires": "Never",
+        "Password last set": "5/15/2024 12:50:00 AM",
+        "Password expires": "Never",
+        "Password changeable": "5/15/2024 12:50:00 AM",
+        "Password required": "Yes",
+        "Last logon": "6/11/2024 4:43:12 PM",
+        "Local Group Memberships": "*Administrators       *Performance Log Users"
+    },
+    "DefaultAccount": {
+        "Name": "DefaultAccount",
+        "Full Name": "",
+        "Comment": "A user account managed by the system.",
+        "User's comment": "",
+        "Account active": "No",
+        "Account expires": "Never",
+        "Password last set": "6/11/2024 7:42:23 PM",
+        "Password expires": "Never",
+        "Password changeable": "6/11/2024 7:42:23 PM",
+        "Password required": "No",
+        "Last logon": "Never",
+        "Local Group Memberships": "*System Managed Accoun"
+    },
+    "Guest": {
+        "Name": "Guest",
+        "Full Name": "",
+        "Comment": "Built-in account for guest access to the computer/domain",
+        "User's comment": "",
+        "Account active": "No",
+        "Account expires": "Never",
+        "Password last set": "6/11/2024 7:42:23 PM",
+        "Password expires": "Never",
+        "Password changeable": "6/11/2024 7:42:23 PM",
+        "Password required": "No",
+        "Last logon": "Never",
+        "Local Group Memberships": "*Guests"
+    },
+    "WDAGUtilityAccount": {
+        "Name": "WDAGUtilityAccount",
+        "Full Name": "",
+        "Comment": "A user account managed and used by the system for Windows Defender Application Guard scenarios.",
+        "User's comment": "",
+        "Account active": "No",
+        "Account expires": "Never",
+        "Password last set": "5/15/2024 10:47:59 AM",
+        "Password expires": "6/26/2024 10:47:59 AM",
+        "Password changeable": "5/15/2024 10:47:59 AM",
+        "Password required": "Yes",
+        "Last logon": "Never",
+        "Local Group Memberships": ""
+    }
+}

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1075</width>
-    <height>607</height>
+    <width>1542</width>
+    <height>1118</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -45,6 +45,12 @@ background-color:#1E1E1E;
     </property>
     <item>
      <widget class="QFrame" name="header_frame">
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
       <property name="styleSheet">
        <string notr="true">*{
 background-color:#24374B;
@@ -69,8 +75,14 @@ background-color:#24374B;
        <property name="bottomMargin">
         <number>0</number>
        </property>
-       <item>
+       <item alignment="Qt::AlignLeft">
         <widget class="QFrame" name="header_left">
+         <property name="maximumSize">
+          <size>
+           <width>600</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -118,8 +130,20 @@ background-color:#24374B;
          </layout>
         </widget>
        </item>
-       <item>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QFrame" name="header_center">
+         <property name="minimumSize">
+          <size>
+           <width>300</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>300</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -139,7 +163,7 @@ background-color:#24374B;
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item>
+          <item alignment="Qt::AlignRight">
            <widget class="QLabel" name="title_icon">
             <property name="maximumSize">
              <size>
@@ -161,8 +185,14 @@ background-color:#24374B;
             </property>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignHCenter">
            <widget class="QLabel" name="title">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="font">
              <font>
               <family>Asus Rog</family>
@@ -179,8 +209,36 @@ background-color:#24374B;
          </layout>
         </widget>
        </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Preferred</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>330</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item alignment="Qt::AlignRight">
         <widget class="QFrame" name="header_right">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
          </property>
@@ -329,7 +387,7 @@ background-color:#24374B;
                 </font>
                </property>
                <property name="text">
-                <string>List Clients</string>
+                <string>Local Account</string>
                </property>
               </widget>
              </item>
@@ -361,7 +419,7 @@ background-color:#24374B;
               </widget>
              </item>
              <item row="0" column="0" alignment="Qt::AlignLeft">
-              <widget class="QPushButton" name="Clientlist">
+              <widget class="QPushButton" name="LocalAcc">
                <property name="text">
                 <string />
                </property>
@@ -599,7 +657,7 @@ background-color:#24374B;
           <item>
            <widget class="QStackedWidget" name="stackedWidget">
             <property name="currentIndex">
-             <number>3</number>
+             <number>8</number>
             </property>
             <widget class="QWidget" name="cpu_memory">
              <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -865,7 +923,410 @@ background-color:#24374B;
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="Domain_status" />
+            <widget class="QWidget" name="Local_accounts">
+             <layout class="QVBoxLayout" name="verticalLayout_19">
+              <item>
+               <widget class="QFrame" name="frame_19">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_22">
+                 <item>
+                  <widget class="QScrollArea" name="scrollArea_2">
+                   <property name="widgetResizable">
+                    <bool>true</bool>
+                   </property>
+                   <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                    <property name="geometry">
+                     <rect>
+                      <x>0</x>
+                      <y>0</y>
+                      <width>987</width>
+                      <height>549</height>
+                     </rect>
+                    </property>
+                    <layout class="QHBoxLayout" name="horizontalLayout_19">
+                     <item>
+                      <widget class="QFrame" name="frame_20">
+                       <property name="frameShape">
+                        <enum>QFrame::StyledPanel</enum>
+                       </property>
+                       <property name="frameShadow">
+                        <enum>QFrame::Raised</enum>
+                       </property>
+                       <layout class="QVBoxLayout" name="verticalLayout_23">
+                        <item>
+                         <widget class="QTableWidget" name="tableWidget_2">
+                          <column>
+                           <property name="text">
+                            <string>User name</string>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
+                            <string>Full Name</string>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
+                            <string>Description</string>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
+                            <string>User comment</string>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
+                            <string>Active</string>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
+                            <string>Expire</string>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
+                            <string>Group</string>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
+                            <string>New Column</string>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
+                            <string>Password expires</string>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
+                            <string>Password changeable</string>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
+                            <string>Password required</string>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
+                            <string>Last logon</string>
+                           </property>
+                          </column>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item alignment="Qt::AlignHCenter">
+               <widget class="QLabel" name="label_34">
+                <property name="font">
+                 <font>
+                  <family>ROG Fonts</family>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>CAN DELETE A USER IF ONLY USERNAME IS SET</string>
+                </property>
+               </widget>
+              </item>
+              <item alignment="Qt::AlignBottom">
+               <widget class="QFrame" name="frame_10">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>130</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>130</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_17">
+                 <item alignment="Qt::AlignLeft|Qt::AlignBottom">
+                  <widget class="QFrame" name="frame_12">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_9">
+                    <item>
+                     <widget class="QLabel" name="label_19">
+                      <property name="font">
+                       <font>
+                        <family>ROG Fonts</family>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>User name :</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="user_text" />
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item alignment="Qt::AlignLeft|Qt::AlignBottom">
+                  <widget class="QFrame" name="frame_13">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_10">
+                    <item>
+                     <widget class="QLabel" name="label_20">
+                      <property name="font">
+                       <font>
+                        <family>ROG Fonts</family>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Full name :</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="fullname_text" />
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item alignment="Qt::AlignVCenter">
+               <widget class="QFrame" name="frame_14">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>130</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>130</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_21">
+                 <item>
+                  <widget class="QFrame" name="frame_18">
+                   <property name="maximumSize">
+                    <size>
+                     <width>300</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_15">
+                    <item>
+                     <widget class="QLabel" name="label_21">
+                      <property name="font">
+                       <font>
+                        <family>ROG Fonts</family>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Description :</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLineEdit" name="description_text" />
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item alignment="Qt::AlignTop">
+               <widget class="QFrame" name="frame_11">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>120</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>120</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_20">
+                 <item>
+                  <widget class="QFrame" name="frame_15">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_14">
+                    <item alignment="Qt::AlignLeft|Qt::AlignTop">
+                     <widget class="QFrame" name="frame_16">
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_16">
+                       <item>
+                        <widget class="QLabel" name="label_22">
+                         <property name="font">
+                          <font>
+                           <family>ROG Fonts</family>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Password :</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLineEdit" name="password_text">
+                         <property name="echoMode">
+                          <enum>QLineEdit::Password</enum>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item alignment="Qt::AlignLeft|Qt::AlignTop">
+                     <widget class="QFrame" name="frame_17">
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_18">
+                       <item>
+                        <widget class="QLabel" name="label_24">
+                         <property name="font">
+                          <font>
+                           <family>ROG Fonts</family>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Pssword Confirm :</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLineEdit" name="passwordconfirm_text">
+                         <property name="echoMode">
+                          <enum>QLineEdit::Password</enum>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="add_user">
+                   <property name="font">
+                    <font>
+                     <family>ROG Fonts</family>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>ADD</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
             <widget class="QWidget" name="Power">
              <layout class="QVBoxLayout" name="verticalLayout_3">
               <property name="spacing">
@@ -1681,7 +2142,7 @@ background-color:#24374B;
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>776</width>
+                   <width>174</width>
                    <height>1076</height>
                   </rect>
                  </property>
@@ -2379,7 +2840,7 @@ background-color:#24374B;
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="clientslist">
+            <widget class="QWidget" name="Domain_tab">
              <layout class="QVBoxLayout" name="verticalLayout_5">
               <property name="spacing">
                <number>10</number>
@@ -2397,55 +2858,421 @@ background-color:#24374B;
                <number>0</number>
               </property>
               <item>
-               <widget class="QLabel" name="label_59">
-                <property name="font">
-                 <font>
-                  <family>Asus Rog</family>
-                  <pointsize>12</pointsize>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                 </font>
+               <widget class="QFrame" name="frame_21">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
                 </property>
-                <property name="text">
-                 <string>Clients List</string>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
                 </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QTableWidget" name="tableWidget_4">
-                <property name="editTriggers">
-                 <set>QAbstractItemView::NoEditTriggers</set>
-                </property>
-                <column>
-                 <property name="text">
-                  <string>New Column</string>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <family>Asus Rog</family>
-                  </font>
-                 </property>
-                </column>
-                <column>
-                 <property name="text">
-                  <string>Client_ID</string>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <family>Asus Rog</family>
-                  </font>
-                 </property>
-                </column>
-                <column>
-                 <property name="text">
-                  <string>IP</string>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <family>Asus Rog</family>
-                  </font>
-                 </property>
-                </column>
+                <layout class="QVBoxLayout" name="verticalLayout_26">
+                 <item alignment="Qt::AlignHCenter">
+                  <widget class="QFrame" name="frame_28">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>100</height>
+                    </size>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_28">
+                    <item>
+                     <widget class="QFrame" name="frame_30">
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_23">
+                       <item>
+                        <widget class="QLabel" name="label_35">
+                         <property name="maximumSize">
+                          <size>
+                           <width>150</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>ROG Fonts</family>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Status Domain:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="status_domain">
+                         <property name="maximumSize">
+                          <size>
+                           <width>150</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>ROG Fonts</family>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>N/A</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QFrame" name="frame_31">
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_25">
+                       <item>
+                        <widget class="QLabel" name="label_38">
+                         <property name="font">
+                          <font>
+                           <family>ROG Fonts</family>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Name Domain:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="name_domain">
+                         <property name="font">
+                          <font>
+                           <family>ROG Fonts</family>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>N/A</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item alignment="Qt::AlignHCenter">
+                  <widget class="QLabel" name="label_36">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>ROG Fonts</family>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>IF DOMAIN IS EMPTY CLIENT WILL LEAVE DOMAIN,USE LOCAL ADMINISTRATOR ACOUNT</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="frame_22">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>200</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>200</height>
+                    </size>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_22">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item alignment="Qt::AlignLeft">
+                     <widget class="QFrame" name="frame_23">
+                      <property name="minimumSize">
+                       <size>
+                        <width>300</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_21">
+                       <item>
+                        <widget class="QLabel" name="label_28">
+                         <property name="font">
+                          <font>
+                           <family>ROG Fonts</family>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Domain:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLineEdit" name="domain_text" />
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item>
+                     <spacer name="horizontalSpacer_3">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeType">
+                       <enum>QSizePolicy::Preferred</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>300</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                    <item alignment="Qt::AlignRight">
+                     <widget class="QFrame" name="frame_24">
+                      <property name="minimumSize">
+                       <size>
+                        <width>300</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>550</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_20">
+                       <item alignment="Qt::AlignRight">
+                        <widget class="QFrame" name="frame_25">
+                         <property name="maximumSize">
+                          <size>
+                           <width>300</width>
+                           <height>120</height>
+                          </size>
+                         </property>
+                         <property name="frameShape">
+                          <enum>QFrame::StyledPanel</enum>
+                         </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Raised</enum>
+                         </property>
+                         <layout class="QVBoxLayout" name="verticalLayout_25">
+                          <item alignment="Qt::AlignRight">
+                           <widget class="QLabel" name="label_29">
+                            <property name="maximumSize">
+                             <size>
+                              <width>16777215</width>
+                              <height>40</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <family>ROG Fonts</family>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Administrator Domain Account:</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <spacer name="verticalSpacer_2">
+                            <property name="orientation">
+                             <enum>Qt::Vertical</enum>
+                            </property>
+                            <property name="sizeType">
+                             <enum>QSizePolicy::Preferred</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>20</width>
+                              <height>10</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                          <item alignment="Qt::AlignRight">
+                           <widget class="QLabel" name="label_30">
+                            <property name="maximumSize">
+                             <size>
+                              <width>16777215</width>
+                              <height>40</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <family>ROG Fonts</family>
+                             </font>
+                            </property>
+                            <property name="text">
+                             <string>Administrator Domain Password:</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QFrame" name="frame_26">
+                         <property name="maximumSize">
+                          <size>
+                           <width>16777215</width>
+                           <height>105</height>
+                          </size>
+                         </property>
+                         <property name="frameShape">
+                          <enum>QFrame::StyledPanel</enum>
+                         </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Raised</enum>
+                         </property>
+                         <layout class="QVBoxLayout" name="verticalLayout_24">
+                          <item alignment="Qt::AlignBottom">
+                           <widget class="QLineEdit" name="acc_text" />
+                          </item>
+                          <item>
+                           <spacer name="verticalSpacer">
+                            <property name="orientation">
+                             <enum>Qt::Vertical</enum>
+                            </property>
+                            <property name="sizeType">
+                             <enum>QSizePolicy::Preferred</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>20</width>
+                              <height>38</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                          <item alignment="Qt::AlignTop">
+                           <widget class="QLineEdit" name="pass_text">
+                            <property name="echoMode">
+                             <enum>QLineEdit::Password</enum>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="frame_29">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_24">
+                    <item alignment="Qt::AlignHCenter|Qt::AlignTop">
+                     <widget class="QFrame" name="frame_27">
+                      <property name="maximumSize">
+                       <size>
+                        <width>200</width>
+                        <height>50</height>
+                       </size>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_27">
+                       <item alignment="Qt::AlignHCenter">
+                        <widget class="QPushButton" name="add_domain">
+                         <property name="maximumSize">
+                          <size>
+                           <width>16777215</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>ROG Fonts</family>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>Add to domain</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
                </widget>
               </item>
              </layout>
@@ -2459,13 +3286,13 @@ background-color:#24374B;
         <widget class="QFrame" name="right_main">
          <property name="minimumSize">
           <size>
-           <width>0</width>
+           <width>250</width>
            <height>200</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>0</width>
+           <width>250</width>
            <height>16777215</height>
           </size>
          </property>
@@ -2494,135 +3321,40 @@ background-color:#24374B;
            <number>0</number>
           </property>
           <item>
-           <widget class="QTreeWidget" name="treeWidget">
+           <widget class="QTreeWidget" name="clients_list">
             <column>
              <property name="text">
-              <string>FEAA</string>
-             </property>
-             <property name="font">
-              <font>
-               <family>Asus Rog</family>
-              </font>
+              <string>UVT</string>
              </property>
             </column>
             <item>
              <property name="text">
-              <string>Lab 101</string>
-             </property>
-             <property name="font">
-              <font>
-               <family>Asus Rog</family>
-              </font>
+              <string>FEAA</string>
              </property>
              <item>
               <property name="text">
-               <string>1</string>
+               <string>LAB 211</string>
               </property>
+              <item>
+               <property name="text">
+                <string>PC1</string>
+               </property>
+              </item>
              </item>
+            </item>
+            <item>
+             <property name="text">
+              <string>Sediu</string>
+             </property>
              <item>
               <property name="text">
-               <string>2</string>
+               <string>003</string>
               </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>3</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>4</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>5</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>6</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>7</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>8</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>9</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>10</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>11</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>12</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>13</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>14</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>15</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>16</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>17</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>18</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>19</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>20</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>21</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>22</string>
-              </property>
+              <item>
+               <property name="text">
+                <string>PC1</string>
+               </property>
+              </item>
              </item>
             </item>
            </widget>
