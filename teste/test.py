@@ -1,32 +1,39 @@
-import json
-import subprocess
+import psutil
+import os
 
-def is_in_domain():
-    try:
-        # Run PowerShell command to check if the computer is in a domain and get the domain name and PartOfDomain status
-        result = subprocess.run(
-            ['powershell', '-Command',
-             '(Get-WmiObject Win32_ComputerSystem | Select-Object -Property Domain, PartOfDomain | ConvertTo-Json)'],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
 
-        if result.returncode != 0:
-            print(f"Error checking domain status: {result.stderr}")
-            return {"PartOfDomain": False, "DomainName": None}
+def find_process_by_name(name):
+    """
+    Return a list of processes matching 'name'.
+    """
+    process_list = []
+    for proc in psutil.process_iter(['pid', 'name']):
+        if proc.info['name'] == name:
+            process_list.append(proc)
+    return process_list
 
-        # Parse the JSON output
-        output = json.loads(result.stdout.strip())
 
-        domain_name = output.get('Domain', '')
-        part_of_domain = output.get('PartOfDomain', False)
+def kill_process_by_name(name):
+    """
+    Kill all processes matching 'name'.
+    """
+    process_list = find_process_by_name(name)
+    if not process_list:
+        print(f"No process with name '{name}' found.")
+        return
 
-        if part_of_domain:
-            #print(f"Computer is in domain: {domain_name}")
-            return {"PartOfDomain": part_of_domain, "DomainName": domain_name}
-        else:
-            #print("Computer is not in a domain")
-            return {"PartOfDomain": part_of_domain, "DomainName": None}
-    except Exception as e:
-        print(f"An error occurred while checking domain status: {e}")
-        return {"PartOfDomain": False, "DomainName": None}
+    for proc in process_list:
+        try:
+            proc.kill()
+            print(f"Process {proc.info['name']} with PID {proc.info['pid']} has been killed.")
+        except psutil.NoSuchProcess:
+            print(f"Process {proc.info['pid']} no longer exists.")
+        except psutil.AccessDenied:
+            print(f"Permission denied to kill process {proc.info['pid']}.")
+        except Exception as e:
+            print(f"An error occurred while killing process {proc.info['pid']}: {e}")
 
-is_in_domain()
+
+if __name__ == "__main__":
+    process_name = input("Enter the process name to kill: ")
+    kill_process_by_name(process_name)

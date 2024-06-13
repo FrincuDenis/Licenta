@@ -657,7 +657,7 @@ background-color:#24374B;
           <item>
            <widget class="QStackedWidget" name="stackedWidget">
             <property name="currentIndex">
-             <number>8</number>
+             <number>4</number>
             </property>
             <widget class="QWidget" name="cpu_memory">
              <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -944,8 +944,8 @@ background-color:#24374B;
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>129</width>
-                      <height>129</height>
+                      <width>973</width>
+                      <height>558</height>
                      </rect>
                     </property>
                     <layout class="QHBoxLayout" name="horizontalLayout_19">
@@ -1718,11 +1718,6 @@ background-color:#24374B;
                 </column>
                 <column>
                  <property name="text">
-                  <string>New Column</string>
-                 </property>
-                </column>
-                <column>
-                 <property name="text">
                   <string />
                  </property>
                 </column>
@@ -1783,7 +1778,7 @@ background-color:#24374B;
                    </property>
                   </widget>
                  </item>
-                 <item>
+                 <item alignment="Qt::AlignRight">
                   <widget class="QFrame" name="frame_5">
                    <property name="frameShape">
                     <enum>QFrame::NoFrame</enum>
@@ -1804,8 +1799,14 @@ background-color:#24374B;
                     <property name="bottomMargin">
                      <number>0</number>
                     </property>
-                    <item>
+                    <item alignment="Qt::AlignRight">
                      <widget class="QLineEdit" name="activity_search">
+                      <property name="minimumSize">
+                       <size>
+                        <width>200</width>
+                        <height>0</height>
+                       </size>
+                      </property>
                       <property name="font">
                        <font>
                         <family>Asus Rog</family>
@@ -1822,7 +1823,7 @@ background-color:#24374B;
                       </property>
                      </widget>
                     </item>
-                    <item>
+                    <item alignment="Qt::AlignLeft">
                      <widget class="QPushButton" name="pushButton_11">
                       <property name="text">
                        <string />
@@ -2147,8 +2148,8 @@ background-color:#24374B;
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>215</width>
-                   <height>1096</height>
+                   <width>992</width>
+                   <height>1076</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -2892,7 +2893,7 @@ background-color:#24374B;
                        <widget class="QLabel" name="status_domain">
                         <property name="maximumSize">
                          <size>
-                          <width>150</width>
+                          <width>16777215</width>
                           <height>16777215</height>
                          </size>
                         </property>

@@ -9,6 +9,8 @@
 import sys
 import time
 import traceback
+from functools import partial
+
 from server import Server
 ########################################################################
 # IMPORT GUI FILE
@@ -40,6 +42,7 @@ platforms = {
 class CommandWorkerSignals(QObject):
     finished = Signal()
     update_data = Signal(str, dict)
+    status_proc= Signal(dict)
 
 class CommandWorker(QRunnable):
     def __init__(self, main, server):
@@ -77,11 +80,14 @@ class CommandWorker(QRunnable):
                 "system_info": self.main.system_info_com,
                 "connects": self.main.update_net_connections_com,
                 "is_in_domain": self.main.statusD,
-                "fetch_all_user_info": self.main.users,
+                "fetch_all_user_info": self.main.users
             }
             if command[1] in command_map:
                 command_map[command[1]].append(command[2])
                 self.signals.update_data.emit(command[1], command[2])
+            elif command[1] in ["suspend", "resume", "terminate", "kill"]:
+                self.signals.status_proc.emit(command[2])
+
 
 class WorkerSignals(QObject):
     finished = Signal()
@@ -135,6 +141,7 @@ class MainWindow(QMainWindow):
         self.network_worker = NetworkWorker(self.server)
         self.sorter = CommandWorker(self, self.server)
         self.sorter.signals.update_data.connect(self.handle_update_data)
+        self.sorter.signals.status_proc.connect(self.handle_client_response)
         self.start_threads()
 
         loadJsonStyle(self, self.ui, jsonFiles={
@@ -275,25 +282,6 @@ class MainWindow(QMainWindow):
         table_widget.setItem(rowPosition, columnPosition, qtablewidgetitem)
         qtablewidgetitem.setText(text)
 
-    def update_table_widget(self, result_data):
-        pid, name, status, create_time = result_data
-        for row in range(self.ui.tableWidget.rowCount()):
-            pid_item = self.ui.tableWidget.item(row, 0)
-            if pid_item and int(pid_item.text()) == pid:
-                self.ui.tableWidget.item(row, 1).setText(name)
-                self.ui.tableWidget.item(row, 2).setText(status)
-                self.ui.tableWidget.item(row, 3).setText(create_time)
-                return
-        self.add_process_row(pid, name, status, create_time)
-
-    def add_process_row(self, pid, name, status, create_time):
-        rowPosition = self.ui.tableWidget.rowCount()
-        self.ui.tableWidget.insertRow(rowPosition)
-        self.create_table_widget(rowPosition, 0, str(pid), "tableWidget")
-        self.create_table_widget(rowPosition, 1, name, "tableWidget")
-        self.create_table_widget(rowPosition, 2, status, "tableWidget")
-        self.create_table_widget(rowPosition, 3, create_time, "tableWidget")
-        self.add_buttons(rowPosition)
 
     #######################################################
     #                    INFO HARDWARE                    #
@@ -418,50 +406,82 @@ class MainWindow(QMainWindow):
     #                    PROCESSES                        #
     #######################################################
 
+    def handle_client_response(self, response):
+        print(f"Client response: {response}")
+        if isinstance(response, dict) and "pid" in response and "status" in response:
+            self.update_process_table(response["pid"], response["status"])
+
+    def update_process_table(self, pid, status):
+        for row in range(self.ui.tableWidget.rowCount()):
+            pid_item = self.ui.tableWidget.item(row, 0)
+            if pid_item and int(pid_item.text()) == pid:
+                if status in ["terminated", "killed"]:
+                    self.ui.tableWidget.removeRow(row)
+                elif status == "suspended":
+                    self.ui.tableWidget.item(row, 2).setText("suspended")
+                elif status == "resumed":
+                    self.ui.tableWidget.item(row, 2).setText("running")
+                break
+        self.filter_processes()  # Reapply filtering after updating the table
+
     def processes(self):
         self.pop_and_handle(self.processes_com, self.handle_processes)
+        self.filter_processes()
 
     def handle_processes(self, process_data):
+        if not process_data:
+            print("No process data received.")
+            return
+        print(f"Received process data: {process_data}")
         scroll_bar_value = self.ui.tableWidget.verticalScrollBar().value()
-        existing_pids = self.get_existing_pids()
+
+        # Clear the existing table content
+        self.ui.tableWidget.setRowCount(0)
 
         for process_info in process_data:
-            if "pid" in process_info:
-                self.update_table_widget(process_info)
+            self.update_table_widget(process_info)
 
-        self.remove_old_processes(existing_pids)
         self.ui.tableWidget.verticalScrollBar().setValue(scroll_bar_value)
 
-    def get_existing_pids(self):
-        existing_pids = set()
-        for row in range(self.ui.tableWidget.rowCount()):
-            pid_item = self.ui.tableWidget.item(row, 0)
-            if pid_item:
-                existing_pids.add(int(pid_item.text()))
-        return existing_pids
+    def update_table_widget(self, process_info):
+        pid = int(process_info["pid"])
+        name = process_info["name"]
+        status = process_info["status"]
+        create_time = process_info["create_time"]
 
-    def remove_old_processes(self, existing_pids):
-        for row in reversed(range(self.ui.tableWidget.rowCount())):
-            pid_item = self.ui.tableWidget.item(row, 0)
-            if pid_item and int(pid_item.text()) not in existing_pids:
-                self.ui.tableWidget.removeRow(row)
+        print(f"Updating table with PID: {pid}, Name: {name}, Status: {status}, Create Time: {create_time}")
 
-    def handle_error(self, error):
-        print("Error:", error)
-
-    def find_name(self):
-        name = self.ui.activity_search.text().lower()
-        for row in range(self.ui.tableWidget.rowCount()):
-            item = self.ui.tableWidget.item(row, 1)
-            if item:
-                self.ui.tableWidget.setRowHidden(row, name not in item.text().lower())
+        rowPosition = self.ui.tableWidget.rowCount()
+        self.ui.tableWidget.insertRow(rowPosition)
+        self.create_table_widget(rowPosition, 0, str(pid), "tableWidget")
+        self.create_table_widget(rowPosition, 1, name, "tableWidget")
+        self.create_table_widget(rowPosition, 2, status, "tableWidget")
+        self.create_table_widget(rowPosition, 3, create_time, "tableWidget")
+        self.add_buttons(rowPosition)
+        print(f"Added new process row: PID={pid}, Name={name}")
 
     def add_buttons(self, rowPosition):
         actions = [("Suspend", "brown"), ("Resume", "green"), ("Terminate", "orange"), ("Kill", "red")]
         for i, (label, color) in enumerate(actions, start=4):
             btn = QPushButton(label)
             btn.setStyleSheet(f"color: {color}")
+            btn.clicked.connect(lambda pid=rowPosition, action=label.lower(): self.handle_process_action(pid, action))
             self.ui.tableWidget.setCellWidget(rowPosition, i, btn)
+
+    def handle_process_action(self, row, action):
+        pid_item = self.ui.tableWidget.item(row, 0)
+        if not pid_item:
+            return
+
+        pid = int(pid_item.text())
+        self.send_process_action_to_client(pid, action)
+
+    def send_process_action_to_client(self, pid, action):
+        message = {
+            "action": action,
+            "pid": pid
+        }
+        self.server.data_send(message, self.set_name,action)
 
     def suspend_process(self, process):
         self.process_action(process, "suspend", "suspended")
@@ -469,11 +489,15 @@ class MainWindow(QMainWindow):
     def resume_process(self, process):
         self.process_action(process, "resume", "resumed")
 
-    def terminate_process(self, process):
+    def terminate_process(self, process, row):
         self.process_action(process, "terminate", "terminated")
+        self.remove_process_row(row)
+        self.filter_processes()  # Reapply filtering
 
-    def kill_process(self, process):
+    def kill_process(self, process, row):
         self.process_action(process, "kill", "killed")
+        self.remove_process_row(row)
+        self.filter_processes()  # Reapply filtering
 
     def process_action(self, process, action, past_tense_action):
         try:
@@ -482,30 +506,22 @@ class MainWindow(QMainWindow):
         except Exception as e:
             print(f"Error {action} process {process.pid}: {e}")
 
-    def update_table_widget(self, process_info):
-        pid = process_info["pid"]
-        name = process_info["name"]
-        status = process_info["status"]
-        create_time = process_info["create_time"]
+    def remove_process_row(self, row):
+        self.ui.tableWidget.removeRow(row)
+        print(f"Removed row {row} from the table")
 
+    def filter_processes(self):
+        filter_text = self.ui.activity_search.text().lower()
         for row in range(self.ui.tableWidget.rowCount()):
-            pid_item = self.ui.tableWidget.item(row, 0)
-            if pid_item and int(pid_item.text()) == pid:
-                self.ui.tableWidget.item(row, 1).setText(name)
-                self.ui.tableWidget.item(row, 2).setText(status)
-                self.ui.tableWidget.item(row, 3).setText(create_time)
-                return
-
-        self.add_process_row(pid, name, status, create_time)
-
-    def add_process_row(self, pid, name, status, create_time):
-        rowPosition = self.ui.tableWidget.rowCount()
-        self.ui.tableWidget.insertRow(rowPosition)
-        self.create_table_widget(rowPosition, 0, str(pid), "tableWidget")
-        self.create_table_widget(rowPosition, 1, name, "tableWidget")
-        self.create_table_widget(rowPosition, 2, status, "tableWidget")
-        self.create_table_widget(rowPosition, 3, create_time, "tableWidget")
-        self.add_buttons(rowPosition)
+            process_name_item = self.ui.tableWidget.item(row, 1)  # Assuming the process name is in the second column
+            process_status_item = self.ui.tableWidget.item(row, 2)  # Assuming the process status is in the third column
+            if process_name_item and process_status_item:
+                process_name = process_name_item.text().lower()
+                process_status = process_status_item.text().lower()
+                if filter_text in process_name or filter_text in process_status:
+                    self.ui.tableWidget.setRowHidden(row, False)
+                else:
+                    self.ui.tableWidget.setRowHidden(row, True)
 
     #######################################################
     #                    NETWORK                          #
@@ -521,17 +537,24 @@ class MainWindow(QMainWindow):
         self.pop_and_handle(self.update_net_io_counters_com, self.handle_update_net_io_counters)
 
     def handle_update_net_io_counters(self, io_counters_data):
-        self.update_table(self.ui.IO_counters_table, io_counters_data, [
-            "bytes_sent", "bytes_recv", "packets_sent", "packets_recv", "errin", "errout", "dropin", "dropout"
-        ])
+        self.update_table(self.ui.IO_counters_table, io_counters_data.items(), [
+            "interface", "bytes_sent", "bytes_recv", "packets_sent", "packets_recv", "errin", "errout", "dropin",
+            "dropout"
+        ], key_transform=lambda k, v: {"interface": k, **v})
 
     def update_net_if_addrs(self):
         self.pop_and_handle(self.update_net_if_addrs_com, self.handle_update_net_if_addrs)
 
     def handle_update_net_if_addrs(self, if_addr_data):
-        self.update_table(self.ui.addresses_table, if_addr_data, [
-            "family", "address", "netmask", "broadcast", "ptp"
-        ], key_transform=lambda k, v: [(k, a) for a in v])
+        transformed_data = []
+        for interface, addrs in if_addr_data.items():
+            for addr in addrs:
+                entry = {"interface": interface}
+                entry.update(addr)
+                transformed_data.append(entry)
+        self.update_table(self.ui.addresses_table, transformed_data, [
+            "interface", "family", "address", "netmask", "broadcast", "ptp"
+        ])
 
     def update_net_connections(self):
         self.pop_and_handle(self.update_net_connections_com, self.handle_update_net_connections)
@@ -546,7 +569,7 @@ class MainWindow(QMainWindow):
         table.setRowCount(0)  # Clear the table
 
         if key_transform:
-            data_items = [item for key, value in data.items() for item in key_transform(key, value)]
+            data_items = [key_transform(key, value) for key, value in data]
         else:
             data_items = data
 

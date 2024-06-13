@@ -94,6 +94,10 @@ class Client:
             "is_in_domain": self.is_in_domain,
             "fetch_all_user_info": self.fetch_all_user_info,
             "shutdown": self.shutdown,
+            "suspend": lambda: self.suspend_process(data),
+            "resume": lambda: self.resume_process(data),
+            "terminate": lambda: self.terminate_process(data),
+            "kill": lambda: self.kill_process(data),
         }
 
         if command in command_map:
@@ -110,7 +114,6 @@ class Client:
         for i in range(0, len(data_to_send), self.chunk_size):
             chunk = data_to_send[i:i + self.chunk_size]
             self.client_socket.sendall(chunk.encode())
-            time.sleep(0.1)
         self.client_socket.sendall(b'\0')
 
     def shutdown(self):
@@ -373,6 +376,42 @@ class Client:
     def remove_from_domain(self, local_admin, local_password):
         self.local_account.remove_from_domain(local_admin, local_password)
         self.send_data("remove_from_domain", {"status": "removed from domain"})
+
+    def suspend_process(self, data):
+        pid = data["pid"]
+        try:
+            process = psutil.Process(int(pid))
+            process.suspend()
+            self.send_data("suspend", {"pid": pid, "status": "suspended"})
+        except Exception as e:
+            self.send_data("suspend", {"pid": pid, "status": "error", "message": str(e)})
+
+    def resume_process(self, data):
+        pid = data["pid"]
+        try:
+            process = psutil.Process(int(pid))
+            process.resume()
+            self.send_data("resume", {"pid": pid, "status": "resumed"})
+        except Exception as e:
+            self.send_data("resume", {"pid": pid, "status": "error", "message": str(e)})
+
+    def terminate_process(self, data):
+        pid = data["pid"]
+        try:
+            process = psutil.Process(int(pid))
+            process.terminate()
+            self.send_data("terminate", {"pid": pid, "status": "terminated"})
+        except Exception as e:
+            self.send_data("terminate", {"pid": pid, "status": "error", "message": str(e)})
+
+    def kill_process(self, data):
+        pid = data["pid"]
+        try:
+            process = psutil.Process(int(pid))
+            process.kill()
+            self.send_data("kill", {"pid": pid, "status": "killed"})
+        except Exception as e:
+            self.send_data("kill", {"pid": pid, "status": "error", "message": str(e)})
 
 if __name__ == "__main__":
     client = Client("127.0.0.1", 8081)
