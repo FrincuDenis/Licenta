@@ -1,28 +1,32 @@
+import json
 import subprocess
 
-def add_user(username, password, full_name=None, description=None):
+def is_in_domain():
     try:
-        # Construct the base command as a string
-        command = f'net user {username} {password} /ADD'
+        # Run PowerShell command to check if the computer is in a domain and get the domain name and PartOfDomain status
+        result = subprocess.run(
+            ['powershell', '-Command',
+             '(Get-WmiObject Win32_ComputerSystem | Select-Object -Property Domain, PartOfDomain | ConvertTo-Json)'],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
 
-        # Append the full name option if provided
-        if full_name:
-            command += f' /FULLNAME:"{full_name}"'
+        if result.returncode != 0:
+            print(f"Error checking domain status: {result.stderr}")
+            return {"PartOfDomain": False, "DomainName": None}
 
-        # Append the comment/description option if provided
-        if description:
-            command += f' /COMMENT:"{description}"'
+        # Parse the JSON output
+        output = json.loads(result.stdout.strip())
 
-        # Run the command in the shell
-        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
+        domain_name = output.get('Domain', '')
+        part_of_domain = output.get('PartOfDomain', False)
 
-        # Check the result
-        if result.returncode == 0:
-            print(f"User {username} added successfully.")
+        if part_of_domain:
+            #print(f"Computer is in domain: {domain_name}")
+            return {"PartOfDomain": part_of_domain, "DomainName": domain_name}
         else:
-            print(f"Error adding user {username}: {result.stderr}")
+            #print("Computer is not in a domain")
+            return {"PartOfDomain": part_of_domain, "DomainName": None}
     except Exception as e:
-        print(f"An error occurred while adding user {username}: {e}")
+        print(f"An error occurred while checking domain status: {e}")
+        return {"PartOfDomain": False, "DomainName": None}
 
-# Example usage
-add_user('testuser', 'testpassword', 'John Doe', 'Test user account')
+is_in_domain()

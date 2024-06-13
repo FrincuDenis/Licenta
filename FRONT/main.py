@@ -1,19 +1,14 @@
 ########################################################################
 ## QT GUI BY SPINN TV(YOUTUBE)
 ########################################################################
-import datetime
-import pdb
-import json
+
 ########################################################################
 ## IMPORTS
 ########################################################################
-import os
-import platform
-import shutil
+
 import sys
 import time
 import traceback
-from json import JSONDecodeError
 from server import Server
 ########################################################################
 # IMPORT GUI FILE
@@ -21,11 +16,9 @@ from src.ui_interface import *
 ########################################################################
 from src.fnct import *
 from PySide2.QtCore import QRunnable, Slot, QThreadPool
-import psutil
-from multiprocessing import cpu_count
 import clr  # the pythonnet module
-from time import sleep
 import faulthandler
+
 clr.AddReference("LibreHardwareMonitorLib")
 from LibreHardwareMonitor import Hardware
 ########################################################################
@@ -34,6 +27,8 @@ from Custom_Widgets import *
 from Custom_Widgets.QAppSettings import QAppSettings
 
 ########################################################################
+########################################################################
+# Platform Mapping
 platforms = {
     'linux': 'Linux',
     'linux1': 'Linux',
@@ -42,77 +37,51 @@ platforms = {
     'win32': 'Windows',
 }
 
-########################################################################
-## MAIN WINDOW CLASS
-########################################################################
-
 class CommandWorkerSignals(QObject):
     finished = Signal()
+    update_data = Signal(str, dict)
 
 class CommandWorker(QRunnable):
     def __init__(self, main, server):
         super().__init__()
         self.server = server
-        self.main=main
+        self.main = main
         self.signals = CommandWorkerSignals()
 
     def run(self):
-            while True:
-                try:
-                    list = self.server.get_next_command()
-                    if not self.main.set_name:
-                        self.main.set_name=list[0]
-                    #print(f"Commands:{list}")
-                    if list[1] == "cpu_ram":
-                        self.main.cpu_ram_com.append(list[2])
-                    elif list[1] == "power":
-                        self.main.power_com.append(list[2])
-                    elif list[1] == "battery":
-                        self.main.battery_com.append(list[2])
-                    elif list[1] == "processes":
-                        self.main.processes_com.append(list[2])
-                    elif list[1] == "sensor_data":
-                        self.main.sensor_com.append(list[2])
-                    elif list[1] == "storage_info":
-                        self.main.storage_com.append(list[2])
-                    elif list[1] == "network_data":
-                        self.main.update_net_if_stats_com.append(list[2])
-                    elif list[1] == "io":
-                        self.main.update_net_io_counters_com.append(list[2])
-                    elif list[1] == "if_addr":
-                        self.main.update_net_if_addrs_com.append(list[2])
-                    elif list[1] == "system_info":
-                        self.main.system_info_com.append(list[2])
-                    elif list[1] == "connects":
-                        self.main.update_net_connections_com.append(list[2])
-                    elif list[1] == "is_in_domain":
-                        self.main.ui.status_domain=list[2]
-                except Exception as e:
-                   # print(f"Sorter error: {e}")
-                    pass
-                    self.signals.finished.emit()
+        while True:
+            try:
+                command = self.server.get_next_command()
+                if command:
+                    self.process_command(command)
+            except Exception as e:
+                print(f"Sorter error: {e}")
+            finally:
+                self.signals.finished.emit()
 
-class ProcessWorkerSignals(QObject):
-    result = Signal(object)
-
-class ProcessWorker(QRunnable):
-    def __init__(self, process_info):
-        super(ProcessWorker, self).__init__()
-        self.process_info = process_info
-        self.signals = ProcessWorkerSignals()
-
-    @Slot()
-    def run(self):
-        try:
-            pid = int(self.process_info["pid"])
-            name = self.process_info["name"]
-            status = self.process_info["status"]
-            create_time = self.process_info["create_time"]
-            result_data = (pid, name, status, create_time)
-            self.signals.result.emit(result_data)
-        except Exception as e:
-            traceback.print_exc()
-            self.signals.error.emit((type(e), e, traceback.format_exc()))
+    def process_command(self, command):
+        if not self.main.set_name:
+            self.main.set_name = command[0]
+        if command:
+            print(f"Commands: {command}")
+            command_map = {
+                "cpu_ram": self.main.cpu_ram_com,
+                "power": self.main.power_com,
+                "battery": self.main.battery_com,
+                "processes": self.main.processes_com,
+                "sensor_data": self.main.sensor_com,
+                "storage_info": self.main.storage_com,
+                "network_data": self.main.update_net_if_stats_com,
+                "io": self.main.update_net_io_counters_com,
+                "if_addr": self.main.update_net_if_addrs_com,
+                "system_info": self.main.system_info_com,
+                "connects": self.main.update_net_connections_com,
+                "is_in_domain": self.main.statusD,
+                "fetch_all_user_info": self.main.users,
+            }
+            if command[1] in command_map:
+                command_map[command[1]].append(command[2])
+                self.signals.update_data.emit(command[1], command[2])
 
 class WorkerSignals(QObject):
     finished = Signal()
@@ -134,7 +103,6 @@ class Worker(QRunnable):
         try:
             result = self.function(*self.args, **self.kwargs)
         except Exception as e:
-            import traceback
             traceback.print_exc()
             self.signals.error.emit((type(e), e, traceback.format_exc()))
         else:
@@ -143,8 +111,8 @@ class Worker(QRunnable):
             self.signals.finished.emit()
 
 class NetworkWorkerSignals(QObject):
-    started = Signal()  # Semnal pentru a indica că lucrătorul a început
-    finished = Signal()  # Semnal pentru a indica că lucrătorul a terminat
+    started = Signal()
+    finished = Signal()
 
 class NetworkWorker(QRunnable):
     def __init__(self, server):
@@ -155,31 +123,42 @@ class NetworkWorker(QRunnable):
     def run(self):
         self.server.start()
 
-
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.cpu_ram_com=[]
-        self.power_com=[]
-        self.system_info_com=[]
-        self.battery_com=[]
-        self.processes_com=[]
-        self.sensor_com=[]
-        self.storage_com=[]
-        self.update_net_if_stats_com=[]
-        self.update_net_io_counters_com=[]
-        self.update_net_if_addrs_com=[]
-        self.update_net_connections_com=[]
-        self.set_name=""
-        self.server = Server("192.168.31.162", 8081)
+        self.initialize_variables()
+        self.setup_ui_elements()
+        self.threadpool = QThreadPool()
+        self.server = Server("127.0.0.1", 8081)
         self.network_worker = NetworkWorker(self.server)
-        self.worker = Worker(self.response, args=(), kwargs={})
-        self.sorter=CommandWorker(self,self.server)
-        self.worker.signals.result.connect(self.print_output)
-        self.worker.signals.finished.connect(self.thread_complete)
-        self.worker.signals.progress.connect(self.progress_fn)
+        self.sorter = CommandWorker(self, self.server)
+        self.sorter.signals.update_data.connect(self.handle_update_data)
+        self.start_threads()
+
+        loadJsonStyle(self, self.ui, jsonFiles={
+            "json-styles/style.json"
+        })
+        QAppSettings.updateAppSettings(self)
+
+    def initialize_variables(self):
+        self.cpu_ram_com = []
+        self.power_com = []
+        self.system_info_com = []
+        self.battery_com = []
+        self.processes_com = []
+        self.sensor_com = []
+        self.storage_com = []
+        self.users = []
+        self.update_net_if_stats_com = []
+        self.update_net_io_counters_com = []
+        self.update_net_if_addrs_com = []
+        self.update_net_connections_com = []
+        self.set_name = ""
+        self.statusD = []
+
+    def setup_ui_elements(self):
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.shadow = QGraphicsDropShadowEffect(self)
@@ -192,445 +171,91 @@ class MainWindow(QMainWindow):
         self.ui.minimize_button.clicked.connect(self.showMinimized)
         self.ui.close_button.clicked.connect(self.closer)
         self.ui.resize_button.clicked.connect(self.restore_or_maximize_window)
-        self.ui.Domain.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Domain_tab))
-        self.ui.LocalAcc.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Local_accounts))
-        self.ui.CPU.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.cpu_memory))
-        self.ui.power.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.Power))
-        self.ui.Sysinfo.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.sysinfo))
-        self.ui.Activities.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.activities))
-        self.ui.Storage.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.storage))
-        self.ui.Sensors.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.sensors))
-        self.ui.Network.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.network))
-        self.ui.add_user.clicked.connect(lambda: self.user())
-        self.ui.add_domain.clicked.connect(lambda: self.domain())
+        self.connect_buttons()
         self.clickPosition = QPoint()
         self.ui.header_frame.mousePressEvent = self.mousePressEvent
         self.ui.header_frame.mouseMoveEvent = self.moveWindow
-        for w in self.ui.menu.findChildren(QPushButton):
-            w.clicked.connect(self.applyButtonStyle)
 
-        loadJsonStyle(self, self.ui, jsonFiles={
-            "json-styles/style.json"
-        })
+    def connect_buttons(self):
+        button_connections = {
+            self.ui.Domain: self.ui.Domain_tab,
+            self.ui.LocalAcc: self.ui.Local_accounts,
+            self.ui.CPU: self.ui.cpu_memory,
+            self.ui.power: self.ui.Power,
+            self.ui.Sysinfo: self.ui.sysinfo,
+            self.ui.Activities: self.ui.activities,
+            self.ui.Storage: self.ui.storage,
+            self.ui.Sensors: self.ui.sensors,
+            self.ui.Network: self.ui.network,
+        }
+        for button, tab in button_connections.items():
+            button.clicked.connect(self.make_tab_switcher(tab))
+        self.ui.add_user.clicked.connect(lambda: self.user())
+        self.ui.add_domain.clicked.connect(lambda: self.domain())
 
-        self.threadpool = QThreadPool()
+    def make_tab_switcher(self, tab):
+        return lambda: self.ui.stackedWidget.setCurrentWidget(tab)
+
+    def start_threads(self):
+        workers = [
+            Worker(self.hardware),
+            Worker(self.hardware1),
+            Worker(self.process),
+            Worker(self.network),
+            Worker(self.computer_man),
+        ]
+        for worker in workers:
+            self.threadpool.start(worker)
         self.threadpool.start(self.network_worker)
         self.threadpool.start(self.sorter)
-        self.threadpool.start(self.worker)
 
-        QAppSettings.updateAppSettings(self)
+    def hardware(self, progress_callback):
+        self.system_info()
+        while True:
+            self.update_hardware_status()
+            time.sleep(1)
 
-    #######################################################
-    #           INFO HARDWARE                             #
-    #######################################################
+    def update_hardware_status(self):
+        self.cpu_ram()
+        self.battery()
+        self.power()
+        self.sensor()
+        self.update_net_if_stats()
+        self.update_net_io_counters()
+        self.update_net_if_addrs()
+        self.update_net_connections()
 
-    def response(self, progress_callback):
-            time.sleep(5)
-            while True:
-                self.system_info()
-                self.cpu_ram()
-                self.power()
-                self.battery()
-                self.processes()
-                self.sensor()
-                self.storage()
-                self.update_net_if_stats()
-                self.update_net_io_counters()
-                self.update_net_if_addrs()
-                self.update_net_connections()
-                time.sleep(1)
+    def hardware1(self, progress_callback):
+        self.storage()
+        while True:
+            self.set_domain()
+            self.set_users()
+            time.sleep(20)
 
-    def cpu_ram(self):
-            #self.server.options("1")
-            try:
-                    response = self.cpu_ram_com.pop(0)
-                    if response:
-                        # Extract the data from the response
-                        core_count = response['core_count']
-                        cpu_percentage = response['cpu_percentage']
-                        main_core_count = response['main_core_count']
-                        total_ram = response['total_ram']
-                        available_ram = response['available_ram']
-                        ram_usage = response['ram_usage']
-                        used_ram = response['used_ram']
-                        ram_free = response['ram_free']
+    def process(self, progress_callback):
+        while True:
+            self.processes()
+            time.sleep(1)
 
-                        # Update the UI elements
-                        self.ui.total_ram.setText(str("{:.2f}".format(total_ram) + ' GB'))
-                        self.ui.available_ram.setText(f"{available_ram:.2f} GB")
-                        self.ui.ram_usage.setText(f"{ram_usage:.2f}%")
-                        self.ui.used_ram.setText(f"{used_ram:.2f} GB")
-                        self.ui.free_ram.setText(f"{ram_free:.2f} GB")
-                        self.ui.cpu_cont.setText(str(core_count))
-                        self.ui.cpu_per.setText(f"{cpu_percentage}%")
-                        self.ui.cpu_main_core.setText(str(main_core_count))
+    def network(self, progress_callback):
+        while True:
+            self.update_net_if_stats()
+            self.update_net_io_counters()
+            self.update_net_if_addrs()
+            self.update_net_connections()
+            time.sleep(1)
 
-                        # Update CPU progress bar
-                        self.ui.CPU_PROGRESS.rpb_setMaximum(100)
-                        self.ui.CPU_PROGRESS.rpb_setValue(cpu_percentage)
-                        self.ui.CPU_PROGRESS.rpb_setBarStyle('Hybrid2')
-                        self.ui.CPU_PROGRESS.rpb_setLineColor((255, 30, 99))
-                        self.ui.CPU_PROGRESS.rpb_setPieColor((45, 74, 83))
-                        self.ui.CPU_PROGRESS.rpb_setInitialPos('West')
-                        self.ui.CPU_PROGRESS.rpb_setTextFormat('Percentage')
-                        self.ui.CPU_PROGRESS.rpb_setTextFont('Asus Font')
-                        self.ui.CPU_PROGRESS.rpb_setLineWidth(15)
-                        self.ui.CPU_PROGRESS.rpb_setPathWidth(15)
-                        self.ui.CPU_PROGRESS.rpb_setLineCap('RoundCap')
+    def computer_man(self, progress_callback):
+        while True:
+            self.set_domain()
+            self.set_users()
+            time.sleep(1)
 
-                        # Update RAM progress bar
-                        self.ui.RAM_PROGRESS.spb_setMinimum((0, 0, 0))
-                        self.ui.RAM_PROGRESS.spb_setMaximum((total_ram, total_ram, total_ram))
-                        self.ui.RAM_PROGRESS.spb_setValue((available_ram, used_ram, ram_free))
-                        self.ui.RAM_PROGRESS.spb_lineColor(((6, 233, 38), (6, 201, 233), (233, 6, 201)))
-                        self.ui.RAM_PROGRESS.spb_setInitialPos(('West', 'West', 'West'))
-                        self.ui.RAM_PROGRESS.spb_lineWidth(15)
-                        self.ui.RAM_PROGRESS.spb_lineStyle(('SolidLine', 'SolidLine', 'SolidLine'))
-                        self.ui.RAM_PROGRESS.spb_lineCap(('RoundCap', 'RoundCap', 'RoundCap'))
-                        self.ui.RAM_PROGRESS.spb_setPathHidden(True)
-            except Exception as e:
-                if e != "pop from empty list":
-                    print(f"Error CPU_RAM: {e}")
-                    pass
+    def closer(self):
+        self.close()
+        self.server.stop()
+        self.stop_worker()
 
-    def power(self):
-            try:
-                    response = self.power_com.pop(0)
-                    if response:
-                        cpu_power = response["cpu_power"]
-                        igpu_power = response["igpu_power"]
-                        dgpu_power = response["dgpu_power"]
-                        self.ui.cpu_consume.setText(f"{cpu_power:.2f}")
-                        if igpu_power > 0:
-                             self.ui.igpu_consume.setText(f"{igpu_power:.2f}")
-                        self.ui.gpu_consume.setText(f"{dgpu_power:.2f}")
-                        avg = (dgpu_power + cpu_power) / 2
-                        self.ui.avg_consumed.setText("{:.2f}".format(avg))
-                        self.ui.power_progress.spb_setMinimum((0, 0, 0))
-                        self.ui.power_progress.spb_setMaximum((100, 100, 300))
-                        self.ui.power_progress.spb_setValue((cpu_power, dgpu_power, avg))
-                        self.ui.power_progress.spb_lineColor(((6, 233, 38), (6, 201, 233), (233, 6, 201)))
-                        self.ui.power_progress.spb_setInitialPos(('West', 'West', 'West'))
-                        self.ui.power_progress.spb_lineWidth(15)
-                        self.ui.power_progress.spb_lineStyle(('SolidLine', 'SolidLine', 'SolidLine'))
-                        self.ui.power_progress.spb_lineCap(('RoundCap', 'RoundCap', 'RoundCap'))
-                        self.ui.power_progress.spb_setPathHidden(True)
-            except Exception as e:
-                    if e != "pop from empty list":
-                        print(f"Error power: {e}")
-                        pass
-
-    def storage(self):
-        scroll_bar_value = self.ui.storageTable.verticalScrollBar().value()
-        try:
-            storage_infos = self.storage_com.pop(0)
-            if storage_infos:
-                self.ui.storageTable.setRowCount(0)  # Clear the table
-                for row, storage_info in enumerate(storage_infos):
-                    if 'mountpoint' in storage_info:
-                        self.ui.storageTable.insertRow(row)
-                        self.create_table_widget(row, 0, storage_info['device'], "storageTable")
-                        self.create_table_widget(row, 1, storage_info["mountpoint"], "storageTable")
-                        self.create_table_widget(row, 2, storage_info["fstype"], "storageTable")
-                        self.create_table_widget(row, 3, storage_info["opts"], "storageTable")
-                        self.create_table_widget(row, 4, storage_info["maxfile"], "storageTable")
-                        self.create_table_widget(row, 5, storage_info["maxpath"], "storageTable")
-                        self.create_table_widget(row, 6, storage_info["total_space"], "storageTable")
-                        self.create_table_widget(row, 7, storage_info["free_space"], "storageTable")
-                        self.create_table_widget(row, 8, storage_info["used_space"], "storageTable")
-
-                        total_space = float(storage_info["total_space"].split()[0])
-                        used_space = float(storage_info["used_space"].split()[0])
-                        full_disk = (used_space / total_space) * 100
-                        progressBar = QProgressBar(self.ui.storageTable)
-                        progressBar.setObjectName(u"progressBar")
-                        progressBar.setValue(full_disk)
-                #     self.ui.storageTable.setCellWidget(row, 9, progressBar)
-                self.ui.storageTable.verticalScrollBar().setValue(scroll_bar_value)
-        except Exception as e:
-            if e != "pop from empty list":
-                print(f"Error storage: {e}")
-                pass
-
-    def sensor(self):
-        scroll_bar_value = self.ui.sensors_table.verticalScrollBar().value()
-        try:
-            sensor_data = self.sensor_com.pop(0)
-            if sensor_data:
-                self.ui.sensors_table.setRowCount(0)
-                cpu_temps = {}
-                gpu_temps = {}
-                row = 0
-                # Extract sensor data from the provided sensor_data
-                for sensor_entry in sensor_data:
-                    if sensor_entry["sensor_type"] == "CPU":
-                        temps = sensor_entry["value"]
-                        current_temp = temps[-1]
-                        avg_temp = sum(temps) / len(temps)
-                        min_temp = min(temps)
-                        max_temp = max(temps)
-                        self.ui.sensors_table.insertRow(row)
-                        self.create_table_widget(row, 0, sensor_entry["sensor_name"], 'sensors_table')
-                        self.create_table_widget(row, 1, f"{current_temp:.2f}", 'sensors_table')
-                        self.create_table_widget(row, 2, f"{min_temp:.2f}", 'sensors_table')
-                        self.create_table_widget(row, 3, f"{max_temp:.2f}", 'sensors_table')
-                        self.create_table_widget(row, 4, f"{avg_temp:.2f}", 'sensors_table')
-                        row += 1
-                    elif sensor_entry["sensor_type"] == "GPU":
-                        temps = sensor_entry["value"]
-                        current_temp = temps[-1]
-                        avg_temp = sum(temps) / len(temps)
-                        min_temp = min(temps)
-                        max_temp = max(temps)
-                        self.ui.sensors_table.insertRow(row)
-                        self.create_table_widget(row, 0, sensor_entry["sensor_name"],
-                                                 'sensors_table')
-                        self.create_table_widget(row, 1, f"{current_temp:.2f}",
-                                                 'sensors_table')
-                        self.create_table_widget(row, 2, f"{min_temp:.2f}", 'sensors_table')
-                        self.create_table_widget(row, 3, f"{max_temp:.2f}", 'sensors_table')
-                        self.create_table_widget(row, 4, f"{avg_temp:.2f}", 'sensors_table')
-                        row += 1
-                self.ui.sensors_table.verticalScrollBar().setValue(scroll_bar_value)
-        except Exception as e:
-            if e != "pop from empty list":
-                print(f"Error sensor: {e}")
-                pass
-
-    def battery(self):
-        try:
-                battery_info = self.battery_com.pop(0)
-                if battery_info["status"] == "Platform not supported":
-                    self.ui.battery_status.setText("Platform not supported")
-                    self.ui.battery_usage.rpb_setValue(100)
-                else:
-                    self.ui.battery_charge.setText(str(battery_info["charge"]) + "%")
-                    self.ui.battery_time_left.setText(battery_info["time_left"])
-                    self.ui.battery_plugged.setText(battery_info["plugged"])
-
-                    if battery_info["status"] == "Charging" or battery_info["status"] == "Fully Charged":
-                        self.ui.battery_status.setText(battery_info["status"])
-                    else:
-                        self.ui.battery_status.setText("Discharging")
-
-                    self.ui.battery_usage.rpb_setValue(battery_info["charge"])
-        except Exception as e:
-                    if e != "pop from empty list":
-                        print(f"Error battery: {e}")
-                        pass
-
-    def system_info(self):
-        # Receive response from the server
-        try:
-                system_info = self.system_info_com.pop(0)
-                # Update GUI elements with system information
-                self.ui.system_time.setText(system_info["time"])
-                self.ui.system_date.setText(system_info["date"])
-                self.ui.system_machine.setText(system_info["machine"])
-                self.ui.system_version.setText(system_info["version"])
-                self.ui.system_platform.setText(system_info["platform"])
-                self.ui.system_system.setText(system_info["system"])
-                self.ui.system_processor.setText(system_info["processor"])
-        except Exception as e:
-            if e != "pop from empty list":
-                print(f"Error system_info: {e}")
-                pass
-
-    #######################################################
-    #           INFO HARDWARE                             #
-    #######################################################
-
-    #######################################################
-    #           PROCESSES                                 #
-    #######################################################
-    def processes(self):
-        scroll_bar_value = self.ui.tableWidget.verticalScrollBar().value()
-        try:
-            process_data = self.processes_com.pop(0)
-            if process_data:
-                existing_pids = set()
-
-                for row in range(self.ui.tableWidget.rowCount()):
-                    pid_item = self.ui.tableWidget.item(row, 0)
-                    if pid_item is None:
-                        continue
-                    pid = int(pid_item.text())
-                    existing_pids.add(pid)
-
-                for process_info in process_data:
-                    if "pid" in process_info:
-                        worker = ProcessWorker(process_info)
-                        worker.signals.result.connect(self.update_table_widget)
-                        self.threadpool.start(worker)
-
-                # Remove processes that are not in the response
-                for row in range(self.ui.tableWidget.rowCount()):
-                    pid_item = self.ui.tableWidget.item(row, 0)
-                    if pid_item is None:
-                        continue
-                    pid = int(pid_item.text())
-                    if pid not in existing_pids:
-                        self.ui.tableWidget.removeRow(row)
-                self.ui.tableWidget.verticalScrollBar().setValue(scroll_bar_value)
-        except Exception as e:
-            print(f"Error processes: {e}")
-            pass
-
-    def handle_error(self, error):
-        print("Error:", error)
-
-    def findName(self):
-        name = self.ui.activity_search.text().lower()
-        for row in range(self.ui.tableWidget.rowCount()):
-            item = self.ui.tableWidget.item(row, 1)
-            self.ui.tableWidget.setRowHidden(row, name not in item.text().lower())
-
-    def add_buttons(self, rowPosition):
-        suspend_btn = QPushButton("Suspend")
-        suspend_btn.setStyleSheet("color: brown")
-        self.ui.tableWidget.setCellWidget(rowPosition, 4, suspend_btn)
-
-        resume_btn = QPushButton("Resume")
-        resume_btn.setStyleSheet("color: green")
-        self.ui.tableWidget.setCellWidget(rowPosition, 5, resume_btn)
-
-        terminate_btn = QPushButton("Terminate")
-        terminate_btn.setStyleSheet("color: orange")
-        self.ui.tableWidget.setCellWidget(rowPosition, 6, terminate_btn)
-
-        kill_btn = QPushButton("Kill")
-        kill_btn.setStyleSheet("color: red")
-        self.ui.tableWidget.setCellWidget(rowPosition, 7, kill_btn)
-
-    def suspend_process(self, process):
-        try:
-            process.suspend()
-            print(f"Process {process.pid} suspended")
-        except Exception as e:
-            print(f"Error suspending process {process.pid}: {e}")
-
-    def resume_process(self, process):
-        try:
-            process.resume()
-            print(f"Process {process.pid} resumed")
-        except Exception as e:
-            print(f"Error resuming process {process.pid}: {e}")
-
-    def terminate_process(self, process):
-        try:
-            process.terminate()
-            print(f"Process {process.pid} terminated")
-        except Exception as e:
-            print(f"Error terminating process {process.pid}: {e}")
-
-    def kill_process(self, process):
-        try:
-            process.kill()
-            print(f"Process {process.pid} killed")
-        except Exception as e:
-            print(f"Error killing process {process.pid}: {e}")
-
-    #######################################################
-    #           PROCESSES                                 #
-    #######################################################
-
-    #######################################################
-    #           NETWORK                                   #
-    #######################################################
-
-    def update_net_if_stats(self):
-        scroll_bar_value = self.ui.stats_table.verticalScrollBar().value()
-        try:
-                stats_infos = self.update_net_if_stats_com.pop(0)
-                if stats_infos:
-                    self.ui.stats_table.setRowCount(0)  # Clear the table
-                    for row, stats_info in enumerate(stats_infos):
-                        if "interface" in stats_info:
-                            self.ui.stats_table.insertRow(row)
-                            self.create_table_widget(row, 0, stats_info["interface"], "stats_table")
-                            self.create_table_widget(row, 1, str(stats_info["is_up"]), "stats_table")
-                            self.create_table_widget(row, 2, str(stats_info["duplex"]), "stats_table")
-                            self.create_table_widget(row, 3, str(stats_info["speed"]), "stats_table")
-                            self.create_table_widget(row, 4, str(stats_info["mtu"]), "stats_table")
-                    self.ui.stats_table.verticalScrollBar().setValue(scroll_bar_value)
-        except Exception as e:
-            if e != "pop from empty list":
-                print(f"Error update_net_if_stats: {e}")
-                pass
-    def update_net_io_counters(self):
-        scroll_bar_value = self.ui.IO_counters_table.verticalScrollBar().value()
-        try:
-            io_counters_data = self.update_net_io_counters_com.pop(0)
-            if io_counters_data:
-                self.ui.IO_counters_table.setRowCount(0)  # Clear the table
-                for row, (interface, counters) in enumerate(io_counters_data.items()):
-                    if "bytes_sent" in counters:
-                        self.ui.IO_counters_table.insertRow(row)
-                        self.create_table_widget(row, 0, str(interface), "IO_counters_table")
-                        self.create_table_widget(row, 1, str(counters["bytes_sent"]), "IO_counters_table")
-                        self.create_table_widget(row, 2, str(counters["bytes_recv"]), "IO_counters_table")
-                        self.create_table_widget(row, 3, str(counters["packets_sent"]), "IO_counters_table")
-                        self.create_table_widget(row, 4, str(counters["packets_recv"]), "IO_counters_table")
-                        self.create_table_widget(row, 5, str(counters["errin"]), "IO_counters_table")
-                        self.create_table_widget(row, 6, str(counters["errout"]), "IO_counters_table")
-                        self.create_table_widget(row, 7, str(counters["dropin"]), "IO_counters_table")
-                        self.create_table_widget(row, 8, str(counters["dropout"]), "IO_counters_table")
-                self.ui.IO_counters_table.verticalScrollBar().setValue(scroll_bar_value)
-        except Exception as e:
-            if e != "pop from empty list":
-                print(f"Error update_net_io_counters: {e}")
-                pass
-    def update_net_if_addrs(self):
-        scroll_bar_value = self.ui.addresses_table.verticalScrollBar().value()
-        try:
-            if_addr_data = self.update_net_if_addrs_com.pop(0)
-            if if_addr_data:
-                self.ui.addresses_table.setRowCount(0)  # Clear the table before updating
-                for interface, addrs in if_addr_data.items():
-                    for addr in addrs:
-                        if "family" in addr:
-                            rowPosition = self.ui.addresses_table.rowCount()
-                            self.ui.addresses_table.insertRow(rowPosition)
-                            self.create_table_widget(rowPosition, 0, str(interface), "addresses_table")
-                            self.create_table_widget(rowPosition, 1, str(addr["family"]), "addresses_table")
-                            self.create_table_widget(rowPosition, 2, str(addr["address"]), "addresses_table")
-                            self.create_table_widget(rowPosition, 3, str(addr["netmask"]), "addresses_table")
-                            self.create_table_widget(rowPosition, 4, str(addr["broadcast"]), "addresses_table")
-                            self.create_table_widget(rowPosition, 5, str(addr["ptp"]), "addresses_table")
-                self.ui.addresses_table.verticalScrollBar().setValue(scroll_bar_value)
-        except Exception as e:
-            if e != "pop from empty list":
-                print(f"Error update_net_if_addrs: {e}")
-                pass
-    def update_net_connections(self):
-        scroll_bar_value = self.ui.connections_table.verticalScrollBar().value()
-        try:
-            connections_data = self.update_net_connections_com.pop(0)
-            if connections_data:
-                self.ui.connections_table.setRowCount(0)  # Clear the table
-                for row, connection_info in enumerate(connections_data):
-                    if "laddr" in connection_info:
-                        self.ui.connections_table.insertRow(row)
-                        self.create_table_widget(row, 0, str(connection_info["fd"]), "connections_table")
-                        self.create_table_widget(row, 1, str(connection_info["family"]), "connections_table")
-                        self.create_table_widget(row, 2, str(connection_info["type"]), "connections_table")
-                        self.create_table_widget(row, 3, str(connection_info["laddr"]), "connections_table")
-                        self.create_table_widget(row, 4, str(connection_info["raddr"]), "connections_table")
-                        self.create_table_widget(row, 5, str(connection_info["status"]), "connections_table")
-                        self.create_table_widget(row, 6, str(connection_info["pid"]), "connections_table")
-                self.ui.connections_table.verticalScrollBar().setValue(scroll_bar_value)
-        except Exception as e:
-            if e != "pop from empty list":
-                print(f"Error update_net_connections: {e}")
-                pass
-
-    #######################################################
-    #           NETWORK                                   #
-    #######################################################
-
-    #######################################################
-    #           THREADS                                   #
-    #######################################################
     def stop_worker(self):
         if hasattr(self, 'worker'):
             self.worker.stop()
@@ -643,30 +268,25 @@ class MainWindow(QMainWindow):
 
     def progress_fn(self, n):
         print(f"Progress: {n}%")
-    #######################################################
-    #           THREADS                                   #
-    #######################################################
-    #######################################################
-    #           TABLES                                    #
-    #######################################################
+
     def create_table_widget(self, rowPosition, columnPosition, text, tablename):
+        table_widget = getattr(self.ui, tablename)
         qtablewidgetitem = QTableWidgetItem()
-        getattr(self.ui, tablename).setItem(rowPosition, columnPosition, qtablewidgetitem)
-        qtablewidgetitem = getattr(self.ui, tablename).item(rowPosition, columnPosition)
+        table_widget.setItem(rowPosition, columnPosition, qtablewidgetitem)
         qtablewidgetitem.setText(text)
 
     def update_table_widget(self, result_data):
         pid, name, status, create_time = result_data
         for row in range(self.ui.tableWidget.rowCount()):
             pid_item = self.ui.tableWidget.item(row, 0)
-            if pid_item is None:
-                continue
-            if int(pid_item.text()) == pid:
+            if pid_item and int(pid_item.text()) == pid:
                 self.ui.tableWidget.item(row, 1).setText(name)
                 self.ui.tableWidget.item(row, 2).setText(status)
                 self.ui.tableWidget.item(row, 3).setText(create_time)
                 return
+        self.add_process_row(pid, name, status, create_time)
 
+    def add_process_row(self, pid, name, status, create_time):
         rowPosition = self.ui.tableWidget.rowCount()
         self.ui.tableWidget.insertRow(rowPosition)
         self.create_table_widget(rowPosition, 0, str(pid), "tableWidget")
@@ -675,90 +295,429 @@ class MainWindow(QMainWindow):
         self.create_table_widget(rowPosition, 3, create_time, "tableWidget")
         self.add_buttons(rowPosition)
 
-    # def populate_clients_list(self):
-    #     # Clear existing items in the tree widget
-    #     self.ui.clients_list.clear()
-    #
-    #     # Fetch data from the database and populate the treeview
-    #     connection = sqlite3.connect("your_database.db")
-    #     cursor = connection.cursor()
-    #
-    #     # Fetch data from the database
-    #     cursor.execute("SELECT building, classroom, pc FROM your_table")
-    #     data = cursor.fetchall()
-    #
-    #     # Populate the treeview with the fetched data
-    #     for building, classroom, pc in data:
-    #         building_item = QtWidgets.QTreeWidgetItem([building])
-    #         classroom_item = QtWidgets.QTreeWidgetItem([classroom])
-    #         pc_item = QtWidgets.QTreeWidgetItem([pc])
-    #         self.ui.clients_list.addTopLevelItem(building_item)
-    #         building_item.addChild(classroom_item)
-    #         classroom_item.addChild(pc_item)
-
     #######################################################
-    #           TABLES                                    #
+    #                    INFO HARDWARE                    #
     #######################################################
 
+    def cpu_ram(self):
+        self.pop_and_handle(self.cpu_ram_com, self.handle_cpu_ram)
+
+    def handle_cpu_ram(self, response):
+        self.update_ui_element(self.ui.total_ram, response['total_ram'], suffix=' GB')
+        self.update_ui_element(self.ui.available_ram, response['available_ram'], suffix=' GB')
+        self.update_ui_element(self.ui.ram_usage, response['ram_usage'], suffix='%')
+        self.update_ui_element(self.ui.used_ram, response['used_ram'], suffix=' GB')
+        self.update_ui_element(self.ui.free_ram, response['ram_free'], suffix=' GB')
+        self.update_ui_element(self.ui.cpu_cont, response['core_count'])
+        self.update_ui_element(self.ui.cpu_per, response['cpu_percentage'], suffix='%')
+        self.update_ui_element(self.ui.cpu_main_core, response['main_core_count'])
+        self.update_progress_bar(self.ui.CPU_PROGRESS, 100, response['cpu_percentage'])
+        self.update_split_progress_bar(self.ui.RAM_PROGRESS,
+                                       (response['total_ram'], response['total_ram'], response['total_ram']),
+                                       (response['available_ram'], response['used_ram'], response['ram_free']),
+                                       ((6, 233, 38), (6, 201, 233), (233, 6, 201)), ('West', 'West', 'West'))
+
+    def power(self):
+        self.pop_and_handle(self.power_com, self.handle_power)
+
+    def handle_power(self, response):
+        self.update_ui_element(self.ui.cpu_consume, response["cpu_power"])
+        if response["igpu_power"] > 0:
+            self.update_ui_element(self.ui.igpu_consume, response["igpu_power"])
+        self.update_ui_element(self.ui.gpu_consume, response["dgpu_power"])
+        avg = (response["dgpu_power"] + response["cpu_power"]) / 2
+        self.update_ui_element(self.ui.avg_consumed, avg)
+        self.update_split_progress_bar(self.ui.power_progress, (100, 100, 300),
+                                       (response["cpu_power"], response["dgpu_power"], avg),
+                                       ((6, 233, 38), (6, 201, 233), (233, 6, 201)),
+                                       ('West', 'West', 'West'))
+
+    def storage(self):
+        self.pop_and_handle(self.storage_com, self.handle_storage)
+
+    def handle_storage(self, storage_infos):
+        scroll_bar_value = self.ui.storageTable.verticalScrollBar().value()
+        self.ui.storageTable.setRowCount(0)  # Clear the table
+        for row, storage_info in enumerate(storage_infos):
+            if 'mountpoint' in storage_info:
+                self.ui.storageTable.insertRow(row)
+                self.create_table_widget(row, 0, storage_info['device'], "storageTable")
+                self.create_table_widget(row, 1, storage_info["mountpoint"], "storageTable")
+                self.create_table_widget(row, 2, storage_info["fstype"], "storageTable")
+                self.create_table_widget(row, 3, storage_info["opts"], "storageTable")
+                self.create_table_widget(row, 4, storage_info["maxfile"], "storageTable")
+                self.create_table_widget(row, 5, storage_info["maxpath"], "storageTable")
+                self.create_table_widget(row, 6, storage_info["total_space"], "storageTable")
+                self.create_table_widget(row, 7, storage_info["free_space"], "storageTable")
+                self.create_table_widget(row, 8, storage_info["used_space"], "storageTable")
+
+                total_space = float(storage_info["total_space"].split()[0])
+                used_space = float(storage_info["used_space"].split()[0])
+                full_disk = (used_space / total_space) * 100
+                progressBar = QProgressBar(self.ui.storageTable)
+                progressBar.setObjectName(u"progressBar")
+                progressBar.setValue(full_disk)
+                self.ui.storageTable.setCellWidget(row, 9, progressBar)
+        self.ui.storageTable.verticalScrollBar().setValue(scroll_bar_value)
+
+    def sensor(self):
+        self.pop_and_handle(self.sensor_com, self.handle_sensor)
+
+    def handle_sensor(self, sensor_data):
+        scroll_bar_value = self.ui.sensors_table.verticalScrollBar().value()
+        self.ui.sensors_table.setRowCount(0)
+        row = 0
+        for sensor_entry in sensor_data:
+            if sensor_entry["sensor_type"] in ["CPU", "GPU"]:
+                temps = sensor_entry["value"]
+                current_temp = temps[-1]
+                avg_temp = sum(temps) / len(temps)
+                min_temp = min(temps)
+                max_temp = max(temps)
+                self.ui.sensors_table.insertRow(row)
+                self.create_table_widget(row, 0, sensor_entry["sensor_name"], 'sensors_table')
+                self.create_table_widget(row, 1, f"{current_temp:.2f}", 'sensors_table')
+                self.create_table_widget(row, 2, f"{min_temp:.2f}", 'sensors_table')
+                self.create_table_widget(row, 3, f"{max_temp:.2f}", 'sensors_table')
+                self.create_table_widget(row, 4, f"{avg_temp:.2f}", 'sensors_table')
+                row += 1
+        self.ui.sensors_table.verticalScrollBar().setValue(scroll_bar_value)
+
+    def battery(self):
+        self.pop_and_handle(self.battery_com, self.handle_battery)
+
+    def handle_battery(self, battery_info):
+        if battery_info["status"] == "Platform not supported":
+            self.ui.battery_status.setText("Platform not supported")
+            self.ui.battery_usage.rpb_setValue(100)
+        else:
+            self.ui.battery_charge.setText(str(battery_info["charge"]) + "%")
+            self.ui.battery_time_left.setText(battery_info["time_left"])
+            self.ui.battery_plugged.setText(battery_info["plugged"])
+
+            status_text = "Discharging"
+            if battery_info["status"] in ["Charging", "Fully Charged"]:
+                status_text = battery_info["status"]
+            self.ui.battery_status.setText(status_text)
+
+            self.ui.battery_usage.rpb_setValue(battery_info["charge"])
+
+    def system_info(self):
+        self.pop_and_handle(self.system_info_com, self.handle_system_info)
+
+    def handle_system_info(self, system_info):
+        self.update_ui_element(self.ui.system_time, system_info["time"], "{}")
+        self.update_ui_element(self.ui.system_date, system_info["date"], "{}")
+        self.update_ui_element(self.ui.system_machine, system_info["machine"], "{}")
+        self.update_ui_element(self.ui.system_version, system_info["version"], "{}")
+        self.update_ui_element(self.ui.system_platform, system_info["platform"], "{}")
+        self.update_ui_element(self.ui.system_system, system_info["system"], "{}")
+        self.update_ui_element(self.ui.system_processor, system_info["processor"], "{}")
+
     #######################################################
-    #           STYLE                                     #
+    #                    PROCESSES                        #
     #######################################################
+
+    def processes(self):
+        self.pop_and_handle(self.processes_com, self.handle_processes)
+
+    def handle_processes(self, process_data):
+        scroll_bar_value = self.ui.tableWidget.verticalScrollBar().value()
+        existing_pids = self.get_existing_pids()
+
+        for process_info in process_data:
+            if "pid" in process_info:
+                self.update_table_widget(process_info)
+
+        self.remove_old_processes(existing_pids)
+        self.ui.tableWidget.verticalScrollBar().setValue(scroll_bar_value)
+
+    def get_existing_pids(self):
+        existing_pids = set()
+        for row in range(self.ui.tableWidget.rowCount()):
+            pid_item = self.ui.tableWidget.item(row, 0)
+            if pid_item:
+                existing_pids.add(int(pid_item.text()))
+        return existing_pids
+
+    def remove_old_processes(self, existing_pids):
+        for row in reversed(range(self.ui.tableWidget.rowCount())):
+            pid_item = self.ui.tableWidget.item(row, 0)
+            if pid_item and int(pid_item.text()) not in existing_pids:
+                self.ui.tableWidget.removeRow(row)
+
+    def handle_error(self, error):
+        print("Error:", error)
+
+    def find_name(self):
+        name = self.ui.activity_search.text().lower()
+        for row in range(self.ui.tableWidget.rowCount()):
+            item = self.ui.tableWidget.item(row, 1)
+            if item:
+                self.ui.tableWidget.setRowHidden(row, name not in item.text().lower())
+
+    def add_buttons(self, rowPosition):
+        actions = [("Suspend", "brown"), ("Resume", "green"), ("Terminate", "orange"), ("Kill", "red")]
+        for i, (label, color) in enumerate(actions, start=4):
+            btn = QPushButton(label)
+            btn.setStyleSheet(f"color: {color}")
+            self.ui.tableWidget.setCellWidget(rowPosition, i, btn)
+
+    def suspend_process(self, process):
+        self.process_action(process, "suspend", "suspended")
+
+    def resume_process(self, process):
+        self.process_action(process, "resume", "resumed")
+
+    def terminate_process(self, process):
+        self.process_action(process, "terminate", "terminated")
+
+    def kill_process(self, process):
+        self.process_action(process, "kill", "killed")
+
+    def process_action(self, process, action, past_tense_action):
+        try:
+            getattr(process, action)()
+            print(f"Process {process.pid} {past_tense_action}")
+        except Exception as e:
+            print(f"Error {action} process {process.pid}: {e}")
+
+    def update_table_widget(self, process_info):
+        pid = process_info["pid"]
+        name = process_info["name"]
+        status = process_info["status"]
+        create_time = process_info["create_time"]
+
+        for row in range(self.ui.tableWidget.rowCount()):
+            pid_item = self.ui.tableWidget.item(row, 0)
+            if pid_item and int(pid_item.text()) == pid:
+                self.ui.tableWidget.item(row, 1).setText(name)
+                self.ui.tableWidget.item(row, 2).setText(status)
+                self.ui.tableWidget.item(row, 3).setText(create_time)
+                return
+
+        self.add_process_row(pid, name, status, create_time)
+
+    def add_process_row(self, pid, name, status, create_time):
+        rowPosition = self.ui.tableWidget.rowCount()
+        self.ui.tableWidget.insertRow(rowPosition)
+        self.create_table_widget(rowPosition, 0, str(pid), "tableWidget")
+        self.create_table_widget(rowPosition, 1, name, "tableWidget")
+        self.create_table_widget(rowPosition, 2, status, "tableWidget")
+        self.create_table_widget(rowPosition, 3, create_time, "tableWidget")
+        self.add_buttons(rowPosition)
+
+    #######################################################
+    #                    NETWORK                          #
+    #######################################################
+
+    def update_net_if_stats(self):
+        self.pop_and_handle(self.update_net_if_stats_com, self.handle_update_net_if_stats)
+
+    def handle_update_net_if_stats(self, stats_infos):
+        self.update_table(self.ui.stats_table, stats_infos, ["interface", "is_up", "duplex", "speed", "mtu"])
+
+    def update_net_io_counters(self):
+        self.pop_and_handle(self.update_net_io_counters_com, self.handle_update_net_io_counters)
+
+    def handle_update_net_io_counters(self, io_counters_data):
+        self.update_table(self.ui.IO_counters_table, io_counters_data, [
+            "bytes_sent", "bytes_recv", "packets_sent", "packets_recv", "errin", "errout", "dropin", "dropout"
+        ])
+
+    def update_net_if_addrs(self):
+        self.pop_and_handle(self.update_net_if_addrs_com, self.handle_update_net_if_addrs)
+
+    def handle_update_net_if_addrs(self, if_addr_data):
+        self.update_table(self.ui.addresses_table, if_addr_data, [
+            "family", "address", "netmask", "broadcast", "ptp"
+        ], key_transform=lambda k, v: [(k, a) for a in v])
+
+    def update_net_connections(self):
+        self.pop_and_handle(self.update_net_connections_com, self.handle_update_net_connections)
+
+    def handle_update_net_connections(self, connections_data):
+        self.update_table(self.ui.connections_table, connections_data, [
+            "fd", "family", "type", "laddr", "raddr", "status", "pid"
+        ])
+
+    def update_table(self, table, data, columns, key_transform=None):
+        scroll_bar_value = table.verticalScrollBar().value()
+        table.setRowCount(0)  # Clear the table
+
+        if key_transform:
+            data_items = [item for key, value in data.items() for item in key_transform(key, value)]
+        else:
+            data_items = data
+
+        for row, item in enumerate(data_items):
+            table.insertRow(row)
+            for col, column in enumerate(columns):
+                value = item.get(column, "") if isinstance(item, dict) else item[col]
+                self.create_table_widget(row, col, str(value), table.objectName())
+
+        table.verticalScrollBar().setValue(scroll_bar_value)
+
+    #######################################################
+    #                    DATA COLLECT                     #
+    #######################################################
+
+    def user(self):
+        data = self.collect_user_data()
+        if not data:
+            return
+
+        action = "remove_user" if len(data) == 1 else "add_user"
+        self.server.data_send(data, self.set_name, action)
+
+    def collect_user_data(self):
+        user_text = self.ui.user_text.text()
+        password_text = self.ui.password_text.text()
+        password_confirm_text = self.ui.passwordconfirm_text.text()
+
+        if not user_text:
+            return []
+
+        if not password_text and not password_confirm_text:
+            return [user_text]
+
+        if password_text == password_confirm_text:
+            return [user_text, self.ui.fullname_text.text(), self.ui.description_text.text(), password_text]
+
+        print("Passwords do not match.")
+        return []
+
+    def domain(self):
+        data = self.collect_domain_data()
+        if not data:
+            return
+
+        action = "remove_from_domain" if len(data) == 2 else "add_to_domain"
+        self.server.data_send(data, self.set_name, action)
+
+    def collect_domain_data(self):
+        domain_text = self.ui.domain_text.text()
+        acc_text = self.ui.acc_text.text()
+        pass_text = self.ui.pass_text.text()
+
+        if not domain_text:
+            if acc_text and pass_text:
+                return [acc_text, pass_text]
+            return []
+
+        return [domain_text, acc_text, pass_text]
+
+    def set_domain(self):
+        self.pop_and_handle(self.statusD, self.handle_set_domain)
+
+    def handle_set_domain(self, dom_data):
+        dom = dom_data.get('is_in_domain')
+        if dom:
+            self.ui.status_domain.setText("Computer is in a domain" if dom.get("PartOfDomain") else "Computer is not in a domain")
+            self.ui.name_domain.setText(dom.get("DomainName", ""))
+
+    def set_users(self):
+        self.pop_and_handle(self.users, self.handle_set_users)
+
+    def handle_set_users(self, users_table):
+        scroll_bar_value = self.ui.user_table.verticalScrollBar().value()
+        self.ui.user_table.setRowCount(0)  # Clear the table
+        for row, (username, user_info) in enumerate(users_table.items()):
+            self.ui.user_table.insertRow(row)
+            self.update_user_table(row, user_info)
+        self.ui.user_table.verticalScrollBar().setValue(scroll_bar_value)
+
+    def update_user_table(self, row, user_info):
+        columns = [
+            'Name', 'Full Name', 'Comment', "User's comment", 'Account active',
+            'Account expires', 'Local Group Memberships', 'Password last set',
+            'Password expires', 'Password changeable', 'Password required', 'Last logon'
+        ]
+        for col, field in enumerate(columns):
+            self.create_table_widget(row, col, user_info.get(field, ""), "user_table")
+
+    def pop_and_handle(self, data_list, handler):
+        try:
+            data = data_list.pop(0)
+            if data:
+                handler(data)
+        except IndexError as e:
+            if str(e) != "pop from empty list":
+                print(f"Error {handler.__name__}: {e}")
+        except Exception as e:
+            print(f"Error {handler.__name__}: {e}")
+
+    def handle_update_data(self, command, data):
+        command_map = {
+            "cpu_ram": self.cpu_ram,
+            "power": self.power,
+            "battery": self.battery,
+            "processes": self.processes,
+            "sensor_data": self.sensor,
+            "storage_info": self.storage,
+            "network_data": self.update_net_if_stats,
+            "io": self.update_net_io_counters,
+            "if_addr": self.update_net_if_addrs,
+            "system_info": self.system_info,
+            "connects": self.update_net_connections,
+            "is_in_domain": self.set_domain,
+            "fetch_all_user_info": self.set_users,
+        }
+        if command in command_map:
+            command_map[command]()
+
+    #######################################################
+    #                    STYLE                            #
+    #######################################################
+
     def applyButtonStyle(self):
         for w in self.ui.menu.findChildren(QPushButton):
             if w.objectName() != self.sender().objectName():
                 w.setStyleSheet("border-bottom: none;")
-
         self.sender().setStyleSheet("border-bottom: 2px solid;")
-        return
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.clickPosition = event.globalPos()
 
     def moveWindow(self, event):
-        if not self.isMaximized():  # Only allow moving when not maximized
-            if event.buttons() == Qt.LeftButton:
-                self.move(self.pos() + event.globalPos() - self.clickPosition)
-                self.clickPosition = event.globalPos()
-                event.accept()
+        if not self.isMaximized() and event.buttons() == Qt.LeftButton:
+            self.move(self.pos() + event.globalPos() - self.clickPosition)
+            self.clickPosition = event.globalPos()
+            event.accept()
 
-    #######################################################
-    #           STYLE                                     #
-    #######################################################
-    #######################################################
-    #           DATA COLLECT                              #
-    #######################################################
-    def user(self):
-        data=[]
-        if self.ui.password_text.text() == "" and self.ui.passwordconfirm_text.text() == "":
-            data.append(self.ui.user_text.text())
-            self.server.data_send(data, self.set_name, "remove_user")
-        else:
-            data.append(self.ui.user_text.text())
-            data.append(self.ui.fullname_text.text())
-            data.append(self.ui.description_text.text())
-            if  self.ui.password_text.text() == self.ui.passwordconfirm_text.text():
-                data.append(self.ui.password_text.text())
-            self.server.data_send(data, self.set_name, "add_user")
-    def domain(self):
-        data = []
-        if self.ui.domain_text == "":
-            data.append(self.ui.acc_text.text())
-            data.append(self.ui.pass_text.text())
-            self.server.data_send(data, self.set_name, "remove_from_domain")
-        else:
-            data.append(self.ui.domain_text.text())
-            data.append(self.ui.acc_text.text())
-            data.append(self.ui.pass_text.text())
-            self.server.data_send(data, self.set_name, "add_to_domain")
-    #######################################################
-    #           DATA COLLECT                              #
-    #######################################################
-    def closer(self):
-        self.close()
-      #  self.server.options("12")
-        self.server.stop()
-        self.stop_worker()
+    def update_ui_element(self, ui_element, value, format_str="{:.2f}", suffix=""):
+        ui_element.setText(f"{format_str.format(value)}{suffix}")
+
+    def update_progress_bar(self, progress_bar, max_value, value, bar_style='Hybrid2', line_color=(255, 30, 99),
+                            pie_color=(45, 74, 83), initial_pos='West', text_format='Percentage', text_font='Asus Font',
+                            line_width=15, path_width=15, line_cap='RoundCap'):
+        progress_bar.rpb_setMaximum(max_value)
+        progress_bar.rpb_setValue(value)
+        progress_bar.rpb_setBarStyle(bar_style)
+        progress_bar.rpb_setLineColor(line_color)
+        progress_bar.rpb_setPieColor(pie_color)
+        progress_bar.rpb_setInitialPos(initial_pos)
+        progress_bar.rpb_setTextFormat(text_format)
+        progress_bar.rpb_setTextFont(text_font)
+        progress_bar.rpb_setLineWidth(line_width)
+        progress_bar.rpb_setPathWidth(path_width)
+        progress_bar.rpb_setLineCap(line_cap)
+
+    def update_split_progress_bar(self, progress_bar, max_values, values, line_colors, initial_positions, line_width=15,
+                                  line_styles=('SolidLine', 'SolidLine', 'SolidLine'),
+                                  line_caps=('RoundCap', 'RoundCap', 'RoundCap'),
+                                  path_hidden=True):
+        progress_bar.spb_setMinimum((0, 0, 0))
+        progress_bar.spb_setMaximum(max_values)
+        progress_bar.spb_setValue(values)
+        progress_bar.spb_lineColor(line_colors)
+        progress_bar.spb_setInitialPos(initial_positions)
+        progress_bar.spb_lineWidth(line_width)
+        progress_bar.spb_lineStyle(line_styles)
+        progress_bar.spb_lineCap(line_caps)
+        progress_bar.spb_setPathHidden(path_hidden)
+
 ######################################  ##################################
 ## EXECUTE APP
 ########################################################################
@@ -766,7 +725,7 @@ if __name__ == "__main__":
     faulthandler.enable()
     app = QApplication(sys.argv)
     ########################################################################
-    ## 
+    ##
     ########################################################################
 
     window = MainWindow()

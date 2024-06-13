@@ -1,3 +1,4 @@
+import json
 import subprocess
 
 class UserManager:
@@ -78,21 +79,18 @@ class UserManager:
             return None
 
     def fetch_all_user_info(self):
-        print("Fetching all users...")
+        # print("Fetching all users...")
         self.get_all_users()
 
         if self.users:
-            print("Users found:")
-            for user in self.users:
-                print(user)
-
+            # print("Users found:")
             # Get info for each user
             for specific_user in self.users:
-                print(f"\nFetching info for user: {specific_user}")
+                # print(f"\nFetching info for user: {specific_user}")
                 user_info = self.get_user_info(specific_user)
                 if user_info:
                     self.all_users_info[specific_user] = user_info
-                    print(f"Info for user {specific_user}:")
+                    # print(f"Info for user {specific_user}:")
                     fields_to_print = [
                         'Name', 'Full Name', 'Comment', "User's comment", 'Account active', 'Account expires',
                         'Password last set',
@@ -145,26 +143,31 @@ class UserManager:
 
     def is_in_domain(self):
         try:
-            # Run PowerShell command to check if the computer is in a domain and get the domain name
+            # Run PowerShell command to check if the computer is in a domain and get the domain name and PartOfDomain status
             result = subprocess.run(
-                ['powershell', '-Command', '(Get-WmiObject Win32_ComputerSystem).Domain'],
+                ['powershell', '-Command',
+                 '(Get-WmiObject Win32_ComputerSystem | Select-Object -Property Domain, PartOfDomain | ConvertTo-Json)'],
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
 
             if result.returncode != 0:
                 print(f"Error checking domain status: {result.stderr}")
-                return None
+                return {"PartOfDomain": False, "DomainName": None}
 
-            # Extract the domain name from the output
-            domain_name = result.stdout.strip()
-            if domain_name:
-                print(f"Computer is in domain: {domain_name}")
-                return domain_name
+            # Parse the JSON output
+            output = json.loads(result.stdout.strip())
+
+            domain_name = output.get('Domain', '')
+            part_of_domain = output.get('PartOfDomain', False)
+
+            if part_of_domain:
+               # print(f"Computer is in domain: {domain_name}")
+                return {"PartOfDomain": part_of_domain, "DomainName": domain_name}
             else:
-                print("Computer is not in a domain")
-                return "Is not in a domain."
+                #print("Computer is not in a domain")
+                return {"PartOfDomain": part_of_domain, "DomainName": None}
         except Exception as e:
             print(f"An error occurred while checking domain status: {e}")
-            return None
+            return {"PartOfDomain": False, "DomainName": None}
 
     def add_to_domain(self, domain, username, password):
         try:
@@ -173,7 +176,7 @@ class UserManager:
             result = subprocess.run(['powershell', '-Command', command], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                     text=True, shell=True)
             if result.returncode == 0:
-                print(f"Computer successfully added to domain {domain}.")
+               print(f"Computer successfully added to domain {domain}.")
             else:
                 print(f"Error adding computer to domain {domain}: {result.stderr}")
         except Exception as e:
@@ -193,22 +196,3 @@ class UserManager:
             print(f"An error occurred while removing computer from domain: {e}")
 
 
-if __name__ == "__main__":
-    user_manager = UserManager()
-    user_manager.fetch_all_user_info()
-    #user_manager.send_to_socket('localhost', 12345)  # Change host and port as needed
-
-    # Add a user
-    #user_manager.add_user('new_user', 'password123')
-
-    # Remove a user
-    #user_manager.remove_user('user_to_remove')
-
-    # Check if in domain
-    user_manager.is_in_domain()
-
-    # Add computer to domain
-   # user_manager.add_to_domain('example.com', 'domain_admin', 'domain_password')
-
-    # Remove computer from domain
-  #  user_manager.remove_from_domain('local_admin', 'local_password')

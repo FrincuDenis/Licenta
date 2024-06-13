@@ -22,93 +22,84 @@ platforms = {
     'win32': 'Windows',
 }
 
-
 class Client:
     def __init__(self, host, port):
         self.host = host
         self.port = port
         self.local_account = UserManager()
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.chunk_size = 7168
+        self.chunk_size = 4096  # Adjusted to match the server's chunk size
 
     def connect(self):
-        self.client_socket.connect((self.host, self.port))
-        client_name = socket.gethostname()  # Get the client's computer name
-        self.client_socket.send(client_name.encode())  # Send the client name to the server
-        print(f"Connected to server at {self.host}:{self.port} as {client_name}")
+        try:
+            self.client_socket.connect((self.host, self.port))
+            client_name = socket.gethostname()  # Get the client's computer name
+            self.client_socket.send(client_name.encode())  # Send the client name to the server
+            print(f"Connected to server at {self.host}:{self.port} as {client_name}")
+        except Exception as e:
+            print(f"Connection error: {e}")
 
     def receive_data(self):
         response = []
-        end = b""
+        end_marker = b""
         while True:
             chunk = self.client_socket.recv(self.chunk_size)
-            if chunk[-1:] == b'\0' or chunk[-1:] == b'\1':
-                end=chunk[-1:]
+            if chunk[-1:] in (b'\0', b'\1'):
+                end_marker = chunk[-1:]
                 response.append(chunk[:-1])
                 break
             response.append(chunk)
         response_data = b''.join(response).decode()
-        if end == b'\0':
-                try:
-                    json_response = json.loads(response_data)
-                    if isinstance(json_response, dict):
-                        for command, data in json_response.items():
-                            return command, data
-                except json.JSONDecodeError as e:
-                    print(f"JSON decode error: {e}")
-                return None, None
-        elif end == b'\1':
-                return response_data, None
+        if end_marker == b'\0':
+            try:
+                json_response = json.loads(response_data)
+                if isinstance(json_response, dict):
+                    for command, data in json_response.items():
+                        return command, data
+            except json.JSONDecodeError as e:
+                print(f"JSON decode error: {e}")
+            return None, None
+        elif end_marker == b'\1':
+            return response_data, None
 
     def handle_server_request(self):
         while True:
             try:
-                # First receive the command
-                command,data= self.receive_data()
-                # Process the command
-                if command == "cpu_ram":
-                    self.cpu_ram()
-                elif command == "power":
-                    self.power()
-                elif command == "battery":
-                    self.battery()
-                elif command == "system_info":
-                    self.system_info()
-                elif command == "processes":
-                    self.processes()
-                elif command == "network_data":
-                    self.network_data()
-                elif command == "storage_info":
-                    self.storage_info()
-                elif command == "sensor_data":
-                    self.sensor_data()
-                elif command == "io":
-                    self.io()
-                elif command == "if_addr":
-                    self.if_addr()
-                elif command == "connects":
-                    self.connects()
-                elif command == "add_user" and data:
-                    self.add_user(data[0], data[3], data[1], data[2])
-                elif command == "remove_user" and data:
-                    self.remove_user(data[0])
-                elif command == "add_to_domain" and data:
-                    self.add_to_domain(data[0], data[1], data[2])
-                elif command == "remove_from_domain" and data:
-                    self.remove_from_domain(data[0], data[1])
-                elif command == "is_in_domain":
-                    self.is_in_domain()
-                elif command == "fetch_all_user_info":
-                    self.fetch_all_user_info()
-                elif command == "shutdown":
-                    self.client_socket.close()
-                    return
+                command, data = self.receive_data()
+                if command:
+                    self.process_command(command, data)
                 else:
-                    print(f"Unknown command or missing data: {command}")
-
+                    print("No command received.")
             except Exception as e:
-                print(f"An error occurred while handling server request: {e}")
-                pass
+                print(f"Error handling server request: {e}")
+                break
+
+    def process_command(self, command, data):
+        command_map = {
+            "cpu_ram": self.cpu_ram,
+            "power": self.power,
+            "battery": self.battery,
+            "system_info": self.system_info,
+            "processes": self.processes,
+            "network_data": self.network_data,
+            "storage_info": self.storage_info,
+            "sensor_data": self.sensor_data,
+            "io": self.io,
+            "if_addr": self.if_addr,
+            "connects": self.connects,
+            "add_user": lambda: self.add_user(data[0], data[3], data[1], data[2]) if data else None,
+            "remove_user": lambda: self.remove_user(data[0]) if data else None,
+            "add_to_domain": lambda: self.add_to_domain(data[0], data[1], data[2]) if data else None,
+            "remove_from_domain": lambda: self.remove_from_domain(data[0], data[1]) if data else None,
+            "is_in_domain": self.is_in_domain,
+            "fetch_all_user_info": self.fetch_all_user_info,
+            "shutdown": self.shutdown,
+        }
+
+        if command in command_map:
+            command_map[command]()
+        else:
+            print(f"Unknown command: {command}")
 
     def start(self):
         self.connect()
@@ -122,6 +113,11 @@ class Client:
             time.sleep(0.1)
         self.client_socket.sendall(b'\0')
 
+    def shutdown(self):
+        self.client_socket.close()
+        print("Client shutdown.")
+
+    # Command Methods
     def connects(self):
         connections_data = []
         for conn in psutil.net_connections():
@@ -134,7 +130,7 @@ class Client:
                 'status': conn.status,
                 'pid': conn.pid
             })
-        self.send_data("connects",connections_data)
+        self.send_data("connects", connections_data)
 
     def cpu_ram(self):
         total_ram = psutil.virtual_memory().total / (1024 * 1024 * 1024)
@@ -142,14 +138,14 @@ class Client:
         ram_usage = psutil.virtual_memory().percent
         used_ram = psutil.virtual_memory().used / (1024 * 1024 * 1024)
         ram_free = psutil.virtual_memory().free / (1024 * 1024 * 1024)
-        core = psutil.cpu_count()
-        cpu_per = psutil.cpu_percent(interval=1)
-        cpu_main_core = psutil.cpu_count(logical=False)
+        core_count = psutil.cpu_count()
+        cpu_percentage = psutil.cpu_percent(interval=1)
+        main_core_count = psutil.cpu_count(logical=False)
 
         cpu_data = {
-            "core_count": core,
-            "cpu_percentage": cpu_per,
-            "main_core_count": cpu_main_core,
+            "core_count": core_count,
+            "cpu_percentage": cpu_percentage,
+            "main_core_count": main_core_count,
             "total_ram": total_ram,
             "available_ram": available_ram,
             "ram_usage": ram_usage,
@@ -157,7 +153,7 @@ class Client:
             "ram_free": ram_free,
         }
 
-        self.send_data("cpu_ram",cpu_data)
+        self.send_data("cpu_ram", cpu_data)
 
     def power(self):
         computer = Hardware.Computer()
@@ -169,30 +165,26 @@ class Client:
         total_igpu_power = 0.0
         total_dgpu_power = 0.0
 
-        for hardware in computer.Hardware:
-            if hardware.HardwareType in (Hardware.HardwareType.Cpu, Hardware.HardwareType.GpuNvidia,
-                                         Hardware.HardwareType.GpuAmd, Hardware.HardwareType.GpuIntel):
-                hardware.Update()
-                for sensor in hardware.Sensors:
-                    if sensor.SensorType == Hardware.SensorType.Power:
-                        value = sensor.Value
-                        if hardware.HardwareType == Hardware.HardwareType.Cpu:
-                            if value is not None:
+        try:
+            for hardware in computer.Hardware:
+                if hardware.HardwareType in (Hardware.HardwareType.Cpu, Hardware.HardwareType.GpuNvidia,
+                                             Hardware.HardwareType.GpuAmd, Hardware.HardwareType.GpuIntel):
+                    hardware.Update()
+                    for sensor in hardware.Sensors:
+                        if sensor.SensorType == Hardware.SensorType.Power and sensor.Value is not None:
+                            value = sensor.Value
+                            if hardware.HardwareType == Hardware.HardwareType.Cpu:
                                 total_cpu_power += value
-                        elif hardware.HardwareType == Hardware.HardwareType.GpuIntel:
-                            if "UHD" in hardware.Name or "Iris" in hardware.Name:
-                                total_igpu_power += value
-                            else:
-                                total_dgpu_power += value
-                        elif hardware.HardwareType == Hardware.HardwareType.GpuAmd:
-                            if "Vega" in hardware.Name or "Radeon Graphics" in hardware.Name:
-                                total_igpu_power += value
-                            else:
-                                total_dgpu_power += value
-                        elif hardware.HardwareType == Hardware.HardwareType.GpuNvidia:
-                            total_dgpu_power += value
-
-        computer.Close()
+                            elif hardware.HardwareType in (Hardware.HardwareType.GpuIntel, Hardware.HardwareType.GpuAmd,
+                                                           Hardware.HardwareType.GpuNvidia):
+                                if "Vega" in hardware.Name or "Radeon Graphics" in hardware.Name or "UHD Graphics" in hardware.Name or "Iris Xe Graphics" in hardware.Name:
+                                    total_igpu_power += value
+                                else:
+                                    total_dgpu_power += value
+        except Exception as e:
+            print(f"Error collecting power data: {e}")
+        finally:
+            computer.Close()
 
         power_data = {
             "cpu_power": total_cpu_power,
@@ -200,19 +192,15 @@ class Client:
             "dgpu_power": total_dgpu_power
         }
 
-        self.send_data("power",power_data)
+        self.send_data("power", power_data)
 
     def battery(self):
         battery = psutil.sensors_battery()
         battery_info = {}
         if battery is not None:
             battery_info["charge"] = round(battery.percent, 2)
-            if battery.power_plugged:
-                battery_info["status"] = "Charging" if battery.percent < 100 else "Fully Charged"
-                battery_info["time_left"] = "N/A"
-            else:
-                battery_info["status"] = "Discharging" if battery.percent < 100 else "Fully Charged"
-                battery_info["time_left"] = self.secs2hours(battery.secsleft)
+            battery_info["status"] = "Charging" if battery.power_plugged and battery.percent < 100 else "Fully Charged" if battery.percent == 100 else "Discharging"
+            battery_info["time_left"] = "N/A" if battery.power_plugged else self.secs2hours(battery.secsleft)
             battery_info["plugged"] = "Yes" if battery.power_plugged else "No"
         else:
             battery_info["status"] = "Platform not supported"
@@ -220,12 +208,12 @@ class Client:
             battery_info["plugged"] = "No"
             battery_info["time_left"] = "N/A"
 
-        self.send_data("battery",battery_info)
+        self.send_data("battery", battery_info)
 
     def secs2hours(self, secs):
         mm, ss = divmod(secs, 60)
         hh, mm = divmod(mm, 60)
-        return "%d:%02d:%02d (H:M:S)" % (hh, mm, ss)
+        return f"{hh}:{mm:02d}:{ss:02d} (H:M:S)"
 
     def system_info(self):
         system_info = {
@@ -238,12 +226,12 @@ class Client:
             "processor": platform.processor()
         }
 
-        self.send_data("system_info",system_info)
+        self.send_data("system_info", system_info)
 
     def processes(self):
         process_data = []
-
         current_pids = set(psutil.pids())
+
         for pid in current_pids:
             try:
                 process = psutil.Process(pid)
@@ -251,12 +239,11 @@ class Client:
                     "pid": str(process.pid),
                     "name": process.name(),
                     "status": process.status(),
-                    "create_time": datetime.datetime.utcfromtimestamp(process.create_time()).strftime(
-                        '%Y-%m-%d %H:%M:%S')
+                    "create_time": datetime.datetime.utcfromtimestamp(process.create_time()).strftime('%Y-%m-%d %H:%M:%S')
                 }
                 process_data.append(process_info)
             except Exception as e:
-                print(e)
+                print(f"Error fetching process {pid}: {e}")
 
         self.send_data("processes", process_data)
 
@@ -290,12 +277,13 @@ class Client:
         sensor_data = []
         cpu_temps = {}
         gpu_temps = {}
-        try:
-            computer = Hardware.Computer()
-            computer.IsCpuEnabled = True
-            computer.IsGpuEnabled = True
-            computer.Open()
 
+        computer = Hardware.Computer()
+        computer.IsCpuEnabled = True
+        computer.IsGpuEnabled = True
+        computer.Open()
+
+        try:
             for hardware in computer.Hardware:
                 if hardware.HardwareType in (Hardware.HardwareType.Cpu, Hardware.HardwareType.GpuNvidia,
                                              Hardware.HardwareType.GpuAmd, Hardware.HardwareType.GpuIntel):
@@ -309,16 +297,15 @@ class Client:
                             elif hardware.HardwareType in (Hardware.HardwareType.GpuIntel, Hardware.HardwareType.GpuAmd,
                                                            Hardware.HardwareType.GpuNvidia):
                                 gpu_temps.setdefault(sensor_name, []).append(temp_value)
-
-            for sensor_name, temp_value in cpu_temps.items():
-                sensor_data.append({"sensor_type": "CPU", "sensor_name": sensor_name, "value": temp_value})
-            for sensor_name, temp_value in gpu_temps.items():
-                sensor_data.append({"sensor_type": "GPU", "sensor_name": sensor_name, "value": temp_value})
-
         except Exception as e:
-            print(f"Error initializing hardware monitor: {e}")
+            print(f"Error collecting sensor data: {e}")
         finally:
             computer.Close()
+
+        for sensor_name, temp_values in cpu_temps.items():
+            sensor_data.append({"sensor_type": "CPU", "sensor_name": sensor_name, "value": temp_values})
+        for sensor_name, temp_values in gpu_temps.items():
+            sensor_data.append({"sensor_type": "GPU", "sensor_name": sensor_name, "value": temp_values})
 
         self.send_data("sensor_data", sensor_data)
 
@@ -332,7 +319,7 @@ class Client:
                 'speed': stats.speed,
                 'mtu': stats.mtu
             })
-        self.send_data("network_data",if_stats_data)
+        self.send_data("network_data", if_stats_data)
 
     def io(self):
         io_counters_data = {}
@@ -347,7 +334,7 @@ class Client:
                 'dropin': counters.dropin,
                 'dropout': counters.dropout
             }
-        self.send_data("io",io_counters_data)
+        self.send_data("io", io_counters_data)
 
     def if_addr(self):
         if_addrs_data = {}
@@ -361,14 +348,14 @@ class Client:
                     'broadcast': addr.broadcast,
                     'ptp': addr.ptp
                 })
-        self.send_data("if_addr",if_addrs_data)
+        self.send_data("if_addr", if_addrs_data)
 
     def fetch_all_user_info(self):
         self.local_account.fetch_all_user_info()
         self.send_data("fetch_all_user_info", self.local_account.all_users_info)
 
-    def add_user(self, username, password,full_name, description):
-        self.local_account.add_user(username, password,full_name, description)
+    def add_user(self, username, password, full_name, description):
+        self.local_account.add_user(username, password, full_name, description)
         self.send_data("add_user", {"username": username, "status": "added"})
 
     def remove_user(self, username):
@@ -388,5 +375,5 @@ class Client:
         self.send_data("remove_from_domain", {"status": "removed from domain"})
 
 if __name__ == "__main__":
-    client = Client("192.168.31.162", 8081)
+    client = Client("127.0.0.1", 8081)
     client.start()

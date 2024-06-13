@@ -66,13 +66,14 @@ class Server:
     def get_client_address(self):
         return self.client_address
 '''
+'''
+
 import socket
 import threading
 import json
 import time
 
 from debugpy.adapter import clients
-
 
 class Server:
     def __init__(self, host, port):
@@ -105,7 +106,7 @@ class Server:
                     command_received, data_received = self.receive_response(client_socket)
                     if command_received:
                         self.command_queue.append((client_name, command_received, data_received))
-                        print(f"Response from {client_name} for {command_received}: {data_received}")
+                     #   print(f"Response from {client_name} for {command_received}: {data_received}")
         except Exception as e:
             print(f"Connection to {client_name} lost: {e}")
         finally:
@@ -138,23 +139,6 @@ class Server:
         else:
             return None
 
-    def options(self, client_name, command,data=[]):
-        client_socket = self.clients.get(client_name)  # Get the client socket using the client name
-        if client_socket:
-            if command:
-                if command == "1":
-                    client_socket.sendall(b"add_user")
-                    client_socket.sendall(data+b"\0")
-                elif command == "2":
-                    client_socket.sendall(b"remove_user")
-                    client_socket.sendall(data)
-                elif command == "3":
-                    client_socket.sendall(b"add_to_domain")
-                    client_socket.sendall(data)
-                elif command == "4":
-                    client_socket.sendall(b"remove_from_domain")
-                    client_socket.sendall(data)
-                print(f"Command sent to client: {command}")
     def data_send(self, data, name,command):
         client_socket=self.clients[name]
         data_to_send = json.dumps({command: data})
@@ -162,11 +146,9 @@ class Server:
             chunk = data_to_send[i:i + self.chunk_size]
             client_socket.sendall(chunk.encode())
             client_socket.sendall(b'\0')
-            time.sleep(0.5)
-
-
             print(f"Command sent to client: {command}")
         client_socket.sendall(data)
+        time.sleep(0.5)
     def stop(self):
         self.server_socket.close()
     def start(self):
@@ -175,6 +157,115 @@ class Server:
             client_socket, client_address = self.server_socket.accept()
             threading.Thread(target=self.handle_client, args=(client_socket, client_address)).start()
 
+
+if __name__ == "__main__":
+    server = Server("localhost", 8080)
+    server.start()
+
+'''
+import socket
+import threading
+import json
+import time
+
+class Server:
+    def __init__(self, host, port):
+        self.host = host
+        self.port = port
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_socket.bind((self.host, self.port))
+        self.server_socket.listen(5)
+        self.clients = {}
+        self.command_queue = []
+        self.chunk_size = 4096
+
+    def handle_client(self, client_socket, client_address):
+        try:
+            client_name = client_socket.recv(1024).decode()
+            self.clients[client_name] = client_socket
+            print(f"New connection from {client_address} ({client_name})")
+            self.send_commands(client_socket, client_name)
+        except Exception as e:
+            print(f"Connection to {client_address} lost: {e}")
+        finally:
+            self.cleanup_client(client_socket, client_name)
+
+    def send_commands(self, client_socket, client_name):
+        commands = ["cpu_ram", "power", "battery", "system_info", "processes", "network_data",
+                    "storage_info", "sensor_data", "io", "if_addr", "connects", "is_in_domain", "fetch_all_user_info"]
+        while True:
+            for command in commands:
+                try:
+                    time.sleep(1)
+                    self.send_command(client_socket, command)
+                    command_received, data_received = self.receive_response(client_socket)
+                    if command_received:
+                        self.command_queue.append((client_name, command_received, data_received))
+                except Exception as e:
+                    print(f"Error handling command {command} for {client_name}: {e}")
+
+    def send_command(self, client_socket, command):
+        full_command = command.encode() + b"\1"
+        client_socket.sendall(full_command)
+        print(f"Sent command to client: {command}")
+
+    def receive_response(self, client_socket):
+        response = []
+        while True:
+            chunk = client_socket.recv(self.chunk_size)
+            if not chunk:
+                raise ConnectionError("Connection closed by client")
+            if chunk[-1:] == b'\0':
+                response.append(chunk[:-1])
+                break
+            response.append(chunk)
+
+        response_data = b''.join(response).decode()
+        try:
+            json_response = json.loads(response_data)
+            if isinstance(json_response, dict):
+                for command, data in json_response.items():
+                    return command, data
+        except json.JSONDecodeError as e:
+            print(f"JSON decode error: {e}")
+        return None, None
+
+    def get_next_command(self):
+        if self.command_queue:
+            return self.command_queue.pop(0)
+        return None
+
+    def data_send(self, data, name, command):
+        client_socket = self.clients.get(name)
+        if not client_socket:
+            print(f"No client found with name {name}")
+            return
+
+        data_to_send = json.dumps({command: data})
+        for i in range(0, len(data_to_send), self.chunk_size):
+            chunk = data_to_send[i:i + self.chunk_size]
+            client_socket.sendall(chunk.encode())
+        client_socket.sendall(b'\0')
+        print(f"Command sent to client: {command}")
+
+    def cleanup_client(self, client_socket, client_name):
+        client_socket.close()
+        if client_name in self.clients:
+            del self.clients[client_name]
+        print(f"Cleaned up client {client_name}")
+
+    def stop(self):
+        self.server_socket.close()
+        print("Server stopped")
+
+    def start(self):
+        print(f"Server started at {self.host}:{self.port}")
+        try:
+            while True:
+                client_socket, client_address = self.server_socket.accept()
+                threading.Thread(target=self.handle_client, args=(client_socket, client_address)).start()
+        except KeyboardInterrupt:
+            self.stop()
 
 if __name__ == "__main__":
     server = Server("localhost", 8080)
