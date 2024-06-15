@@ -797,6 +797,10 @@
 2024-06-06 01:26:44,291 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
 2024-06-06 01:26:44,565 - INFO - Checking icons for qt designer app.
 2024-06-06 01:26:44,842 - INFO - all icons have been checked and missing icons generated!
+2024-06-07 13:33:01,076 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-07 13:33:02,540 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-07 13:33:03,198 - INFO - Checking icons for qt designer app.
+2024-06-07 13:33:04,643 - INFO - all icons have been checked and missing icons generated!
 2024-06-06 11:00:50,948 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
 2024-06-06 11:00:51,912 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
 2024-06-06 11:00:52,251 - INFO - Checking icons for qt designer app.
@@ -2130,3 +2134,428 @@
 2024-06-13 20:38:00,436 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
 2024-06-13 20:38:01,758 - INFO - Checking icons for qt designer app.
 2024-06-13 20:38:03,029 - INFO - all icons have been checked and missing icons generated!
+2024-06-14 23:42:05,545 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:42:06,914 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:42:07,716 - INFO - Checking icons for qt designer app.
+2024-06-14 23:42:09,013 - INFO - all icons have been checked and missing icons generated!
+2024-06-14 23:42:23,096 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:42:24,126 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:42:25,147 - INFO - Checking icons for qt designer app.
+2024-06-14 23:42:26,541 - INFO - all icons have been checked and missing icons generated!
+2024-06-14 23:44:16,937 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:44:17,817 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:44:19,224 - INFO - Checking icons for qt designer app.
+2024-06-14 23:44:20,804 - INFO - all icons have been checked and missing icons generated!
+2024-06-14 23:45:33,202 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:45:34,339 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:45:35,318 - INFO - Checking icons for qt designer app.
+2024-06-14 23:45:36,409 - INFO - all icons have been checked and missing icons generated!
+2024-06-14 23:45:42,954 - DEBUG - Using proactor: IocpProactor
+2024-06-14 23:48:28,223 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:48:34,885 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:48:36,104 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:48:37,129 - INFO - Checking icons for qt designer app.
+2024-06-14 23:48:37,327 - DEBUG - Using proactor: IocpProactor
+2024-06-14 23:48:39,322 - INFO - all icons have been checked and missing icons generated!
+2024-06-14 23:50:13,462 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:50:14,227 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:50:14,986 - INFO - Checking icons for qt designer app.
+2024-06-14 23:50:15,825 - INFO - all icons have been checked and missing icons generated!
+2024-06-14 23:54:17,928 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:54:18,860 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:54:19,616 - INFO - Checking icons for qt designer app.
+2024-06-14 23:54:20,452 - INFO - all icons have been checked and missing icons generated!
+2024-06-14 23:59:25,969 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:59:27,422 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-14 23:59:28,594 - INFO - Checking icons for qt designer app.
+2024-06-14 23:59:29,175 - DEBUG - Using proactor: IocpProactor
+2024-06-14 23:59:29,711 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:00:01,647 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:00:02,522 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:00:03,411 - INFO - Checking icons for qt designer app.
+2024-06-15 00:00:04,423 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:02:55,723 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:02:56,794 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:02:57,751 - INFO - Checking icons for qt designer app.
+2024-06-15 00:02:58,735 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:03:29,134 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:03:30,102 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:03:31,014 - INFO - Checking icons for qt designer app.
+2024-06-15 00:03:31,791 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:10:54,605 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:10:55,422 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:10:56,077 - INFO - Checking icons for qt designer app.
+2024-06-15 00:10:56,798 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:17:52,366 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:18:02,852 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:18:08,505 - INFO - Checking icons for qt designer app.
+2024-06-15 00:18:09,667 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:20:10,433 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:20:11,414 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:20:12,500 - INFO - Checking icons for qt designer app.
+2024-06-15 00:20:13,476 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:21:10,181 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:21:10,985 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:21:11,687 - INFO - Checking icons for qt designer app.
+2024-06-15 00:21:12,343 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:21:41,712 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:21:42,451 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:21:43,186 - INFO - Checking icons for qt designer app.
+2024-06-15 00:21:43,927 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:22:22,317 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:22:23,180 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:22:24,062 - INFO - Checking icons for qt designer app.
+2024-06-15 00:22:25,429 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:24:54,298 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:24:55,467 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:24:56,708 - INFO - Checking icons for qt designer app.
+2024-06-15 00:24:57,875 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:24:58,593 - DEBUG - Using proactor: IocpProactor
+2024-06-15 00:25:19,793 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:25:21,049 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:25:22,107 - INFO - Checking icons for qt designer app.
+2024-06-15 00:25:23,174 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:28:13,779 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:28:14,880 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:28:15,611 - INFO - Checking icons for qt designer app.
+2024-06-15 00:28:16,961 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:29:27,155 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:29:28,061 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:29:28,992 - INFO - Checking icons for qt designer app.
+2024-06-15 00:29:30,430 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:30:21,193 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:30:22,179 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:30:23,105 - INFO - Checking icons for qt designer app.
+2024-06-15 00:30:23,951 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:32:55,979 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:32:57,060 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:32:58,147 - INFO - Checking icons for qt designer app.
+2024-06-15 00:32:59,096 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:34:33,758 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:34:34,826 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:34:35,613 - INFO - Checking icons for qt designer app.
+2024-06-15 00:34:36,451 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:41:56,851 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:41:58,224 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:41:59,319 - INFO - Checking icons for qt designer app.
+2024-06-15 00:42:01,086 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:42:50,503 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:42:51,563 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:42:52,606 - INFO - Checking icons for qt designer app.
+2024-06-15 00:42:53,636 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:53:42,095 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:53:43,272 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:53:44,235 - INFO - Checking icons for qt designer app.
+2024-06-15 00:53:45,094 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:56:45,347 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:56:46,427 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:56:47,438 - INFO - Checking icons for qt designer app.
+2024-06-15 00:56:48,458 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 00:58:54,824 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:58:56,098 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 00:58:57,025 - INFO - Checking icons for qt designer app.
+2024-06-15 00:58:57,950 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 01:00:08,822 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 01:00:09,637 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 01:00:10,401 - INFO - Checking icons for qt designer app.
+2024-06-15 01:00:11,221 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 01:01:47,920 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 01:01:49,020 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 01:01:50,319 - INFO - Checking icons for qt designer app.
+2024-06-15 01:01:51,563 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 15:15:37,419 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:15:38,882 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:15:39,938 - INFO - Checking icons for qt designer app.
+2024-06-15 15:15:41,047 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 15:16:25,609 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:16:26,494 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:16:27,339 - INFO - Checking icons for qt designer app.
+2024-06-15 15:16:28,157 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 15:16:51,563 - ERROR - Failed to compile source code
+2024-06-15 15:16:57,953 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:16:59,007 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:17:00,068 - INFO - Checking icons for qt designer app.
+2024-06-15 15:17:00,820 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 15:18:43,175 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:18:44,790 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:18:46,469 - INFO - Checking icons for qt designer app.
+2024-06-15 15:18:48,352 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 15:23:18,174 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:23:19,291 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:23:20,350 - INFO - Checking icons for qt designer app.
+2024-06-15 15:23:21,562 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 15:26:12,341 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:26:13,235 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:26:14,178 - INFO - Checking icons for qt designer app.
+2024-06-15 15:26:15,194 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 15:26:43,648 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:26:44,429 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:26:45,555 - INFO - Checking icons for qt designer app.
+2024-06-15 15:26:46,663 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 15:26:55,585 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:26:56,600 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:26:57,434 - INFO - Checking icons for qt designer app.
+2024-06-15 15:26:59,250 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 15:28:00,921 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:28:01,917 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:28:02,717 - INFO - Checking icons for qt designer app.
+2024-06-15 15:28:04,131 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 15:28:40,008 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:28:40,869 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:28:41,830 - INFO - Checking icons for qt designer app.
+2024-06-15 15:28:42,682 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 15:35:18,135 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:35:19,015 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 15:35:19,609 - INFO - Checking icons for qt designer app.
+2024-06-15 15:35:20,201 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 16:34:44,472 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 16:34:45,482 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 16:34:46,291 - INFO - Checking icons for qt designer app.
+2024-06-15 16:34:47,589 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 16:35:22,096 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 16:35:22,875 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 16:35:23,632 - INFO - Checking icons for qt designer app.
+2024-06-15 16:35:24,987 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 16:36:33,837 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 16:36:34,633 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 16:36:35,626 - INFO - Checking icons for qt designer app.
+2024-06-15 16:36:36,531 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 16:45:03,483 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 16:45:04,323 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 16:45:05,191 - INFO - Checking icons for qt designer app.
+2024-06-15 16:45:06,047 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 16:45:45,291 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 16:45:46,342 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 16:45:47,299 - INFO - Checking icons for qt designer app.
+2024-06-15 16:45:48,232 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 16:58:09,523 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 16:58:10,878 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 16:58:11,457 - INFO - Checking icons for qt designer app.
+2024-06-15 16:58:12,069 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 17:11:57,135 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 17:11:57,979 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 17:11:58,764 - INFO - Checking icons for qt designer app.
+2024-06-15 17:12:00,018 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 17:35:46,930 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 17:35:48,088 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 17:35:48,837 - INFO - Checking icons for qt designer app.
+2024-06-15 17:35:49,669 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 17:36:27,818 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 17:36:28,911 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 17:36:29,993 - INFO - Checking icons for qt designer app.
+2024-06-15 17:36:30,968 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 17:54:43,890 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 17:54:44,769 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 17:54:45,558 - INFO - Checking icons for qt designer app.
+2024-06-15 17:54:46,428 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 17:57:42,776 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 17:57:43,791 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 17:57:44,755 - INFO - Checking icons for qt designer app.
+2024-06-15 17:57:45,802 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 21:37:28,892 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 21:37:30,252 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 21:37:31,276 - INFO - Checking icons for qt designer app.
+2024-06-15 21:37:33,019 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 21:44:26,195 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 21:44:27,418 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 21:44:28,445 - INFO - Checking icons for qt designer app.
+2024-06-15 21:44:29,699 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 21:50:42,260 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 21:50:43,346 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 21:50:44,236 - INFO - Checking icons for qt designer app.
+2024-06-15 21:50:45,592 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 21:53:12,721 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 21:53:13,713 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 21:53:14,699 - INFO - Checking icons for qt designer app.
+2024-06-15 21:53:16,173 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 21:53:26,285 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 21:53:27,721 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 21:53:28,734 - INFO - Checking icons for qt designer app.
+2024-06-15 21:53:29,955 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 21:56:33,419 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 21:56:34,266 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 21:56:35,074 - INFO - Checking icons for qt designer app.
+2024-06-15 21:56:36,578 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:00:52,649 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:00:53,751 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:00:54,801 - INFO - Checking icons for qt designer app.
+2024-06-15 22:00:55,944 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:01:19,195 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:01:20,134 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:01:20,999 - INFO - Checking icons for qt designer app.
+2024-06-15 22:01:22,509 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:02:33,699 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:02:34,691 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:02:36,055 - INFO - Checking icons for qt designer app.
+2024-06-15 22:02:37,052 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:03:28,403 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:03:29,445 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:03:30,218 - INFO - Checking icons for qt designer app.
+2024-06-15 22:03:31,836 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:06:14,989 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:06:16,200 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:06:17,274 - INFO - Checking icons for qt designer app.
+2024-06-15 22:06:18,353 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:09:26,534 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:09:27,648 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:09:29,032 - INFO - Checking icons for qt designer app.
+2024-06-15 22:09:30,506 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:11:40,010 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:11:40,870 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:11:42,219 - INFO - Checking icons for qt designer app.
+2024-06-15 22:11:43,352 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:12:45,715 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:12:46,783 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:12:47,877 - INFO - Checking icons for qt designer app.
+2024-06-15 22:12:48,965 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:14:31,815 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:14:32,784 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:14:33,525 - INFO - Checking icons for qt designer app.
+2024-06-15 22:14:34,414 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:15:37,036 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:15:37,962 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:15:39,124 - INFO - Checking icons for qt designer app.
+2024-06-15 22:15:40,309 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:16:35,260 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:16:36,631 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:16:37,682 - INFO - Checking icons for qt designer app.
+2024-06-15 22:16:38,916 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:17:22,630 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:17:23,688 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:17:24,717 - INFO - Checking icons for qt designer app.
+2024-06-15 22:17:25,862 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:19:10,399 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:19:11,319 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:19:12,563 - INFO - Checking icons for qt designer app.
+2024-06-15 22:19:14,050 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:19:47,448 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:19:48,411 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:19:49,277 - INFO - Checking icons for qt designer app.
+2024-06-15 22:19:51,132 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:27:39,018 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:29:23,433 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:29:23,740 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:29:24,035 - INFO - Checking icons for qt designer app.
+2024-06-15 22:29:24,419 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:30:17,760 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:30:18,035 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:30:18,301 - INFO - Checking icons for qt designer app.
+2024-06-15 22:30:18,548 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:31:40,416 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:32:31,942 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:32:32,223 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:32:32,481 - INFO - Checking icons for qt designer app.
+2024-06-15 22:32:32,734 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:33:01,464 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:33:02,396 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:33:03,615 - INFO - Checking icons for qt designer app.
+2024-06-15 22:33:05,195 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:40:52,817 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:40:53,974 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:40:54,867 - INFO - Checking icons for qt designer app.
+2024-06-15 22:40:55,732 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:41:13,538 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:41:14,589 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:41:15,599 - INFO - Checking icons for qt designer app.
+2024-06-15 22:41:16,695 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:41:28,037 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:41:29,049 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:41:29,985 - INFO - Checking icons for qt designer app.
+2024-06-15 22:41:31,260 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:42:36,290 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:42:37,489 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:42:38,422 - INFO - Checking icons for qt designer app.
+2024-06-15 22:42:39,647 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:43:14,111 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:43:15,379 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:43:16,528 - INFO - Checking icons for qt designer app.
+2024-06-15 22:43:18,026 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:50:20,887 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:50:21,988 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:50:23,311 - INFO - Checking icons for qt designer app.
+2024-06-15 22:50:24,530 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:50:48,805 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:50:50,156 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:50:51,238 - INFO - Checking icons for qt designer app.
+2024-06-15 22:50:52,153 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:51:35,994 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:51:36,905 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:51:37,836 - INFO - Checking icons for qt designer app.
+2024-06-15 22:51:39,462 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:53:55,796 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:53:57,051 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:53:58,026 - INFO - Checking icons for qt designer app.
+2024-06-15 22:53:59,036 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 22:54:41,307 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:54:42,574 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 22:54:43,765 - INFO - Checking icons for qt designer app.
+2024-06-15 22:54:45,017 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:00:29,397 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:00:30,565 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:00:31,356 - INFO - Checking icons for qt designer app.
+2024-06-15 23:00:32,356 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:09:43,566 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:09:44,713 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:09:45,853 - INFO - Checking icons for qt designer app.
+2024-06-15 23:09:47,019 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:10:12,007 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:10:12,930 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:10:13,814 - INFO - Checking icons for qt designer app.
+2024-06-15 23:10:15,171 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:11:52,578 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:11:53,665 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:11:54,555 - INFO - Checking icons for qt designer app.
+2024-06-15 23:11:55,575 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:12:52,978 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:12:54,552 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:12:55,541 - INFO - Checking icons for qt designer app.
+2024-06-15 23:12:56,957 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:15:14,263 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:15:15,210 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:15:16,032 - INFO - Checking icons for qt designer app.
+2024-06-15 23:15:16,957 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:15:37,508 - DEBUG - Using proactor: IocpProactor
+2024-06-15 23:15:45,846 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:15:46,731 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:15:47,572 - INFO - Checking icons for qt designer app.
+2024-06-15 23:15:48,527 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:16:05,765 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:16:06,840 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:16:08,135 - INFO - Checking icons for qt designer app.
+2024-06-15 23:16:09,088 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:26:16,214 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:26:16,998 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:26:17,776 - INFO - Checking icons for qt designer app.
+2024-06-15 23:26:19,253 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:27:28,570 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:27:54,821 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:27:59,317 - INFO - Checking icons for qt designer app.
+2024-06-15 23:28:00,183 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:29:39,288 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:29:40,356 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:29:41,547 - INFO - Checking icons for qt designer app.
+2024-06-15 23:29:42,665 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:36:08,501 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:36:09,573 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:36:10,485 - INFO - Checking icons for qt designer app.
+2024-06-15 23:36:11,346 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:41:25,310 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:41:26,229 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:41:27,266 - INFO - Checking icons for qt designer app.
+2024-06-15 23:41:28,152 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:41:56,599 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:42:06,946 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:42:08,024 - INFO - Checking icons for qt designer app.
+2024-06-15 23:42:08,855 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:43:15,854 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:43:16,887 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:43:18,026 - INFO - Checking icons for qt designer app.
+2024-06-15 23:43:19,870 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:44:10,772 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:44:11,719 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:44:13,041 - INFO - Checking icons for qt designer app.
+2024-06-15 23:44:14,161 - INFO - all icons have been checked and missing icons generated!
+2024-06-15 23:45:24,976 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:45:25,926 - INFO - Checking icons for Default-theme theme. Icons color: #ffffff
+2024-06-15 23:45:26,891 - INFO - Checking icons for qt designer app.
+2024-06-15 23:45:27,909 - INFO - all icons have been checked and missing icons generated!

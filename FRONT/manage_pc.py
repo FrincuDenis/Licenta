@@ -105,7 +105,7 @@ class UserManager:
         else:
             print("No users found or an error occurred.")
 
-    def add_user(self, username, password, full_name=None, description=None):
+    def add_user(self, username, password, full_name=None, description=None, set_active=True, group=None):
         try:
             # Construct the base command as a string
             command = f'net user {username} {password} /ADD'
@@ -118,12 +118,27 @@ class UserManager:
             if description:
                 command += f' /COMMENT:"{description}"'
 
-            # Run the command in the shell
+            # Append the active/inactive option
+            if not set_active:
+                command += ' /ACTIVE:NO'
+            else:
+                command += ' /ACTIVE:YES'
+
+            # Run the command to add the user
             result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
 
-            # Check the result
+            # Check the result of the user creation command
             if result.returncode == 0:
                 print(f"User {username} added successfully.")
+                # If the user was added successfully, add the user to the specified group if provided
+                if group:
+                    group_command = f'net localgroup {group} {username} /ADD'
+                    group_result = subprocess.run(group_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                                  text=True, shell=True)
+                    if group_result.returncode == 0:
+                        print(f"User {username} added to group {group} successfully.")
+                    else:
+                        print(f"Error adding user {username} to group {group}: {group_result.stderr}")
             else:
                 print(f"Error adding user {username}: {result.stderr}")
         except Exception as e:
@@ -195,4 +210,30 @@ class UserManager:
         except Exception as e:
             print(f"An error occurred while removing computer from domain: {e}")
 
+    def get_local_groups(self):
+        try:
+            # Execute the command to get local groups
+            result = subprocess.run(['net', 'localgroup'], capture_output=True, text=True, check=True)
 
+            # Split the output by lines
+            output_lines = result.stdout.splitlines()
+
+            # The groups are listed after a specific header line and before a specific footer line
+            header = "Aliases for"
+            footer = "The command completed successfully."
+
+            # Find the start and end indices
+            start_index = next(i for i, line in enumerate(output_lines) if line.startswith(header)) + 2
+            end_index = next(i for i, line in enumerate(output_lines) if line.startswith(footer))
+
+            # Extract the group names, excluding the separator line and removing the '*'
+            groups = [line.replace('*', '').strip() for line in output_lines[start_index:end_index] if
+                      line.strip() and line != "-------------------------------------------------------------------------------"]
+
+            return {"Name of the group": groups}
+        except subprocess.CalledProcessError as e:
+            print(f"Error occurred while fetching local groups: {e}")
+            return {}
+        except StopIteration:
+            print("Unexpected output format. Failed to parse local groups.")
+            return {}

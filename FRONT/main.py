@@ -1,11 +1,3 @@
-########################################################################
-## QT GUI BY SPINN TV(YOUTUBE)
-########################################################################
-
-########################################################################
-## IMPORTS
-########################################################################
-
 import sys
 import time
 import traceback
@@ -20,11 +12,6 @@ from src.fnct import *
 from PySide2.QtCore import QRunnable, Slot, QThreadPool
 import clr  # the pythonnet module
 import faulthandler
-
-clr.AddReference("LibreHardwareMonitorLib")
-from LibreHardwareMonitor import Hardware
-########################################################################
-# IMPORT Custom widgets
 from Custom_Widgets import *
 from Custom_Widgets.QAppSettings import QAppSettings
 
@@ -38,7 +25,6 @@ platforms = {
     'darwin': 'Mac x',
     'win32': 'Windows',
 }
-
 class CommandWorkerSignals(QObject):
     finished = Signal()
     update_data = Signal(str, dict)
@@ -63,30 +49,35 @@ class CommandWorker(QRunnable):
                 self.signals.finished.emit()
 
     def process_command(self, command):
-        if not self.main.set_name:
-            self.main.set_name = command[0]
+        client_name = command[0]
+        if client_name not in self.main.data['cpu_ram_com']:
+            for key in self.main.data:
+                self.main.data[key][client_name] = []
         if command:
             print(f"Commands: {command}")
             command_map = {
-                "cpu_ram": self.main.cpu_ram_com,
-                "power": self.main.power_com,
-                "battery": self.main.battery_com,
-                "processes": self.main.processes_com,
-                "sensor_data": self.main.sensor_com,
-                "storage_info": self.main.storage_com,
-                "network_data": self.main.update_net_if_stats_com,
-                "io": self.main.update_net_io_counters_com,
-                "if_addr": self.main.update_net_if_addrs_com,
-                "system_info": self.main.system_info_com,
-                "connects": self.main.update_net_connections_com,
-                "is_in_domain": self.main.statusD,
-                "fetch_all_user_info": self.main.users
+                "cpu_ram": self.main.data['cpu_ram_com'],
+                "power": self.main.data['power_com'],
+                "battery": self.main.data['battery_com'],
+                "processes": self.main.data['processes_com'],
+                "sensor_data": self.main.data['sensor_com'],
+                "storage_info": self.main.data['storage_com'],
+                "network_data": self.main.data['update_net_if_stats_com'],
+                "io": self.main.data['update_net_io_counters_com'],
+                "if_addr": self.main.data['update_net_if_addrs_com'],
+                "system_info": self.main.data['system_info_com'],
+                "connects": self.main.data['update_net_connections_com'],
+                "is_in_domain": self.main.data['statusD'],
+                "fetch_all_user_info": self.main.data['users'],
+                "get_group": self.main.data['grp'],
+                "set_hwid": self.main.data['set_hwid']
             }
             if command[1] in command_map:
-                command_map[command[1]].append(command[2])
+                command_map[command[1]][client_name].append(command[2])
                 self.signals.update_data.emit(command[1], command[2])
             elif command[1] in ["suspend", "resume", "terminate", "kill"]:
                 self.signals.status_proc.emit(command[2])
+
 
 
 class WorkerSignals(QObject):
@@ -135,9 +126,12 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.initialize_variables()
-        self.setup_ui_elements()
+        self.is_loading_data = False
+        self.server = Server("192.168.0.227", 9000)  # Initialize server before setup_ui_elements
+        self.server.new_client_connected.connect(self.populate_clients_list)  # Connect signal to slot
+
+        self.setup_ui_elements()  # Setup UI elements
         self.threadpool = QThreadPool()
-        self.server = Server("127.0.0.1", 8081)
         self.network_worker = NetworkWorker(self.server)
         self.sorter = CommandWorker(self, self.server)
         self.sorter.signals.update_data.connect(self.handle_update_data)
@@ -150,20 +144,23 @@ class MainWindow(QMainWindow):
         QAppSettings.updateAppSettings(self)
 
     def initialize_variables(self):
-        self.cpu_ram_com = []
-        self.power_com = []
-        self.system_info_com = []
-        self.battery_com = []
-        self.processes_com = []
-        self.sensor_com = []
-        self.storage_com = []
-        self.users = []
-        self.update_net_if_stats_com = []
-        self.update_net_io_counters_com = []
-        self.update_net_if_addrs_com = []
-        self.update_net_connections_com = []
-        self.set_name = ""
-        self.statusD = []
+        self.data = {
+            'cpu_ram_com': {},
+            'power_com': {},
+            'system_info_com': {},
+            'battery_com': {},
+            'processes_com': {},
+            'sensor_com': {},
+            'storage_com': {},
+            'users': {},
+            'update_net_if_stats_com': {},
+            'update_net_io_counters_com': {},
+            'update_net_if_addrs_com': {},
+            'update_net_connections_com': {},
+            'statusD': {},
+            'grp': {},
+            'set_hwid': {}
+        }
 
     def setup_ui_elements(self):
         self.setWindowFlags(Qt.FramelessWindowHint)
@@ -182,6 +179,10 @@ class MainWindow(QMainWindow):
         self.clickPosition = QPoint()
         self.ui.header_frame.mousePressEvent = self.mousePressEvent
         self.ui.header_frame.mouseMoveEvent = self.moveWindow
+
+        # Initialize clients_list QTreeWidget
+        self.populate_clients_list()
+        self.ui.clients_list.itemSelectionChanged.connect(self.client_selection_changed)
 
     def connect_buttons(self):
         button_connections = {
@@ -211,26 +212,61 @@ class MainWindow(QMainWindow):
             Worker(self.network),
             Worker(self.computer_man),
         ]
-        for worker in workers:
-            self.threadpool.start(worker)
+        #for worker in workers:
+       #     self.threadpool.start(worker)
         self.threadpool.start(self.network_worker)
         self.threadpool.start(self.sorter)
 
-    def hardware(self, progress_callback):
-        self.system_info()
-        while True:
-            self.update_hardware_status()
-            time.sleep(1)
+    @Slot()
+    def populate_clients_list(self):
+        self.ui.clients_list.clear()  # Clear the existing items
+        for client_name in self.server.clients.keys():
+            item = QTreeWidgetItem([client_name])
+            self.ui.clients_list.addTopLevelItem(item)
 
-    def update_hardware_status(self):
-        self.cpu_ram()
-        self.battery()
-        self.power()
-        self.sensor()
-        self.update_net_if_stats()
-        self.update_net_io_counters()
-        self.update_net_if_addrs()
-        self.update_net_connections()
+    def client_selection_changed(self):
+        selected_items = self.ui.clients_list.selectedItems()
+        if selected_items:
+            client_name = selected_items[0].text(0)
+            self.refresh_ui_data(client_name)
+
+    def refresh_ui_data(self, client_name):
+        if self.is_loading_data:
+            print("Data loading is already in progress. Queuing the update.")
+            QTimer.singleShot(500, lambda: self.refresh_ui_data(client_name))
+            return
+
+        self.is_loading_data = True
+        self.system_info(client_name)
+        self.cpu_ram(client_name)
+        self.power(client_name)
+        self.battery(client_name)
+        self.processes(client_name)
+        self.sensor(client_name)
+        self.storage(client_name)
+        self.update_net_if_stats(client_name)
+        self.update_net_io_counters(client_name)
+        self.update_net_if_addrs(client_name)
+        self.update_net_connections(client_name)
+        self.set_users(client_name)
+        self.is_loading_data = False
+
+    def hardware(self, progress_callback):
+        while True:
+            for client_name in self.server.clients.keys():
+                self.system_info(client_name)
+                self.update_hardware_status(client_name)
+                time.sleep(1)
+
+    def update_hardware_status(self, client_name):
+        self.cpu_ram(client_name)
+        self.battery(client_name)
+        self.power(client_name)
+        self.sensor(client_name)
+        self.update_net_if_stats(client_name)
+        self.update_net_io_counters(client_name)
+        self.update_net_if_addrs(client_name)
+        self.update_net_connections(client_name)
 
     def hardware1(self, progress_callback):
         self.storage()
@@ -259,9 +295,9 @@ class MainWindow(QMainWindow):
             time.sleep(1)
 
     def closer(self):
-        self.close()
         self.server.stop()
-        self.stop_worker()
+       # self.threadpool.waitForDone()  # Wait for all threads to finish
+        self.close()
 
     def stop_worker(self):
         if hasattr(self, 'worker'):
@@ -282,13 +318,61 @@ class MainWindow(QMainWindow):
         table_widget.setItem(rowPosition, columnPosition, qtablewidgetitem)
         qtablewidgetitem.setText(text)
 
+    def get_selected_client_name(self):
+        selected_items = self.ui.clients_list.selectedItems()
+        if selected_items:
+            return selected_items[0].text(0)
+        return None
 
-    #######################################################
-    #                    INFO HARDWARE                    #
-    #######################################################
+    def system_info(self, client_name):
+        if client_name in self.data['system_info_com']:
+            self.pop_and_handle(self.data['system_info_com'][client_name], self.handle_system_info)
 
-    def cpu_ram(self):
-        self.pop_and_handle(self.cpu_ram_com, self.handle_cpu_ram)
+    def cpu_ram(self, client_name):
+        if client_name in self.data['cpu_ram_com']:
+            self.pop_and_handle(self.data['cpu_ram_com'][client_name], self.handle_cpu_ram)
+
+    def power(self, client_name):
+        if client_name in self.data['power_com']:
+            self.pop_and_handle(self.data['power_com'][client_name], self.handle_power)
+
+    def battery(self, client_name):
+        if client_name in self.data['battery_com']:
+            self.pop_and_handle(self.data['battery_com'][client_name], self.handle_battery)
+
+    def processes(self, client_name):
+        if client_name in self.data['processes_com']:
+            self.pop_and_handle(self.data['processes_com'][client_name], self.handle_processes)
+
+    def sensor(self, client_name):
+        if client_name in self.data['sensor_com']:
+            self.pop_and_handle(self.data['sensor_com'][client_name], self.handle_sensor)
+
+    def storage(self, client_name):
+        if client_name in self.data['storage_com']:
+            self.pop_and_handle(self.data['storage_com'][client_name], self.handle_storage)
+
+    def set_users(self, client_name):
+        if client_name in self.data['users']:
+            self.pop_and_handle(self.data['users'][client_name], self.handle_set_users)
+
+    def update_net_if_stats(self, client_name):
+        if client_name in self.data['update_net_if_stats_com']:
+            self.pop_and_handle(self.data['update_net_if_stats_com'][client_name], self.handle_update_net_if_stats)
+
+    def update_net_io_counters(self, client_name):
+        if client_name in self.data['update_net_io_counters_com']:
+            self.pop_and_handle(self.data['update_net_io_counters_com'][client_name],
+                                self.handle_update_net_io_counters)
+
+    def update_net_if_addrs(self, client_name):
+        if client_name in self.data['update_net_if_addrs_com']:
+            self.pop_and_handle(self.data['update_net_if_addrs_com'][client_name], self.handle_update_net_if_addrs)
+
+    def update_net_connections(self, client_name):
+        if client_name in self.data['update_net_connections_com']:
+            self.pop_and_handle(self.data['update_net_connections_com'][client_name],
+                                self.handle_update_net_connections)
 
     def handle_cpu_ram(self, response):
         self.update_ui_element(self.ui.total_ram, response['total_ram'], suffix=' GB')
@@ -305,8 +389,6 @@ class MainWindow(QMainWindow):
                                        (response['available_ram'], response['used_ram'], response['ram_free']),
                                        ((6, 233, 38), (6, 201, 233), (233, 6, 201)), ('West', 'West', 'West'))
 
-    def power(self):
-        self.pop_and_handle(self.power_com, self.handle_power)
 
     def handle_power(self, response):
         self.update_ui_element(self.ui.cpu_consume, response["cpu_power"])
@@ -320,8 +402,6 @@ class MainWindow(QMainWindow):
                                        ((6, 233, 38), (6, 201, 233), (233, 6, 201)),
                                        ('West', 'West', 'West'))
 
-    def storage(self):
-        self.pop_and_handle(self.storage_com, self.handle_storage)
 
     def handle_storage(self, storage_infos):
         scroll_bar_value = self.ui.storageTable.verticalScrollBar().value()
@@ -348,8 +428,6 @@ class MainWindow(QMainWindow):
                 self.ui.storageTable.setCellWidget(row, 9, progressBar)
         self.ui.storageTable.verticalScrollBar().setValue(scroll_bar_value)
 
-    def sensor(self):
-        self.pop_and_handle(self.sensor_com, self.handle_sensor)
 
     def handle_sensor(self, sensor_data):
         scroll_bar_value = self.ui.sensors_table.verticalScrollBar().value()
@@ -371,8 +449,6 @@ class MainWindow(QMainWindow):
                 row += 1
         self.ui.sensors_table.verticalScrollBar().setValue(scroll_bar_value)
 
-    def battery(self):
-        self.pop_and_handle(self.battery_com, self.handle_battery)
 
     def handle_battery(self, battery_info):
         if battery_info["status"] == "Platform not supported":
@@ -390,9 +466,6 @@ class MainWindow(QMainWindow):
 
             self.ui.battery_usage.rpb_setValue(battery_info["charge"])
 
-    def system_info(self):
-        self.pop_and_handle(self.system_info_com, self.handle_system_info)
-
     def handle_system_info(self, system_info):
         self.update_ui_element(self.ui.system_time, system_info["time"], "{}")
         self.update_ui_element(self.ui.system_date, system_info["date"], "{}")
@@ -401,10 +474,6 @@ class MainWindow(QMainWindow):
         self.update_ui_element(self.ui.system_platform, system_info["platform"], "{}")
         self.update_ui_element(self.ui.system_system, system_info["system"], "{}")
         self.update_ui_element(self.ui.system_processor, system_info["processor"], "{}")
-
-    #######################################################
-    #                    PROCESSES                        #
-    #######################################################
 
     def handle_client_response(self, response):
         print(f"Client response: {response}")
@@ -424,9 +493,6 @@ class MainWindow(QMainWindow):
                 break
         self.filter_processes()  # Reapply filtering after updating the table
 
-    def processes(self):
-        self.pop_and_handle(self.processes_com, self.handle_processes)
-        self.filter_processes()
 
     def handle_processes(self, process_data):
         if not process_data:
@@ -477,11 +543,16 @@ class MainWindow(QMainWindow):
         self.send_process_action_to_client(pid, action)
 
     def send_process_action_to_client(self, pid, action):
+        client_name = self.get_selected_client_name()
+        if not client_name:
+            print("No client selected.")
+            return
+
         message = {
             "action": action,
             "pid": pid
         }
-        self.server.data_send(message, self.set_name,action)
+        self.server.data_send(message, client_name, action)
 
     def suspend_process(self, process):
         self.process_action(process, "suspend", "suspended")
@@ -523,18 +594,9 @@ class MainWindow(QMainWindow):
                 else:
                     self.ui.tableWidget.setRowHidden(row, True)
 
-    #######################################################
-    #                    NETWORK                          #
-    #######################################################
-
-    def update_net_if_stats(self):
-        self.pop_and_handle(self.update_net_if_stats_com, self.handle_update_net_if_stats)
-
     def handle_update_net_if_stats(self, stats_infos):
         self.update_table(self.ui.stats_table, stats_infos, ["interface", "is_up", "duplex", "speed", "mtu"])
 
-    def update_net_io_counters(self):
-        self.pop_and_handle(self.update_net_io_counters_com, self.handle_update_net_io_counters)
 
     def handle_update_net_io_counters(self, io_counters_data):
         self.update_table(self.ui.IO_counters_table, io_counters_data.items(), [
@@ -542,8 +604,6 @@ class MainWindow(QMainWindow):
             "dropout"
         ], key_transform=lambda k, v: {"interface": k, **v})
 
-    def update_net_if_addrs(self):
-        self.pop_and_handle(self.update_net_if_addrs_com, self.handle_update_net_if_addrs)
 
     def handle_update_net_if_addrs(self, if_addr_data):
         transformed_data = []
@@ -556,8 +616,6 @@ class MainWindow(QMainWindow):
             "interface", "family", "address", "netmask", "broadcast", "ptp"
         ])
 
-    def update_net_connections(self):
-        self.pop_and_handle(self.update_net_connections_com, self.handle_update_net_connections)
 
     def handle_update_net_connections(self, connections_data):
         self.update_table(self.ui.connections_table, connections_data, [
@@ -581,10 +639,6 @@ class MainWindow(QMainWindow):
 
         table.verticalScrollBar().setValue(scroll_bar_value)
 
-    #######################################################
-    #                    DATA COLLECT                     #
-    #######################################################
-
     def user(self):
         data = self.collect_user_data()
         if not data:
@@ -597,6 +651,8 @@ class MainWindow(QMainWindow):
         user_text = self.ui.user_text.text()
         password_text = self.ui.password_text.text()
         password_confirm_text = self.ui.passwordconfirm_text.text()
+        stat_activ = self.ui.acc_status.currentText()
+        group = self.ui.group_status.currentText()
 
         if not user_text:
             return []
@@ -605,8 +661,8 @@ class MainWindow(QMainWindow):
             return [user_text]
 
         if password_text == password_confirm_text:
-            return [user_text, self.ui.fullname_text.text(), self.ui.description_text.text(), password_text]
-
+            return [user_text, self.ui.fullname_text.text(), self.ui.description_text.text(), password_text, stat_activ,
+                    group]
         print("Passwords do not match.")
         return []
 
@@ -630,17 +686,13 @@ class MainWindow(QMainWindow):
 
         return [domain_text, acc_text, pass_text]
 
-    def set_domain(self):
-        self.pop_and_handle(self.statusD, self.handle_set_domain)
 
     def handle_set_domain(self, dom_data):
         dom = dom_data.get('is_in_domain')
         if dom:
-            self.ui.status_domain.setText("Computer is in a domain" if dom.get("PartOfDomain") else "Computer is not in a domain")
+            self.ui.status_domain.setText(
+                "Computer is in a domain" if dom.get("PartOfDomain") else "Computer is not in a domain")
             self.ui.name_domain.setText(dom.get("DomainName", ""))
-
-    def set_users(self):
-        self.pop_and_handle(self.users, self.handle_set_users)
 
     def handle_set_users(self, users_table):
         scroll_bar_value = self.ui.user_table.verticalScrollBar().value()
@@ -659,6 +711,20 @@ class MainWindow(QMainWindow):
         for col, field in enumerate(columns):
             self.create_table_widget(row, col, user_info.get(field, ""), "user_table")
 
+    def grupe(self):
+        client_name = self.get_selected_client_name()
+        if client_name and client_name in self.data['grp']:
+            unique_groups = set()
+            for item in self.data['grp'][client_name]:
+                groups = item.get('Name of the group', [])
+                for group in groups:
+                    unique_groups.add(group)
+
+            unique_groups_list = sorted(unique_groups)
+
+            self.ui.group_status.clear()
+            self.ui.group_status.addItems(unique_groups_list)
+
     def pop_and_handle(self, data_list, handler):
         try:
             data = data_list.pop(0)
@@ -671,27 +737,31 @@ class MainWindow(QMainWindow):
             print(f"Error {handler.__name__}: {e}")
 
     def handle_update_data(self, command, data):
-        command_map = {
-            "cpu_ram": self.cpu_ram,
-            "power": self.power,
-            "battery": self.battery,
-            "processes": self.processes,
-            "sensor_data": self.sensor,
-            "storage_info": self.storage,
-            "network_data": self.update_net_if_stats,
-            "io": self.update_net_io_counters,
-            "if_addr": self.update_net_if_addrs,
-            "system_info": self.system_info,
-            "connects": self.update_net_connections,
-            "is_in_domain": self.set_domain,
-            "fetch_all_user_info": self.set_users,
-        }
-        if command in command_map:
-            command_map[command]()
+        client_name = command[0]
+        if client_name not in self.data['cpu_ram_com']:
+            for key in self.data:
+                self.data[key][client_name] = []
 
-    #######################################################
-    #                    STYLE                            #
-    #######################################################
+        command_map = {
+            "cpu_ram": lambda: self.data['cpu_ram_com'][client_name].append(data),
+            "power": lambda: self.data['power_com'][client_name].append(data),
+            "battery": lambda: self.data['battery_com'][client_name].append(data),
+            "processes": lambda: self.data['processes_com'][client_name].append(data),
+            "sensor_data": lambda: self.data['sensor_com'][client_name].append(data),
+            "storage_info": lambda: self.data['storage_com'][client_name].append(data),
+            "network_data": lambda: self.data['update_net_if_stats_com'][client_name].append(data),
+            "io": lambda: self.data['update_net_io_counters_com'][client_name].append(data),
+            "if_addr": lambda: self.data['update_net_if_addrs_com'][client_name].append(data),
+            "system_info": lambda: self.data['system_info_com'][client_name].append(data),
+            "connects": lambda: self.data['update_net_connections_com'][client_name].append(data),
+            "is_in_domain": lambda: self.data['statusD'][client_name].append(data),
+            "fetch_all_user_info": lambda: self.data['users'][client_name].append(data),
+            "get_group": lambda: self.data['grp'][client_name].append(data),
+            "set_hwid": lambda: self.data['set_hwid'][client_name].append(data)
+        }
+
+        if command[1] in command_map:
+            command_map[command[1]]()
 
     def applyButtonStyle(self):
         for w in self.ui.menu.findChildren(QPushButton):
@@ -741,6 +811,8 @@ class MainWindow(QMainWindow):
         progress_bar.spb_lineCap(line_caps)
         progress_bar.spb_setPathHidden(path_hidden)
 
+
+
 ######################################  ##################################
 ## EXECUTE APP
 ########################################################################
@@ -754,6 +826,13 @@ if __name__ == "__main__":
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())
+    # TODO:INSTALLER,LISTA PROGRAME
+    # WIDGET PT BAZA DE DATE DE ADAUGAT LOCATII
+    # BUTON INVENTAR,BUTON RAPORT CURENT
+    # FIX TABEL PROCESE
+    # MIN AND MAX VALUE SENSORI
+    # REFRESH UI ELEMENTS WHEN CLIENTS ARE ALREADY SELECTED
+
 ########################################################################
 ## END===>
 ########################################################################

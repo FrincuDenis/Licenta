@@ -1,3 +1,4 @@
+import hashlib
 import shutil
 import socket
 import sys
@@ -7,6 +8,9 @@ import psutil
 import time
 import platform
 import datetime
+
+import wmi
+
 from manage_pc import UserManager
 import clr  # the pythonnet module
 from time import sleep
@@ -35,24 +39,44 @@ class Client:
             self.client_socket.connect((self.host, self.port))
             client_name = socket.gethostname()  # Get the client's computer name
             self.client_socket.send(client_name.encode())  # Send the client name to the server
+            self.client_socket.send(self.hash_hwid(self.get_hwid()).encode())
             print(f"Connected to server at {self.host}:{self.port} as {client_name}")
         except Exception as e:
             print(f"Connection error: {e}")
 
     def receive_data(self):
-        response = []
-        end_marker = b""
+        response = bytearray()
+        end_marker = None
         while True:
             chunk = self.client_socket.recv(self.chunk_size)
-            if chunk[-1:] in (b'\0', b'\1'):
-                end_marker = chunk[-1:]
-                response.append(chunk[:-1])
+            if not chunk:
+                raise ConnectionError("Connection closed by client")
+
+            response.extend(chunk)
+
+            # Check if the terminator is in the received chunk
+            if b'\0' in chunk or b'\1' in chunk:
+                if b'\0' in chunk:
+                    end_marker = b'\0'
+                elif b'\1' in chunk:
+                    end_marker = b'\1'
                 break
-            response.append(chunk)
-        response_data = b''.join(response).decode()
+
+        # Split the response at the first occurrence of the end marker
+        if end_marker is not None:
+            terminator_index = response.find(end_marker)
+            if terminator_index != -1:
+                response_data = response[:terminator_index]
+            else:
+                response_data = response
+        else:
+            response_data = response
+
+        response_str = response_data.decode()
+
         if end_marker == b'\0':
             try:
-                json_response = json.loads(response_data)
+                json_response = json.loads(response_str)
                 if isinstance(json_response, dict):
                     for command, data in json_response.items():
                         return command, data
@@ -60,9 +84,11 @@ class Client:
                 print(f"JSON decode error: {e}")
             return None, None
         elif end_marker == b'\1':
-            return response_data, None
+            return response_str, None
 
+        return None, None
     def handle_server_request(self):
+
         while True:
             try:
                 command, data = self.receive_data()
@@ -72,10 +98,11 @@ class Client:
                     print("No command received.")
             except Exception as e:
                 print(f"Error handling server request: {e}")
-                break
+                pass
 
     def process_command(self, command, data):
         command_map = {
+            "get_group": self.get_group,
             "cpu_ram": self.cpu_ram,
             "power": self.power,
             "battery": self.battery,
@@ -377,6 +404,20 @@ class Client:
         self.local_account.remove_from_domain(local_admin, local_password)
         self.send_data("remove_from_domain", {"status": "removed from domain"})
 
+    def get_group(self):
+        self.send_data("get_group", self.local_account.get_local_groups())
+    def get_hwid(self):
+        c = wmi.WMI()
+        hwid = None
+        for system in c.Win32_ComputerSystemProduct():
+            hwid = system.UUID
+        return hwid
+
+    def hash_hwid(self,hwid):
+        sha256 = hashlib.sha256()
+        sha256.update(hwid.encode('utf-8'))
+        return sha256.hexdigest()
+
     def suspend_process(self, data):
         pid = data["pid"]
         try:
@@ -414,5 +455,6 @@ class Client:
             self.send_data("kill", {"pid": pid, "status": "error", "message": str(e)})
 
 if __name__ == "__main__":
-    client = Client("127.0.0.1", 8081)
+    #client = Client("192.168.0.227", 9000)
+    client = Client("84.117.168.222", 9000)
     client.start()
