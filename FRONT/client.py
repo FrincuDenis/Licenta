@@ -1,4 +1,3 @@
-import hashlib
 import shutil
 import socket
 import sys
@@ -8,9 +7,9 @@ import psutil
 import time
 import platform
 import datetime
-
 import wmi
-
+import winreg
+from hardware import HardwareInfoCollector
 from manage_pc import UserManager
 import clr  # the pythonnet module
 from time import sleep
@@ -31,6 +30,7 @@ class Client:
         self.host = host
         self.port = port
         self.local_account = UserManager()
+        self.hrd = HardwareInfoCollector()
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.chunk_size = 4096  # Adjusted to match the server's chunk size
 
@@ -39,7 +39,7 @@ class Client:
             self.client_socket.connect((self.host, self.port))
             client_name = socket.gethostname()  # Get the client's computer name
             self.client_socket.send(client_name.encode())  # Send the client name to the server
-            self.client_socket.send(self.hash_hwid(self.get_hwid()).encode())
+            self.client_socket.send(self.get_hwid().encode())
             print(f"Connected to server at {self.host}:{self.port} as {client_name}")
         except Exception as e:
             print(f"Connection error: {e}")
@@ -87,8 +87,8 @@ class Client:
             return response_str, None
 
         return None, None
-    def handle_server_request(self):
 
+    def handle_server_request(self):
         while True:
             try:
                 command, data = self.receive_data()
@@ -103,28 +103,30 @@ class Client:
     def process_command(self, command, data):
         command_map = {
             "get_group": self.get_group,
-            "cpu_ram": self.cpu_ram,
-            "power": self.power,
-            "battery": self.battery,
-            "system_info": self.system_info,
-            "processes": self.processes,
-            "network_data": self.network_data,
-            "storage_info": self.storage_info,
-            "sensor_data": self.sensor_data,
-            "io": self.io,
-            "if_addr": self.if_addr,
-            "connects": self.connects,
             "add_user": lambda: self.add_user(data[0], data[3], data[1], data[2]) if data else None,
             "remove_user": lambda: self.remove_user(data[0]) if data else None,
             "add_to_domain": lambda: self.add_to_domain(data[0], data[1], data[2]) if data else None,
             "remove_from_domain": lambda: self.remove_from_domain(data[0], data[1]) if data else None,
             "is_in_domain": self.is_in_domain,
             "fetch_all_user_info": self.fetch_all_user_info,
+            "cpu_ram": self.cpu_ram,
+            "power": self.power,
+            "battery": self.battery,
+            "system_info": self.system_info,
+            "processes": self.processes,
+            "storage_info": self.storage_info,
+            "sensor_data": self.sensor_data,
+            "network_data": self.network_data,
+            "io": self.io,
+            "if_addr": self.if_addr,
+            "connects": self.connects,
             "shutdown": self.shutdown,
             "suspend": lambda: self.suspend_process(data),
             "resume": lambda: self.resume_process(data),
             "terminate": lambda: self.terminate_process(data),
             "kill": lambda: self.kill_process(data),
+            "hardware": self.hardware,
+            "installed_programs": self.installed_programs  # Add the new command here
         }
 
         if command in command_map:
@@ -406,17 +408,13 @@ class Client:
 
     def get_group(self):
         self.send_data("get_group", self.local_account.get_local_groups())
+
     def get_hwid(self):
         c = wmi.WMI()
         hwid = None
         for system in c.Win32_ComputerSystemProduct():
             hwid = system.UUID
         return hwid
-
-    def hash_hwid(self,hwid):
-        sha256 = hashlib.sha256()
-        sha256.update(hwid.encode('utf-8'))
-        return sha256.hexdigest()
 
     def suspend_process(self, data):
         pid = data["pid"]
@@ -454,7 +452,73 @@ class Client:
         except Exception as e:
             self.send_data("kill", {"pid": pid, "status": "error", "message": str(e)})
 
+    def hardware(self):
+        hardware_info = self.hrd.collect_all_info("client.ps1")
+        self.send_data("hardware", hardware_info)
+
+    def installed_programs(self):
+        programs = self.get_installed_programs()
+        self.send_data("installed_programs", programs)
+
+    def get_installed_programs(self):
+        program_list = []
+
+        # Registry paths to check for installed applications (32-bit and 64-bit)
+        registry_paths = [
+            r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+            r"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
+        ]
+
+        for path in registry_paths:
+            try:
+                # Open the registry key
+                reg_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path)
+
+                # Enumerate through the subkeys
+                for i in range(0, winreg.QueryInfoKey(reg_key)[0]):
+                    sub_key_name = winreg.EnumKey(reg_key, i)
+                    sub_key = winreg.OpenKey(reg_key, sub_key_name)
+                    try:
+                        # Fetch the program name
+                        program_name = winreg.QueryValueEx(sub_key, "DisplayName")[0]
+                        try:
+                            program_version = winreg.QueryValueEx(sub_key, "DisplayVersion")[0]
+                        except FileNotFoundError:
+                            program_version = "Unknown Version"
+                        try:
+                            install_date = winreg.QueryValueEx(sub_key, "InstallDate")[0]
+                            install_date = self.format_date(install_date)
+                        except FileNotFoundError:
+                            install_date = "Unknown Date"
+                        try:
+                            publisher = winreg.QueryValueEx(sub_key, "Publisher")[0]
+                        except FileNotFoundError:
+                            publisher = "Unknown Publisher"
+                        program_list.append({
+                            "Name": program_name,
+                            "Version": program_version,
+                            "Install Date": install_date,
+                            "Publisher": publisher
+                        })
+                    except FileNotFoundError:
+                        # If DisplayName does not exist, skip the entry
+                        continue
+                    finally:
+                        sub_key.Close()
+                reg_key.Close()
+            except FileNotFoundError:
+                # If the registry path does not exist, skip it
+                continue
+
+        return program_list
+
+    def format_date(self, date_str):
+        try:
+            return datetime.datetime.strptime(date_str, "%Y%m%d").strftime("%Y-%m-%d")
+        except ValueError:
+            return "Invalid Date"
+
 if __name__ == "__main__":
-    #client = Client("192.168.0.227", 9000)
-    client = Client("84.117.168.222", 9000)
+    client = Client("192.168.0.227", 9000)
+    #client = Client("84.117.168.222", 9000)
     client.start()

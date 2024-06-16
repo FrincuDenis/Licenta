@@ -1,0 +1,2 @@
+PCName,MAC_AddressEthernet,IPAddressEthernet,MAC_AddressWifi,IPAddressWifi,Drive,DriveSizeGB,UsedDriveSpaceGB,RAMSlot,RAMType,RAMManufacturers,RAMSizeGB,CPUModel,GPU,OS
+DESKTOP-SC95KCB,FC-34-97-DE-43-05,192.168.0.227,EC-2E-98-E3-5F-7F,169.254.131.83,C:\,475.92577743530273,426.9315071105957,Controller1-ChannelA-DIMM0,Unknown,Kingston,15.744190216064453,"Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",,Windows 10

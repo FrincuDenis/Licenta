@@ -1,0 +1,2 @@
+PCName,MAC_AddressEthernet,IPAddressEthernet,MAC_AddressWifi,IPAddressWifi,Drive,DriveSizeGB,UsedDriveSpaceGB,RAM,RamType,RAMSizeGB,CPUModel,OS
+DESKTOP-SC95KCB,,,EC-2E-98-E3-5F-7F,169.254.131.83,C:\ (NTFS);D:\ (NTFS),475.93;465.75,426.90;331.57,12,"Controller0-ChannelA-DIMM0, Controller1-ChannelA-DIMM0",16.00 GB,"Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",Windows 10.0.22631

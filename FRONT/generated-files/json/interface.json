@@ -17,24 +17,16 @@
       "icon": "Qss/icons/icons/feather/window_close.png"
     },
     {
-      "name": "Sensors",
-      "icon": "Qss/icons/icons/font_awesome/solid/temperature-empty.png"
+      "name": "Storage",
+      "icon": "Qss/icons/icons/feather/disc.png"
     },
     {
-      "name": "Activities",
-      "icon": "Qss/icons/icons/feather/activity.png"
+      "name": "tabel_DB",
+      "icon": "Qss/icons/icons/feather/table.png"
     },
     {
       "name": "LocalAcc",
       "icon": "Qss/icons/icons/material_design/person.png"
-    },
-    {
-      "name": "CPU",
-      "icon": "Qss/icons/icons/feather/cpu.png"
-    },
-    {
-      "name": "Domain",
-      "icon": "Qss/icons/icons/material_design/domain.png"
     },
     {
       "name": "Sysinfo",
@@ -45,12 +37,32 @@
       "icon": "Qss/icons/icons/feather/zap.png"
     },
     {
-      "name": "Storage",
-      "icon": "Qss/icons/icons/feather/disc.png"
+      "name": "Activities",
+      "icon": "Qss/icons/icons/feather/activity.png"
+    },
+    {
+      "name": "Sensors",
+      "icon": "Qss/icons/icons/font_awesome/solid/temperature-empty.png"
+    },
+    {
+      "name": "program",
+      "icon": "Qss/icons/icons/material_design/install_desktop.png"
+    },
+    {
+      "name": "pushButton",
+      "icon": "Qss/icons/icons/feather/alert-triangle.png"
     },
     {
       "name": "Network",
       "icon": "Qss/icons/icons/font_awesome/solid/network-wired.png"
+    },
+    {
+      "name": "CPU",
+      "icon": "Qss/icons/icons/feather/cpu.png"
+    },
+    {
+      "name": "Domain",
+      "icon": "Qss/icons/icons/material_design/domain.png"
     },
     {
       "name": "pushButton_11",

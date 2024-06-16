@@ -1,104 +1,127 @@
 import sys
-import socket
-import json
-import time
-from PySide2.QtCore import QThread, Signal
-from PySide2.QtWidgets import QApplication, QMainWindow, QTreeWidget, QTreeWidgetItem, QLabel, QVBoxLayout, QWidget
+import subprocess
+import winreg
+from PySide2.QtWidgets import QApplication, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QListWidget, \
+    QWidget, QMessageBox
 
-class SystemInfoWorker(QThread):
-    info_signal = Signal(dict)
 
-    def __init__(self):
-        super().__init__()
-        self.running = True
+def format_date(install_date):
+    if len(install_date) == 8:
+        return f"{install_date[:4]}-{install_date[4:6]}-{install_date[6:]}"
+    return install_date
 
-    def run(self):
-        while self.running:
-            system_info = self.get_system_info_from_server()
-            if system_info:
-                self.info_signal.emit(system_info)
-            time.sleep(5)  # Update every 5 seconds
 
-    def stop(self):
-        self.running = False
+def get_installed_programs():
+    program_list = []
 
-    def get_system_info_from_server(self):
+    # Registry paths to check for installed applications (32-bit and 64-bit)
+    registry_paths = [
+        r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+        r"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
+    ]
+
+    for path in registry_paths:
         try:
-            client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            client.connect(('127.0.0.1', 9999))
-            client.send(b"GET_SYSTEM_INFO")
-            response = client.recv(4096)
-            client.close()
-            system_info = json.loads(response.decode('utf-8'))
-            return system_info
-        except Exception as e:
-            print(f"Error: {e}")
-            return None
+            # Open the registry key
+            reg_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path)
 
-class MainWindow(QMainWindow):
+            # Enumerate through the subkeys
+            for i in range(0, winreg.QueryInfoKey(reg_key)[0]):
+                sub_key_name = winreg.EnumKey(reg_key, i)
+                sub_key = winreg.OpenKey(reg_key, sub_key_name)
+                try:
+                    # Fetch the program name
+                    program_name = winreg.QueryValueEx(sub_key, "DisplayName")[0]
+                    try:
+                        program_version = winreg.QueryValueEx(sub_key, "DisplayVersion")[0]
+                    except FileNotFoundError:
+                        program_version = "Unknown Version"
+                    try:
+                        install_date = winreg.QueryValueEx(sub_key, "InstallDate")[0]
+                        install_date = format_date(install_date)
+                    except FileNotFoundError:
+                        install_date = "Unknown Date"
+                    try:
+                        publisher = winreg.QueryValueEx(sub_key, "Publisher")[0]
+                    except FileNotFoundError:
+                        publisher = "Unknown Publisher"
+                    program_list.append({
+                        "Name": program_name,
+                        "Version": program_version,
+                        "Install Date": install_date,
+                        "Publisher": publisher
+                    })
+                except FileNotFoundError:
+                    # If DisplayName does not exist, skip the entry
+                    continue
+                finally:
+                    sub_key.Close()
+            reg_key.Close()
+        except FileNotFoundError:
+            # If the registry path does not exist, skip it
+            continue
+
+    return program_list
+
+
+def install_program(package_name):
+    try:
+        result = subprocess.run(["choco", "install", package_name, "-y"], capture_output=True, text=True)
+        if result.returncode == 0:
+            return f"Successfully installed {package_name}."
+        else:
+            return f"Failed to install {package_name}.\n{result.stderr}"
+    except Exception as e:
+        return f"An error occurred: {str(e)}"
+
+
+class App(QWidget):
     def __init__(self):
         super().__init__()
+        self.initUI()
 
-        self.setWindowTitle("Client UI")
+    def initUI(self):
+        self.setWindowTitle('Installed Programs and Chocolatey Installer')
 
-        # Create a central widget
-        self.central_widget = QWidget()
-        self.setCentralWidget(self.central_widget)
+        layout = QVBoxLayout()
 
-        # Create a QVBoxLayout
-        self.layout = QVBoxLayout(self.central_widget)
+        self.program_list = QListWidget()
+        layout.addWidget(self.program_list)
 
-        # Create a QTreeWidget
-        self.tree_widget = QTreeWidget()
-        self.tree_widget.setHeaderLabels(["Clients"])
+        self.refresh_button = QPushButton('Refresh Installed Programs')
+        self.refresh_button.clicked.connect(self.refresh_programs)
+        layout.addWidget(self.refresh_button)
 
-        # Add sample clients to the QTreeWidget
-        clients = ["Server 1"]
-        for client in clients:
-            item = QTreeWidgetItem([client])
-            self.tree_widget.addTopLevelItem(item)
+        install_layout = QHBoxLayout()
+        self.package_input = QLineEdit()
+        self.package_input.setPlaceholderText('Enter package name to install')
+        install_layout.addWidget(self.package_input)
+        self.install_button = QPushButton('Install')
+        self.install_button.clicked.connect(self.install_package)
+        install_layout.addWidget(self.install_button)
+        layout.addLayout(install_layout)
 
-        # Connect the selection change signal to a slot function
-        self.tree_widget.itemSelectionChanged.connect(self.on_client_selected)
+        self.setLayout(layout)
+        self.refresh_programs()
 
-        # Add QTreeWidget to the layout
-        self.layout.addWidget(self.tree_widget)
+    def refresh_programs(self):
+        self.program_list.clear()
+        programs = get_installed_programs()
+        for program in programs:
+            self.program_list.addItem(
+                f"Name: {program['Name']}, Version: {program['Version']}, Install Date: {program['Install Date']}, Publisher: {program['Publisher']}")
 
-        # Create a QLabel to display selected client details
-        self.client_label = QLabel("Select a client")
-        self.layout.addWidget(self.client_label)
-
-        # Initialize the worker thread
-        self.worker = SystemInfoWorker()
-        self.worker.info_signal.connect(self.update_label)
-
-    def update_label(self, info):
-        info_text = (
-            f"Time: {info['time']}\n"
-            f"Date: {info['date']}\n"
-            f"Machine: {info['machine']}\n"
-            f"Version: {info['version']}\n"
-            f"Platform: {info['platform']}\n"
-            f"System: {info['system']}\n"
-            f"Processor: {info['processor']}"
-        )
-        self.client_label.setText(info_text)
-
-    def on_client_selected(self):
-        selected_items = self.tree_widget.selectedItems()
-        if selected_items and selected_items[0].text(0) == "Server 1":
-            self.worker.start()
+    def install_package(self):
+        package_name = self.package_input.text()
+        if package_name:
+            message = install_program(package_name)
+            QMessageBox.information(self, 'Install Result', message)
         else:
-            self.worker.stop()
-            self.client_label.setText("No client selected")
+            QMessageBox.warning(self, 'Input Error', 'Please enter a package name.')
 
-    def closeEvent(self, event):
-        self.worker.stop()
-        self.worker.wait()
-        event.accept()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
+    ex = App()
+    ex.show()
     sys.exit(app.exec_())

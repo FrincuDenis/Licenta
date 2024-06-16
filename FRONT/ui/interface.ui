@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1546</width>
-    <height>1127</height>
+    <width>1132</width>
+    <height>859</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -210,7 +210,7 @@ background-color:#24374B;
         </widget>
        </item>
        <item>
-        <spacer name="horizontalSpacer">
+        <spacer name="spacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -219,7 +219,7 @@ background-color:#24374B;
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>330</width>
+           <width>70</width>
            <height>20</height>
           </size>
          </property>
@@ -345,20 +345,133 @@ background-color:#24374B;
              <property name="leftMargin">
               <number>0</number>
              </property>
-             <item row="7" column="0">
-              <widget class="QPushButton" name="Sensors">
+             <item row="1" column="1">
+              <widget class="QLabel" name="label_23">
+               <property name="font">
+                <font>
+                 <family>ROG Fonts</family>
+                </font>
+               </property>
+               <property name="text">
+                <string>Domain</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QPushButton" name="Storage">
                <property name="text">
                 <string/>
                </property>
                <property name="icon">
                 <iconset resource="../Qss/icons/_icons.qrc">
-                 <normaloff>:/font_awesome_solid/icons/font_awesome/solid/temperature-empty.png</normaloff>:/font_awesome_solid/icons/font_awesome/solid/temperature-empty.png</iconset>
+                 <normaloff>:/feather/icons/feather/disc.png</normaloff>:/feather/icons/feather/disc.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
-                 <width>30</width>
-                 <height>30</height>
+                 <width>40</width>
+                 <height>40</height>
                 </size>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="0">
+              <widget class="QPushButton" name="tabel_DB">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/feather/icons/feather/table.png</normaloff>:/feather/icons/feather/table.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>40</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QPushButton" name="LocalAcc">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/material_design/icons/material_design/person.png</normaloff>:/material_design/icons/material_design/person.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>40</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLabel" name="label_3">
+               <property name="font">
+                <font>
+                 <family>ROG Fonts</family>
+                </font>
+               </property>
+               <property name="text">
+                <string>Power</string>
+               </property>
+               <property name="margin">
+                <number>5</number>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QPushButton" name="Sysinfo">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/feather/icons/feather/monitor.png</normaloff>:/feather/icons/feather/monitor.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>40</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QPushButton" name="power">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/feather/icons/feather/zap.png</normaloff>:/feather/icons/feather/zap.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>40</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="2">
+              <widget class="QLabel" name="label_8">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Asus Rog</family>
+                </font>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="margin">
+                <number>5</number>
                </property>
               </widget>
              </item>
@@ -373,8 +486,25 @@ background-color:#24374B;
                </property>
                <property name="iconSize">
                 <size>
-                 <width>30</width>
-                 <height>30</height>
+                 <width>40</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="0">
+              <widget class="QPushButton" name="Sensors">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/font_awesome_solid/icons/font_awesome/solid/temperature-empty.png</normaloff>:/font_awesome_solid/icons/font_awesome/solid/temperature-empty.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>40</width>
+                 <height>40</height>
                 </size>
                </property>
               </widget>
@@ -388,6 +518,103 @@ background-color:#24374B;
                </property>
                <property name="text">
                 <string>Local Account</string>
+               </property>
+              </widget>
+             </item>
+             <item row="11" column="0">
+              <widget class="QPushButton" name="program">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/material_design/icons/material_design/install_desktop.png</normaloff>:/material_design/icons/material_design/install_desktop.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>40</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="12" column="0">
+              <widget class="QPushButton" name="pushButton">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/feather/icons/feather/alert-triangle.png</normaloff>:/feather/icons/feather/alert-triangle.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>40</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="1">
+              <widget class="QLabel" name="label_46">
+               <property name="text">
+                <string>Locations</string>
+               </property>
+              </widget>
+             </item>
+             <item row="11" column="1">
+              <widget class="QLabel" name="label_48">
+               <property name="text">
+                <string>Programs</string>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0">
+              <widget class="QPushButton" name="Network">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/font_awesome_solid/icons/font_awesome/solid/network-wired.png</normaloff>:/font_awesome_solid/icons/font_awesome/solid/network-wired.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>40</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QLabel" name="label_5">
+               <property name="font">
+                <font>
+                 <family>ROG Fonts</family>
+                </font>
+               </property>
+               <property name="text">
+                <string>Activities</string>
+               </property>
+               <property name="margin">
+                <number>5</number>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QPushButton" name="CPU">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/feather/icons/feather/cpu.png</normaloff>:/feather/icons/feather/cpu.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>40</width>
+                 <height>40</height>
+                </size>
                </property>
               </widget>
              </item>
@@ -406,32 +633,47 @@ background-color:#24374B;
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
-              <widget class="QLabel" name="label_23">
+             <item row="1" column="0">
+              <widget class="QPushButton" name="Domain">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../Qss/icons/_icons.qrc">
+                 <normaloff>:/material_design/icons/material_design/domain.png</normaloff>:/material_design/icons/material_design/domain.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>40</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLabel" name="label_2">
                <property name="font">
                 <font>
                  <family>ROG Fonts</family>
                 </font>
                </property>
                <property name="text">
-                <string>Domain</string>
+                <string>CPU</string>
+               </property>
+               <property name="margin">
+                <number>5</number>
                </property>
               </widget>
              </item>
-             <item row="0" column="0">
-              <widget class="QPushButton" name="LocalAcc">
+             <item row="8" column="1">
+              <widget class="QLabel" name="label_18">
+               <property name="font">
+                <font>
+                 <family>ROG Fonts</family>
+                </font>
+               </property>
                <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../Qss/icons/_icons.qrc">
-                 <normaloff>:/material_design/icons/material_design/person.png</normaloff>:/material_design/icons/material_design/person.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
+                <string>Network</string>
                </property>
               </widget>
              </item>
@@ -465,180 +707,10 @@ background-color:#24374B;
                </property>
               </widget>
              </item>
-             <item row="3" column="1">
-              <widget class="QLabel" name="label_3">
-               <property name="font">
-                <font>
-                 <family>ROG Fonts</family>
-                </font>
-               </property>
+             <item row="12" column="1">
+              <widget class="QLabel" name="label_49">
                <property name="text">
-                <string>Power</string>
-               </property>
-               <property name="margin">
-                <number>5</number>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QPushButton" name="CPU">
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../Qss/icons/_icons.qrc">
-                 <normaloff>:/feather/icons/feather/cpu.png</normaloff>:/feather/icons/feather/cpu.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="1">
-              <widget class="QLabel" name="label_5">
-               <property name="font">
-                <font>
-                 <family>ROG Fonts</family>
-                </font>
-               </property>
-               <property name="text">
-                <string>Activities</string>
-               </property>
-               <property name="margin">
-                <number>5</number>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QPushButton" name="Domain">
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../Qss/icons/_icons.qrc">
-                 <normaloff>:/material_design/icons/material_design/domain.png</normaloff>:/material_design/icons/material_design/domain.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QPushButton" name="Sysinfo">
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../Qss/icons/_icons.qrc">
-                 <normaloff>:/feather/icons/feather/monitor.png</normaloff>:/feather/icons/feather/monitor.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="8" column="1">
-              <widget class="QLabel" name="label_18">
-               <property name="font">
-                <font>
-                 <family>ROG Fonts</family>
-                </font>
-               </property>
-               <property name="text">
-                <string>Network</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QPushButton" name="power">
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../Qss/icons/_icons.qrc">
-                 <normaloff>:/feather/icons/feather/zap.png</normaloff>:/feather/icons/feather/zap.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="0">
-              <widget class="QPushButton" name="Storage">
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../Qss/icons/_icons.qrc">
-                 <normaloff>:/feather/icons/feather/disc.png</normaloff>:/feather/icons/feather/disc.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLabel" name="label_2">
-               <property name="font">
-                <font>
-                 <family>ROG Fonts</family>
-                </font>
-               </property>
-               <property name="text">
-                <string>CPU</string>
-               </property>
-               <property name="margin">
-                <number>5</number>
-               </property>
-              </widget>
-             </item>
-             <item row="8" column="0">
-              <widget class="QPushButton" name="Network">
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../Qss/icons/_icons.qrc">
-                 <normaloff>:/font_awesome_solid/icons/font_awesome/solid/network-wired.png</normaloff>:/font_awesome_solid/icons/font_awesome/solid/network-wired.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="8" column="2">
-              <widget class="QLabel" name="label_8">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="font">
-                <font>
-                 <family>Asus Rog</family>
-                </font>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="margin">
-                <number>5</number>
+                <string>Updates</string>
                </property>
               </widget>
              </item>
@@ -657,7 +729,7 @@ background-color:#24374B;
           <item>
            <widget class="QStackedWidget" name="stackedWidget">
             <property name="currentIndex">
-             <number>1</number>
+             <number>10</number>
             </property>
             <widget class="QWidget" name="cpu_memory">
              <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -941,8 +1013,8 @@ background-color:#24374B;
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>984</width>
-                      <height>531</height>
+                      <width>569</width>
+                      <height>263</height>
                      </rect>
                     </property>
                     <layout class="QHBoxLayout" name="horizontalLayout_19">
@@ -2745,54 +2817,27 @@ background-color:#24374B;
                  <enum>QFrame::NoFrame</enum>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_6">
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="label_42">
+                 <item row="4" column="3">
+                  <widget class="QLabel" name="label_52">
                    <property name="font">
                     <font>
                      <family>Asus Rog</family>
-                     <pointsize>12</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
                     </font>
                    </property>
                    <property name="text">
-                    <string>System information</string>
+                    <string>System time</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="4" column="4">
-                  <widget class="QLabel" name="system_date">
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_45">
                    <property name="font">
                     <font>
                      <family>Asus Rog</family>
                     </font>
                    </property>
                    <property name="text">
-                    <string>N/A</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="3">
-                  <widget class="QLabel" name="label_51">
-                   <property name="font">
-                    <font>
-                     <family>Asus Rog</family>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Machine</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="2">
-                  <widget class="QLabel" name="system_version">
-                   <property name="font">
-                    <font>
-                     <family>Asus Rog</family>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>N/A</string>
+                    <string>Version</string>
                    </property>
                   </widget>
                  </item>
@@ -2808,18 +2853,6 @@ background-color:#24374B;
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="0">
-                  <widget class="QLabel" name="label_44">
-                   <property name="font">
-                    <font>
-                     <family>Asus Rog</family>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Platform</string>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="4" column="2">
                   <widget class="QLabel" name="system_time">
                    <property name="font">
@@ -2832,20 +2865,23 @@ background-color:#24374B;
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="3">
-                  <widget class="QLabel" name="label_50">
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_42">
                    <property name="font">
                     <font>
                      <family>Asus Rog</family>
+                     <pointsize>12</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
                     </font>
                    </property>
                    <property name="text">
-                    <string>CPU Model</string>
+                    <string>System information</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="4">
-                  <widget class="QLabel" name="system_processor">
+                 <item row="2" column="2">
+                  <widget class="QLabel" name="system_platform">
                    <property name="font">
                     <font>
                      <family>Asus Rog</family>
@@ -2853,18 +2889,6 @@ background-color:#24374B;
                    </property>
                    <property name="text">
                     <string>N/A</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="0">
-                  <widget class="QLabel" name="label_45">
-                   <property name="font">
-                    <font>
-                     <family>Asus Rog</family>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Version</string>
                    </property>
                   </widget>
                  </item>
@@ -2892,20 +2916,8 @@ background-color:#24374B;
                    </property>
                   </widget>
                  </item>
-                 <item row="4" column="3">
-                  <widget class="QLabel" name="label_52">
-                   <property name="font">
-                    <font>
-                     <family>Asus Rog</family>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>System time</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="2">
-                  <widget class="QLabel" name="system_platform">
+                 <item row="3" column="2">
+                  <widget class="QLabel" name="system_version">
                    <property name="font">
                     <font>
                      <family>Asus Rog</family>
@@ -2913,6 +2925,73 @@ background-color:#24374B;
                    </property>
                    <property name="text">
                     <string>N/A</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="3">
+                  <widget class="QLabel" name="label_50">
+                   <property name="font">
+                    <font>
+                     <family>Asus Rog</family>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>CPU Model</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="4">
+                  <widget class="QLabel" name="system_date">
+                   <property name="font">
+                    <font>
+                     <family>Asus Rog</family>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>N/A</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_44">
+                   <property name="font">
+                    <font>
+                     <family>Asus Rog</family>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Platform</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="4">
+                  <widget class="QLabel" name="system_processor">
+                   <property name="font">
+                    <font>
+                     <family>Asus Rog</family>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>N/A</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="3">
+                  <widget class="QLabel" name="label_51">
+                   <property name="font">
+                    <font>
+                     <family>Asus Rog</family>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Machine</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="3" colspan="2">
+                  <widget class="QPushButton" name="get_hardware_info">
+                   <property name="text">
+                    <string>Get hardware information</string>
                    </property>
                   </widget>
                  </item>
@@ -3227,6 +3306,137 @@ background-color:#24374B;
               </item>
              </layout>
             </widget>
+            <widget class="QWidget" name="DB_tab"/>
+            <widget class="QWidget" name="Programs_tab">
+             <layout class="QVBoxLayout" name="verticalLayout_29">
+              <item>
+               <widget class="QFrame" name="frame_31">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>300</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_31">
+                 <item>
+                  <widget class="QTableWidget" name="installed_table">
+                   <column>
+                    <property name="text">
+                     <string>Name</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Version</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Install Date</string>
+                    </property>
+                   </column>
+                   <column>
+                    <property name="text">
+                     <string>Publisher</string>
+                    </property>
+                   </column>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="frame_32">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_30">
+                 <item>
+                  <layout class="QGridLayout" name="gridLayout_9">
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="label_53">
+                     <property name="text">
+                      <string>TextLabel</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_58">
+                     <property name="text">
+                      <string>TextLabel</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_55">
+                     <property name="text">
+                      <string>TextLabel</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QLabel" name="label_64">
+                     <property name="text">
+                      <string>TextLabel</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="0">
+                    <widget class="QLabel" name="label_54">
+                     <property name="text">
+                      <string>TextLabel</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QLabel" name="label_59">
+                     <property name="text">
+                      <string>TextLabel</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="frame_30">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_23">
+                 <item>
+                  <widget class="QPushButton" name="pushButton_2">
+                   <property name="text">
+                    <string>Install</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton_4">
+                   <property name="text">
+                    <string>Uninstall</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
          </layout>
@@ -3271,7 +3481,25 @@ background-color:#24374B;
            <number>0</number>
           </property>
           <item>
-           <widget class="QTreeWidget" name="clients_list"/>
+           <widget class="QTreeWidget" name="clients_list">
+            <property name="dragEnabled">
+             <bool>true</bool>
+            </property>
+            <property name="dragDropOverwriteMode">
+             <bool>true</bool>
+            </property>
+            <property name="dragDropMode">
+             <enum>QAbstractItemView::InternalMove</enum>
+            </property>
+            <property name="defaultDropAction">
+             <enum>Qt::MoveAction</enum>
+            </property>
+            <column>
+             <property name="text">
+              <string notr="true">1</string>
+             </property>
+            </column>
+           </widget>
           </item>
          </layout>
         </widget>
