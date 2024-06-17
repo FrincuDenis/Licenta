@@ -21,7 +21,7 @@
       "icon": "Qss/icons/icons/feather/disc.png"
     },
     {
-      "name": "tabel_DB",
+      "name": "DB",
       "icon": "Qss/icons/icons/feather/table.png"
     },
     {
@@ -49,7 +49,7 @@
       "icon": "Qss/icons/icons/material_design/install_desktop.png"
     },
     {
-      "name": "pushButton",
+      "name": "updates",
       "icon": "Qss/icons/icons/feather/alert-triangle.png"
     },
     {

@@ -1,131 +1,111 @@
 import sys
-import os
-import subprocess
-from PySide2.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QCheckBox, QPushButton, QFileDialog, \
-    QMessageBox
+import socket
+from PySide2.QtWidgets import (QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton,
+                               QLineEdit, QHBoxLayout, QTableWidget, QTableWidgetItem)
+from PySide2.QtCore import Qt
 
-# Predefined list of software packages and their silent install arguments
-software_packages = [
-    {'name': 'winrar', 'args': '--install-arguments="/S"'},
-    {'name': 'microsoft-office-deployment', 'args': '--install-arguments="/quiet"'},
-    {'name': 'googlechrome', 'args': '--install-arguments="/silent /install"'},
-    {'name': 'adobereader', 'args': '--install-arguments="/sAll /msi /norestart"'},
-    {'name': 'vlc', 'args': '--install-arguments="--quiet"'},
-    {'name': 'zoom', 'args': '--install-arguments="/quiet"'},
-    {'name': 'googledrive', 'args': '--install-arguments="/silent"'},
-    {'name': 'teamviewer', 'args': '--install-arguments="/S"'},
-    {'name': 'anydesk', 'args': '--install-arguments="/S"'},
-]
+CHUNK_SIZE = 4096
+END_OF_MESSAGE = b'<<END_OF_MESSAGE>>'
 
-
-class ChocoPackageGenerator(QWidget):
+class ServerApp(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.initUI()
 
-    def initUI(self):
-        self.setWindowTitle('Chocolatey Package Generator')
-        self.layout = QVBoxLayout()
+        self.setWindowTitle("Server Command Sender")
+        self.setGeometry(100, 100, 1000, 600)
 
-        self.label = QLabel('Select the programs to include in the package:')
-        self.layout.addWidget(self.label)
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
 
-        self.checkboxes = []
-        for software in software_packages:
-            checkbox = QCheckBox(software['name'])
-            self.layout.addWidget(checkbox)
-            self.checkboxes.append(checkbox)
+        self.layout = QVBoxLayout(self.central_widget)
 
-        self.generateButton = QPushButton('Generate Package')
-        self.generateButton.clicked.connect(self.generatePackage)
-        self.layout.addWidget(self.generateButton)
+        self.output_table = QTableWidget(self)
+        self.layout.addWidget(self.output_table)
 
-        self.setLayout(self.layout)
+        self.input_layout = QHBoxLayout()
+        self.command_input = QLineEdit(self)
+        self.input_layout.addWidget(self.command_input)
+        self.send_button = QPushButton("Send Command", self)
+        self.send_button.clicked.connect(self.send_command)
+        self.input_layout.addWidget(self.send_button)
+        self.layout.addLayout(self.input_layout)
 
-    def generatePackage(self):
-        selected_packages = [software_packages[i] for i, checkbox in enumerate(self.checkboxes) if checkbox.isChecked()]
+        self.commands = [
+            "check-updates", "install-updates", "hide-update <KBID>",
+            "schedule-update <UPDATE_ID> <REVISION> <HOUR> <MINUTE>",
+            "add-microsoft-update-service", "add-offline-sync-service <FILE_PATH>",
+            "get-update-history", "get-update-history-24h", "uninstall-update <KBID>",
+            "get-update-settings", "set-target-version <PRODUCT_VERSION> <TARGET_VERSION>"
+        ]
 
-        if not selected_packages:
-            QMessageBox.warning(self, 'No Selection', 'Please select at least one program.')
+        for command in self.commands:
+            button = QPushButton(command, self)
+            button.clicked.connect(self.create_command_handler(command))
+            self.layout.addWidget(button)
+
+    def create_command_handler(self, command):
+        def handler():
+            if "<" in command and ">" in command:
+                self.command_input.setText(command)
+            else:
+                self.send_command(command)
+        return handler
+
+    def send_command(self, command=None):
+        if command is None:
+            command = self.command_input.text()
+
+        self.command_input.clear()
+        response = self.send_command_to_client(command)
+        self.display_response_in_table(response)
+
+    def send_command_to_client(self, command):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.connect(('localhost', 65432))
+                s.sendall(command.encode())
+
+                response = []
+                while True:
+                    data = s.recv(CHUNK_SIZE)
+                    print(data.decode())
+                    if END_OF_MESSAGE in data:
+                        response.append(data.replace(END_OF_MESSAGE, b'').decode())
+                        break
+                    response.append(data.decode())
+                return ''.join(response)
+        except Exception as e:
+            return f"Failed to send command: {e}"
+
+    def display_response_in_table(self, response):
+        self.output_table.clear()
+        lines = response.splitlines()
+
+        if not lines:
             return
 
-        directory = QFileDialog.getExistingDirectory(self, 'Select Directory to Save Package')
+        # Extract headers from the first line and determine column widths
+        headers = lines[1].split()
+        self.output_table.setColumnCount(len(headers))
+        self.output_table.setHorizontalHeaderLabels(headers)
 
-        if not directory:
-            return
+        # Find the indices for splitting based on header positions
+        col_indices = [lines[1].index(header) for header in headers] + [len(lines[0])]
 
-        package_id = "custom-software-package"
-        package_version = "1.0.0"
-        package_title = "Custom Software Package"
-        authors = "Your Name"
-        description = "Installs selected software"
-        release_notes = "Initial release"
-        tags = "software installation automation"
+        # Add rows
+        self.output_table.setRowCount(len(lines) - 2)
+        for row_idx, line in enumerate(lines[2:]):
+            for col_idx in range(len(headers)):
+                item_text = line[col_indices[col_idx]:col_indices[col_idx + 1]].strip()
+                self.output_table.setItem(row_idx, col_idx, QTableWidgetItem(item_text))
 
-        package_path = os.path.join(directory, package_id)
-
-        # Create the package directory structure
-        os.makedirs(os.path.join(package_path, 'tools'), exist_ok=True)
-
-        # Create the .nuspec file
-        nuspec_content = f"""<?xml version="1.0"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
-  <metadata>
-    <id>{package_id}</id>
-    <version>{package_version}</version>
-    <title>{package_title}</title>
-    <authors>{authors}</authors>
-    <owners>{authors}</owners>
-    <description>{description}</description>
-    <releaseNotes>{release_notes}</releaseNotes>
-    <tags>{tags}</tags>
-  </metadata>
-  <files>
-    <file src="tools\\chocolateyInstall.ps1" target="tools\\chocolateyInstall.ps1" />
-  </files>
-</package>
-"""
-
-        with open(os.path.join(package_path, f"{package_id}.nuspec"), 'w') as file:
-            file.write(nuspec_content)
-
-        # Create the chocolateyInstall.ps1 script
-        install_script_content = """# Chocolatey package names for the software with silent install arguments
-$packages = @(
-"""
-
-        for software in selected_packages:
-            install_script_content += f"    @{'{'}\n"
-            install_script_content += f"        name = '{software['name']}'\n"
-            install_script_content += f"        args = '{software['args']}'\n"
-            install_script_content += f"    {'}'},\n"
-
-        install_script_content += """)
-
-foreach ($package in $packages) {
-    Write-Host "Installing $($package.name)..."
-    choco install $($package.name) -y $($package.args)
-}
-
-Write-Host "All applications have been installed."
-"""
-
-        with open(os.path.join(package_path, 'tools', 'chocolateyInstall.ps1'), 'w') as file:
-            file.write(install_script_content)
-
-        # Package the files using nuget
-        subprocess.run(['nuget', 'pack', f"{package_id}.nuspec"], cwd=package_path)
-
-        QMessageBox.information(self, 'Package Created',
-                                f"Chocolatey package '{package_id}' has been created successfully at {directory}.")
-
+        self.output_table.resizeColumnsToContents()
 
 def main():
     app = QApplication(sys.argv)
-    generator = ChocoPackageGenerator()
-    generator.show()
+    server_app = ServerApp()
+    server_app.show()
     sys.exit(app.exec_())
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

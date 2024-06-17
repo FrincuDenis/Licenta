@@ -375,7 +375,7 @@ background-color:#24374B;
               </widget>
              </item>
              <item row="9" column="0">
-              <widget class="QPushButton" name="tabel_DB">
+              <widget class="QPushButton" name="DB">
                <property name="text">
                 <string />
                </property>
@@ -539,7 +539,7 @@ background-color:#24374B;
               </widget>
              </item>
              <item row="12" column="0">
-              <widget class="QPushButton" name="pushButton">
+              <widget class="QPushButton" name="updates">
                <property name="text">
                 <string />
                </property>
@@ -729,7 +729,7 @@ background-color:#24374B;
           <item>
            <widget class="QStackedWidget" name="stackedWidget">
             <property name="currentIndex">
-             <number>10</number>
+             <number>11</number>
             </property>
             <widget class="QWidget" name="cpu_memory">
              <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -3306,7 +3306,84 @@ background-color:#24374B;
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="DB_tab" />
+            <widget class="QWidget" name="DB_tab">
+             <layout class="QVBoxLayout" name="verticalLayout_35">
+              <item>
+               <widget class="QFrame" name="frame_35">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_38">
+                 <item>
+                  <widget class="QLabel" name="label_66">
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="frame_37">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_37">
+                    <item>
+                     <layout class="QGridLayout" name="gridLayout_11">
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="label_67">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QLineEdit" name="lineEdit_2" />
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QLineEdit" name="lineEdit_3" />
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QLabel" name="label_68">
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="frame_36">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_36">
+                    <item>
+                     <widget class="QPushButton" name="pushButton_5">
+                      <property name="text">
+                       <string>PushButton</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
             <widget class="QWidget" name="Programs_tab">
              <layout class="QVBoxLayout" name="verticalLayout_29">
               <item>
@@ -3326,6 +3403,9 @@ background-color:#24374B;
                 <layout class="QVBoxLayout" name="verticalLayout_31">
                  <item>
                   <widget class="QTableWidget" name="installed_table">
+                   <property name="contextMenuPolicy">
+                    <enum>Qt::CustomContextMenu</enum>
+                   </property>
                    <column>
                     <property name="text">
                      <string>Name</string>
@@ -3437,6 +3517,145 @@ background-color:#24374B;
               </item>
              </layout>
             </widget>
+            <widget class="QWidget" name="Updates_tab">
+             <layout class="QVBoxLayout" name="verticalLayout_32">
+              <item>
+               <widget class="QFrame" name="frame_33">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>250</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_34">
+                 <item>
+                  <widget class="QTableWidget" name="updates_table" />
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="frame_34">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_33">
+                 <item>
+                  <widget class="QLabel" name="label_65">
+                   <property name="text">
+                    <string>OPTIONS</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="args">
+                   <property name="placeholderText">
+                    <string>Input</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QGridLayout" name="gridLayout_10">
+                   <item row="3" column="0">
+                    <widget class="QPushButton" name="hide">
+                     <property name="text">
+                      <string>Hide-Updates</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QPushButton" name="offline_sync">
+                     <property name="text">
+                      <string>add-offline-sync-service &lt;FILE_PATH&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="0">
+                    <widget class="QPushButton" name="history">
+                     <property name="text">
+                      <string>get-update-history</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="1">
+                    <widget class="QPushButton" name="settings">
+                     <property name="text">
+                      <string>get-update-settings</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QPushButton" name="uninstall">
+                     <property name="text">
+                      <string>uninstall-update</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QPushButton" name="update_service">
+                     <property name="text">
+                      <string>add-microsoft-update-service</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="1">
+                    <widget class="QPushButton" name="set_target">
+                     <property name="text">
+                      <string>set-target-version </string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QPushButton" name="check">
+                     <property name="text">
+                      <string>Check for updates</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QPushButton" name="schedule">
+                     <property name="text">
+                      <string>schedule-update </string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QPushButton" name="install">
+                     <property name="text">
+                      <string>Install updates</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="0">
+                    <widget class="QPushButton" name="history_24h">
+                     <property name="text">
+                      <string>get-update-history-24h</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="1">
+                    <widget class="QPushButton" name="help">
+                     <property name="text">
+                      <string>Help</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
          </layout>
@@ -3496,7 +3715,7 @@ background-color:#24374B;
             </property>
             <column>
              <property name="text">
-              <string notr="true">1</string>
+              <string notr="true">UVT</string>
              </property>
             </column>
            </widget>

@@ -1,127 +1,127 @@
-import sys
+import socket
 import subprocess
-import winreg
-from PySide2.QtWidgets import QApplication, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, QListWidget, \
-    QWidget, QMessageBox
+
+CHUNK_SIZE = 4096
+END_OF_MESSAGE = b'<<END_OF_MESSAGE>>'
 
 
-def format_date(install_date):
-    if len(install_date) == 8:
-        return f"{install_date[:4]}-{install_date[4:6]}-{install_date[6:]}"
-    return install_date
+def run_powershell_command(command):
+    result = subprocess.run(["powershell", "-Command", command], capture_output=True, text=True)
+    if result.returncode != 0:
+        return f"Command failed with error: {result.stderr}"
+    return result.stdout
 
 
-def get_installed_programs():
-    program_list = []
-
-    # Registry paths to check for installed applications (32-bit and 64-bit)
-    registry_paths = [
-        r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
-        r"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
-    ]
-
-    for path in registry_paths:
-        try:
-            # Open the registry key
-            reg_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path)
-
-            # Enumerate through the subkeys
-            for i in range(0, winreg.QueryInfoKey(reg_key)[0]):
-                sub_key_name = winreg.EnumKey(reg_key, i)
-                sub_key = winreg.OpenKey(reg_key, sub_key_name)
-                try:
-                    # Fetch the program name
-                    program_name = winreg.QueryValueEx(sub_key, "DisplayName")[0]
-                    try:
-                        program_version = winreg.QueryValueEx(sub_key, "DisplayVersion")[0]
-                    except FileNotFoundError:
-                        program_version = "Unknown Version"
-                    try:
-                        install_date = winreg.QueryValueEx(sub_key, "InstallDate")[0]
-                        install_date = format_date(install_date)
-                    except FileNotFoundError:
-                        install_date = "Unknown Date"
-                    try:
-                        publisher = winreg.QueryValueEx(sub_key, "Publisher")[0]
-                    except FileNotFoundError:
-                        publisher = "Unknown Publisher"
-                    program_list.append({
-                        "Name": program_name,
-                        "Version": program_version,
-                        "Install Date": install_date,
-                        "Publisher": publisher
-                    })
-                except FileNotFoundError:
-                    # If DisplayName does not exist, skip the entry
-                    continue
-                finally:
-                    sub_key.Close()
-            reg_key.Close()
-        except FileNotFoundError:
-            # If the registry path does not exist, skip it
-            continue
-
-    return program_list
+def set_execution_policy():
+    return run_powershell_command("Set-ExecutionPolicy -ExecutionPolicy Bypass -Force")
 
 
-def install_program(package_name):
+def is_module_installed(module_name):
+    return module_name in run_powershell_command(f"Get-Module -ListAvailable -Name {module_name}")
+
+
+def register_psgallery():
+    return run_powershell_command("Register-PSRepository -Default")
+
+
+def is_psgallery_registered():
+    return "PSGallery" in run_powershell_command("Get-PSRepository")
+
+
+def install_module(module_name):
+    command = f"Install-Module -Name {module_name} -Force" if module_name == "PSWindowsUpdate" else f"Install-PackageProvider -Name {module_name} -MinimumVersion 2.8.5.201 -Force"
+    return run_powershell_command(command)
+
+
+def import_module(module_name):
+    return run_powershell_command(f"Import-Module -Name {module_name}")
+
+
+def ensure_prerequisites():
+    ps_module = "PSWindowsUpdate"
+    nu_module = "NuGet"
     try:
-        result = subprocess.run(["choco", "install", package_name, "-y"], capture_output=True, text=True)
-        if result.returncode == 0:
-            return f"Successfully installed {package_name}."
-        else:
-            return f"Failed to install {package_name}.\n{result.stderr}"
+        if not is_module_installed(ps_module):
+            set_execution_policy()
+            if not is_module_installed(nu_module):
+                install_module(nu_module)
+            if not is_psgallery_registered():
+                register_psgallery()
+            if not is_module_installed("PowerShellGet"):
+                install_module("PowerShellGet")
+            install_module(ps_module)
+            import_module(ps_module)
     except Exception as e:
-        return f"An error occurred: {str(e)}"
+        return f"Failed to ensure prerequisites: {e}"
+    return "All prerequisites are met."
 
 
-class App(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.initUI()
+def handle_client_command(command):
+    prerequisite_check = ensure_prerequisites()
+    if "Failed" in prerequisite_check:
+        return prerequisite_check
 
-    def initUI(self):
-        self.setWindowTitle('Installed Programs and Chocolatey Installer')
-
-        layout = QVBoxLayout()
-
-        self.program_list = QListWidget()
-        layout.addWidget(self.program_list)
-
-        self.refresh_button = QPushButton('Refresh Installed Programs')
-        self.refresh_button.clicked.connect(self.refresh_programs)
-        layout.addWidget(self.refresh_button)
-
-        install_layout = QHBoxLayout()
-        self.package_input = QLineEdit()
-        self.package_input.setPlaceholderText('Enter package name to install')
-        install_layout.addWidget(self.package_input)
-        self.install_button = QPushButton('Install')
-        self.install_button.clicked.connect(self.install_package)
-        install_layout.addWidget(self.install_button)
-        layout.addLayout(install_layout)
-
-        self.setLayout(layout)
-        self.refresh_programs()
-
-    def refresh_programs(self):
-        self.program_list.clear()
-        programs = get_installed_programs()
-        for program in programs:
-            self.program_list.addItem(
-                f"Name: {program['Name']}, Version: {program['Version']}, Install Date: {program['Install Date']}, Publisher: {program['Publisher']}")
-
-    def install_package(self):
-        package_name = self.package_input.text()
-        if package_name:
-            message = install_program(package_name)
-            QMessageBox.information(self, 'Install Result', message)
-        else:
-            QMessageBox.warning(self, 'Input Error', 'Please enter a package name.')
+    args = command.split()
+    if command == "check-updates":
+        return run_powershell_command("Get-WindowsUpdate")
+    elif command == "install-updates":
+        return run_powershell_command("Install-WindowsUpdate -AcceptAll -AutoReboot")
+    elif args[0] == "hide-update":
+        return run_powershell_command(f"Hide-WindowsUpdate -KBArticleID {args[1]} -Verbose")
+    elif args[0] == "schedule-update":
+        update_id, revision, hour, minute = args[1], args[2], args[3], args[4]
+        ps_command = (f"Install-WindowsUpdate -MicrosoftUpdate -UpdateID {update_id} "
+                      f"-RevisionNumber {revision} -ScheduleJob (Get-Date -Hour {hour} -Minute {minute} -Second 0) "
+                      f"-AcceptAll -AutoReboot -Verbose")
+        return run_powershell_command(ps_command)
+    elif command == "add-microsoft-update-service":
+        return run_powershell_command("Add-WUServiceManager -MicrosoftUpdate")
+    elif args[0] == "add-offline-sync-service":
+        return run_powershell_command(f"Add-WUServiceManager -ScanFileLocation {args[1]}")
+    elif command == "get-update-history":
+        return run_powershell_command("Get-WUHistory")
+    elif command == "get-update-history-24h":
+        return run_powershell_command("Get-WUHistory -MaxDate (Get-Date).AddDays(-1)")
+    elif args[0] == "uninstall-update":
+        return run_powershell_command(f"Get-WUUninstall -KBArticleID {args[1]}")
+    elif command == "get-update-settings":
+        return run_powershell_command("Get-WUSettings")
+    elif args[0] == "set-target-version":
+        product_version, target_version = args[1], args[2]
+        ps_command = (f"Set-WUSettings -TargetReleaseVersion -TargetReleaseVersionInfo {target_version} "
+                      f"-ProductVersion \"{product_version}\"")
+        return run_powershell_command(ps_command)
+    else:
+        return "Unknown command"
 
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = App()
-    ex.show()
-    sys.exit(app.exec_())
+def handle_client_connection(conn):
+    try:
+        while True:
+            data = conn.recv(CHUNK_SIZE)
+            if not data:
+                break
+            command = data.decode()
+            print(f"Received command: {command}")
+            output = handle_client_command(command)
+
+            for i in range(0, len(output), CHUNK_SIZE):
+                conn.sendall(output[i:i + CHUNK_SIZE].encode())
+            conn.sendall(END_OF_MESSAGE)  # Indicate the end of transmission
+    finally:
+        conn.close()
+
+
+def main():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('localhost', 65432))
+        s.listen()
+        print("Client is listening for commands...")
+        while True:
+            conn, addr = s.accept()
+            print('Connected by', addr)
+            handle_client_connection(conn)
+
+
+if __name__ == "__main__":
+    main()

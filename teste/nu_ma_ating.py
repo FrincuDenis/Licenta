@@ -1,42 +1,12 @@
-import shutil
-import socket
-import sys
-import json
-import threading
-import psutil
-import time
-import platform
-import datetime
-import wmi
-import winreg
-from hardware import HardwareInfoCollector
-from manage_pc import UserManager
-from update import PowerShellServer
-import clr  # the pythonnet module
-from time import sleep
-
-clr.AddReference("LibreHardwareMonitorLib")
-from LibreHardwareMonitor import Hardware
-
-platforms = {
-    'linux': 'Linux',
-    'linux1': 'Linux',
-    'linux2': 'Linux',
-    'darwin': 'Mac OS',
-    'win32': 'Windows',
-}
-
-CHUNK_SIZE = 4096
-
+"""
 class Client:
     def __init__(self, host, port):
         self.host = host
         self.port = port
         self.local_account = UserManager()
         self.hrd = HardwareInfoCollector()
-        self.ps_server = PowerShellServer()  # Initialize PowerShellServer
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.chunk_size = CHUNK_SIZE
+        self.chunk_size = 4096  # Adjusted to match the server's chunk size
 
     def connect(self):
         try:
@@ -58,6 +28,7 @@ class Client:
 
             response.extend(chunk)
 
+            # Check if the terminator is in the received chunk
             if b'\0' in chunk or b'\1' in chunk:
                 if b'\0' in chunk:
                     end_marker = b'\0'
@@ -65,6 +36,7 @@ class Client:
                     end_marker = b'\1'
                 break
 
+        # Split the response at the first occurrence of the end marker
         if end_marker is not None:
             terminator_index = response.find(end_marker)
             if terminator_index != -1:
@@ -95,7 +67,7 @@ class Client:
             try:
                 command, data = self.receive_data()
                 if command:
-                    threading.Thread(target=self.process_command, args=(command, data)).start()
+                    self.process_command(command, data)
                 else:
                     print("No command received.")
             except socket.error as e:
@@ -132,28 +104,13 @@ class Client:
             "terminate": lambda: self.terminate_process(data),
             "kill": lambda: self.kill_process(data),
             "hardware": self.hardware,
-            "installed_programs": self.installed_programs,
-            "powershell_command": lambda: self.handle_powershell_command(data),  # New command for PowerShell
-            "ping": self.handle_ping  # Handle ping command
+            "installed_programs": self.installed_programs  # Add the new command here
         }
 
         if command in command_map:
             command_map[command]()
         else:
             print(f"Unknown command: {command}")
-
-    def handle_powershell_command(self, data):
-        command = data.get("command")
-        prerequisite_check = self.ps_server.check_and_install_components()
-        self.send_data("prerequisite_check", prerequisite_check)
-        if "Failed" in prerequisite_check:
-            return
-
-        result = self.ps_server.handle_client_command(command)
-        self.send_data("powershell_result", result)
-
-    def handle_ping(self):
-        self.client_socket.sendall(b'pong')
 
     def start(self):
         self.connect()
@@ -484,6 +441,7 @@ class Client:
     def get_installed_programs(self):
         program_list = []
 
+        # Registry paths to check for installed applications (32-bit and 64-bit)
         registry_paths = [
             r"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
             r"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
@@ -491,12 +449,15 @@ class Client:
 
         for path in registry_paths:
             try:
+                # Open the registry key
                 reg_key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path)
 
+                # Enumerate through the subkeys
                 for i in range(0, winreg.QueryInfoKey(reg_key)[0]):
                     sub_key_name = winreg.EnumKey(reg_key, i)
                     sub_key = winreg.OpenKey(reg_key, sub_key_name)
                     try:
+                        # Fetch the program name
                         program_name = winreg.QueryValueEx(sub_key, "DisplayName")[0]
                         try:
                             program_version = winreg.QueryValueEx(sub_key, "DisplayVersion")[0]
@@ -518,11 +479,13 @@ class Client:
                             "Publisher": publisher
                         })
                     except FileNotFoundError:
+                        # If DisplayName does not exist, skip the entry
                         continue
                     finally:
                         sub_key.Close()
                 reg_key.Close()
             except FileNotFoundError:
+                # If the registry path does not exist, skip it
                 continue
 
         return program_list
@@ -533,6 +496,4 @@ class Client:
         except ValueError:
             return "Invalid Date"
 
-if __name__ == "__main__":
-    client = Client("localhost", 9000)
-    client.start()
+"""

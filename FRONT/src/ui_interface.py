@@ -189,14 +189,14 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.Storage, 6, 0, 1, 1)
 
-        self.tabel_DB = QPushButton(self.menu)
-        self.tabel_DB.setObjectName(u"tabel_DB")
+        self.DB = QPushButton(self.menu)
+        self.DB.setObjectName(u"DB")
         icon5 = QIcon()
         icon5.addFile(u":/feather/icons/feather/table.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.tabel_DB.setIcon(icon5)
-        self.tabel_DB.setIconSize(QSize(40, 40))
+        self.DB.setIcon(icon5)
+        self.DB.setIconSize(QSize(40, 40))
 
-        self.gridLayout.addWidget(self.tabel_DB, 9, 0, 1, 1)
+        self.gridLayout.addWidget(self.DB, 9, 0, 1, 1)
 
         self.LocalAcc = QPushButton(self.menu)
         self.LocalAcc.setObjectName(u"LocalAcc")
@@ -275,14 +275,14 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.program, 11, 0, 1, 1)
 
-        self.pushButton = QPushButton(self.menu)
-        self.pushButton.setObjectName(u"pushButton")
+        self.updates = QPushButton(self.menu)
+        self.updates.setObjectName(u"updates")
         icon12 = QIcon()
         icon12.addFile(u":/feather/icons/feather/alert-triangle.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButton.setIcon(icon12)
-        self.pushButton.setIconSize(QSize(40, 40))
+        self.updates.setIcon(icon12)
+        self.updates.setIconSize(QSize(40, 40))
 
-        self.gridLayout.addWidget(self.pushButton, 12, 0, 1, 1)
+        self.gridLayout.addWidget(self.updates, 12, 0, 1, 1)
 
         self.label_46 = QLabel(self.menu)
         self.label_46.setObjectName(u"label_46")
@@ -1605,6 +1605,70 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.Domain_tab)
         self.DB_tab = QWidget()
         self.DB_tab.setObjectName(u"DB_tab")
+        self.verticalLayout_35 = QVBoxLayout(self.DB_tab)
+        self.verticalLayout_35.setObjectName(u"verticalLayout_35")
+        self.frame_35 = QFrame(self.DB_tab)
+        self.frame_35.setObjectName(u"frame_35")
+        self.frame_35.setFrameShape(QFrame.StyledPanel)
+        self.frame_35.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_38 = QVBoxLayout(self.frame_35)
+        self.verticalLayout_38.setObjectName(u"verticalLayout_38")
+        self.label_66 = QLabel(self.frame_35)
+        self.label_66.setObjectName(u"label_66")
+
+        self.verticalLayout_38.addWidget(self.label_66)
+
+        self.frame_37 = QFrame(self.frame_35)
+        self.frame_37.setObjectName(u"frame_37")
+        self.frame_37.setFrameShape(QFrame.StyledPanel)
+        self.frame_37.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_37 = QVBoxLayout(self.frame_37)
+        self.verticalLayout_37.setObjectName(u"verticalLayout_37")
+        self.gridLayout_11 = QGridLayout()
+        self.gridLayout_11.setObjectName(u"gridLayout_11")
+        self.label_67 = QLabel(self.frame_37)
+        self.label_67.setObjectName(u"label_67")
+
+        self.gridLayout_11.addWidget(self.label_67, 0, 0, 1, 1)
+
+        self.lineEdit_2 = QLineEdit(self.frame_37)
+        self.lineEdit_2.setObjectName(u"lineEdit_2")
+
+        self.gridLayout_11.addWidget(self.lineEdit_2, 0, 1, 1, 1)
+
+        self.lineEdit_3 = QLineEdit(self.frame_37)
+        self.lineEdit_3.setObjectName(u"lineEdit_3")
+
+        self.gridLayout_11.addWidget(self.lineEdit_3, 1, 1, 1, 1)
+
+        self.label_68 = QLabel(self.frame_37)
+        self.label_68.setObjectName(u"label_68")
+
+        self.gridLayout_11.addWidget(self.label_68, 1, 0, 1, 1)
+
+
+        self.verticalLayout_37.addLayout(self.gridLayout_11)
+
+
+        self.verticalLayout_38.addWidget(self.frame_37)
+
+        self.frame_36 = QFrame(self.frame_35)
+        self.frame_36.setObjectName(u"frame_36")
+        self.frame_36.setFrameShape(QFrame.StyledPanel)
+        self.frame_36.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_36 = QVBoxLayout(self.frame_36)
+        self.verticalLayout_36.setObjectName(u"verticalLayout_36")
+        self.pushButton_5 = QPushButton(self.frame_36)
+        self.pushButton_5.setObjectName(u"pushButton_5")
+
+        self.verticalLayout_36.addWidget(self.pushButton_5)
+
+
+        self.verticalLayout_38.addWidget(self.frame_36)
+
+
+        self.verticalLayout_35.addWidget(self.frame_35)
+
         self.stackedWidget.addWidget(self.DB_tab)
         self.Programs_tab = QWidget()
         self.Programs_tab.setObjectName(u"Programs_tab")
@@ -1629,6 +1693,7 @@ class Ui_MainWindow(object):
         __qtablewidgetitem65 = QTableWidgetItem()
         self.installed_table.setHorizontalHeaderItem(3, __qtablewidgetitem65)
         self.installed_table.setObjectName(u"installed_table")
+        self.installed_table.setContextMenuPolicy(Qt.CustomContextMenu)
 
         self.verticalLayout_31.addWidget(self.installed_table)
 
@@ -1699,6 +1764,110 @@ class Ui_MainWindow(object):
         self.verticalLayout_29.addWidget(self.frame_30)
 
         self.stackedWidget.addWidget(self.Programs_tab)
+        self.Updates_tab = QWidget()
+        self.Updates_tab.setObjectName(u"Updates_tab")
+        self.verticalLayout_32 = QVBoxLayout(self.Updates_tab)
+        self.verticalLayout_32.setObjectName(u"verticalLayout_32")
+        self.frame_33 = QFrame(self.Updates_tab)
+        self.frame_33.setObjectName(u"frame_33")
+        self.frame_33.setMaximumSize(QSize(16777215, 250))
+        self.frame_33.setFrameShape(QFrame.StyledPanel)
+        self.frame_33.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_34 = QVBoxLayout(self.frame_33)
+        self.verticalLayout_34.setObjectName(u"verticalLayout_34")
+        self.updates_table = QTableWidget(self.frame_33)
+        self.updates_table.setObjectName(u"updates_table")
+
+        self.verticalLayout_34.addWidget(self.updates_table)
+
+
+        self.verticalLayout_32.addWidget(self.frame_33)
+
+        self.frame_34 = QFrame(self.Updates_tab)
+        self.frame_34.setObjectName(u"frame_34")
+        self.frame_34.setFrameShape(QFrame.StyledPanel)
+        self.frame_34.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_33 = QVBoxLayout(self.frame_34)
+        self.verticalLayout_33.setObjectName(u"verticalLayout_33")
+        self.label_65 = QLabel(self.frame_34)
+        self.label_65.setObjectName(u"label_65")
+
+        self.verticalLayout_33.addWidget(self.label_65)
+
+        self.args = QLineEdit(self.frame_34)
+        self.args.setObjectName(u"args")
+
+        self.verticalLayout_33.addWidget(self.args)
+
+        self.gridLayout_10 = QGridLayout()
+        self.gridLayout_10.setObjectName(u"gridLayout_10")
+        self.hide = QPushButton(self.frame_34)
+        self.hide.setObjectName(u"hide")
+
+        self.gridLayout_10.addWidget(self.hide, 3, 0, 1, 1)
+
+        self.offline_sync = QPushButton(self.frame_34)
+        self.offline_sync.setObjectName(u"offline_sync")
+
+        self.gridLayout_10.addWidget(self.offline_sync, 2, 1, 1, 1)
+
+        self.history = QPushButton(self.frame_34)
+        self.history.setObjectName(u"history")
+
+        self.gridLayout_10.addWidget(self.history, 4, 0, 1, 1)
+
+        self.settings = QPushButton(self.frame_34)
+        self.settings.setObjectName(u"settings")
+
+        self.gridLayout_10.addWidget(self.settings, 3, 1, 1, 1)
+
+        self.uninstall = QPushButton(self.frame_34)
+        self.uninstall.setObjectName(u"uninstall")
+
+        self.gridLayout_10.addWidget(self.uninstall, 2, 0, 1, 1)
+
+        self.update_service = QPushButton(self.frame_34)
+        self.update_service.setObjectName(u"update_service")
+
+        self.gridLayout_10.addWidget(self.update_service, 1, 1, 1, 1)
+
+        self.set_target = QPushButton(self.frame_34)
+        self.set_target.setObjectName(u"set_target")
+
+        self.gridLayout_10.addWidget(self.set_target, 4, 1, 1, 1)
+
+        self.check = QPushButton(self.frame_34)
+        self.check.setObjectName(u"check")
+
+        self.gridLayout_10.addWidget(self.check, 0, 0, 1, 1)
+
+        self.schedule = QPushButton(self.frame_34)
+        self.schedule.setObjectName(u"schedule")
+
+        self.gridLayout_10.addWidget(self.schedule, 0, 1, 1, 1)
+
+        self.install = QPushButton(self.frame_34)
+        self.install.setObjectName(u"install")
+
+        self.gridLayout_10.addWidget(self.install, 1, 0, 1, 1)
+
+        self.history_24h = QPushButton(self.frame_34)
+        self.history_24h.setObjectName(u"history_24h")
+
+        self.gridLayout_10.addWidget(self.history_24h, 5, 0, 1, 1)
+
+        self.help = QPushButton(self.frame_34)
+        self.help.setObjectName(u"help")
+
+        self.gridLayout_10.addWidget(self.help, 5, 1, 1, 1)
+
+
+        self.verticalLayout_33.addLayout(self.gridLayout_10)
+
+
+        self.verticalLayout_32.addWidget(self.frame_34)
+
+        self.stackedWidget.addWidget(self.Updates_tab)
 
         self.verticalLayout_2.addWidget(self.stackedWidget)
 
@@ -1719,7 +1888,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_17.setContentsMargins(0, 0, 0, 0)
         self.clients_list = QTreeWidget(self.right_main)
         __qtreewidgetitem = QTreeWidgetItem()
-        __qtreewidgetitem.setText(0, u"1");
+        __qtreewidgetitem.setText(0, u"UVT");
         self.clients_list.setHeaderItem(__qtreewidgetitem)
         self.clients_list.setObjectName(u"clients_list")
         self.clients_list.setDragEnabled(True)
@@ -1786,7 +1955,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(10)
+        self.stackedWidget.setCurrentIndex(11)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1802,7 +1971,7 @@ class Ui_MainWindow(object):
         self.close_button.setText("")
         self.label_23.setText(QCoreApplication.translate("MainWindow", u"Domain", None))
         self.Storage.setText("")
-        self.tabel_DB.setText("")
+        self.DB.setText("")
         self.LocalAcc.setText("")
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Power", None))
         self.Sysinfo.setText("")
@@ -1812,7 +1981,7 @@ class Ui_MainWindow(object):
         self.Sensors.setText("")
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"Local Account", None))
         self.program.setText("")
-        self.pushButton.setText("")
+        self.updates.setText("")
         self.label_46.setText(QCoreApplication.translate("MainWindow", u"Locations", None))
         self.label_48.setText(QCoreApplication.translate("MainWindow", u"Programs", None))
         self.Network.setText("")
@@ -2032,6 +2201,10 @@ class Ui_MainWindow(object):
         self.label_28.setText(QCoreApplication.translate("MainWindow", u"Domain:", None))
         self.label_30.setText(QCoreApplication.translate("MainWindow", u"Administrator Domain Password:", None))
         self.add_domain.setText(QCoreApplication.translate("MainWindow", u"Add to domain", None))
+        self.label_66.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_67.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.label_68.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
+        self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
         ___qtablewidgetitem60 = self.installed_table.horizontalHeaderItem(0)
         ___qtablewidgetitem60.setText(QCoreApplication.translate("MainWindow", u"Name", None));
         ___qtablewidgetitem61 = self.installed_table.horizontalHeaderItem(1)
@@ -2048,6 +2221,20 @@ class Ui_MainWindow(object):
         self.label_59.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"Install", None))
         self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"Uninstall", None))
+        self.label_65.setText(QCoreApplication.translate("MainWindow", u"OPTIONS", None))
+        self.args.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Input", None))
+        self.hide.setText(QCoreApplication.translate("MainWindow", u"Hide-Updates", None))
+        self.offline_sync.setText(QCoreApplication.translate("MainWindow", u"add-offline-sync-service <FILE_PATH>", None))
+        self.history.setText(QCoreApplication.translate("MainWindow", u"get-update-history", None))
+        self.settings.setText(QCoreApplication.translate("MainWindow", u"get-update-settings", None))
+        self.uninstall.setText(QCoreApplication.translate("MainWindow", u"uninstall-update", None))
+        self.update_service.setText(QCoreApplication.translate("MainWindow", u"add-microsoft-update-service", None))
+        self.set_target.setText(QCoreApplication.translate("MainWindow", u"set-target-version ", None))
+        self.check.setText(QCoreApplication.translate("MainWindow", u"Check for updates", None))
+        self.schedule.setText(QCoreApplication.translate("MainWindow", u"schedule-update ", None))
+        self.install.setText(QCoreApplication.translate("MainWindow", u"Install updates", None))
+        self.history_24h.setText(QCoreApplication.translate("MainWindow", u"get-update-history-24h", None))
+        self.help.setText(QCoreApplication.translate("MainWindow", u"Help", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Version 1.0", None))
         self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"?", None))
     # retranslateUi
