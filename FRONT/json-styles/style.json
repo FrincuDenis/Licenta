@@ -11,9 +11,9 @@
         {
           "CustomTheme": [
             {
-              "Background-color": "#000000",
+              "Background-color": "#1E1E1E",
               "Text-color": "#FFFFFF",
-              "Accent-color": "#FF0000",
+              "Accent-color": "#808080",
               "Icons-color": "#ffffff",
               "Theme-name": "Default-theme",
               "Default-Theme": true

@@ -136,7 +136,7 @@ class Server(QObject):
         self.server_socket.listen(5)
         self.clients = {}
         self.command_queue = []
-        self.chunk_size = 4096
+        self.chunk_size = 7196
         self.stop_event = threading.Event()
 
     def handle_client(self, client_socket, client_address):
@@ -161,7 +161,7 @@ class Server(QObject):
                 if self.stop_event.is_set():
                     break
                 try:
-                    time.sleep(0.2)
+                    time.sleep(3)
                     self.send_command(client_socket, command)
                     command_received, data_received = self.receive_response(client_socket)
                     if command_received:
@@ -172,7 +172,7 @@ class Server(QObject):
     def send_command(self, client_socket, command):
         full_command = command.encode() + b"\1"
         client_socket.sendall(full_command)
-        print(f"Sent command to client: {command}")
+        #print(f"Sent command to client: {command}")
 
     def receive_response(self, client_socket):
         response = bytearray()
@@ -226,9 +226,8 @@ class Server(QObject):
 
     def cleanup_client(self, client_socket, client_name):
         client_socket.close()
-        if client_name in self.clients:
-            del self.clients[client_name]
-        print(f"Cleaned up client {client_name}")
+        del self.clients[client_name]
+        print(f"Client {client_name} has been disconnected and cleaned up.")
 
     def stop(self):
         self.stop_event.set()

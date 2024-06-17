@@ -7,12 +7,13 @@ import time
 import traceback
 from functools import partial
 
+import psutil
+
 from server import Server
 ########################################################################
 # IMPORT GUI FILE
 from src.ui_interface import *
 ########################################################################
-from src.fnct import *
 from PySide2.QtCore import *
 import clr  # the pythonnet module
 import faulthandler
@@ -1688,7 +1689,8 @@ class CommandWorker(QRunnable):
                 "get_group": self.main.data['grp'],
                 "set_hwid": self.main.data['set_hwid'],
                 "hardware": self.main.data['hardware'],
-                "installed_programs": self.main.data['installed_programs']
+                "installed_programs": self.main.data['installed_programs'],
+                "powershell_result":self.main.data['PSH']
             }
             if cmd in command_map:
                 command_map[cmd][client_name].append(data)
@@ -1738,7 +1740,7 @@ class NetworkWorker(QRunnable):
         self.server.start()
 
 class MainWindow(QMainWindow):
-    update_ui_signal = Signal(str, dict, str)
+    update_ui_signal = Signal(str, dict, str)  # Define the signal here
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -1756,7 +1758,7 @@ class MainWindow(QMainWindow):
         self.sorter = CommandWorker(self, self.server)
         self.sorter.signals.update_data.connect(self.handle_update_data)
         self.sorter.signals.status_proc.connect(self.handle_client_response)
-        self.update_ui_signal.connect(self.update_ui_elements)
+        self.update_ui_signal.connect(self.update_ui_elements)  # Connect the signal here
         self.process_loader_thread = QThread()
         self.process_loader_worker = ProcessLoaderWorker()
         self.process_loader_worker.moveToThread(self.process_loader_thread)
@@ -1765,13 +1767,26 @@ class MainWindow(QMainWindow):
         self.process_loader_thread.started.connect(self.process_loader_worker.run)
         self.start_threads()
 
-        loadJsonStyle(self, self.ui, jsonFiles={
-            "json-styles/style.json"
-        })
+        loadJsonStyle(self, self.ui, jsonFiles={"json-styles/style.json"})
         QAppSettings.updateAppSettings(self)
 
         self.initialize_buttons()
+        # Set up the QTreeWidget with two columns
+        self.ui.clients_list.setColumnCount(2)
+        self.ui.clients_list.setHeaderLabels(["Client Name", "Status"])
 
+        # Enable drag and drop
+        self.ui.clients_list.setDragEnabled(True)
+        self.ui.clients_list.setAcceptDrops(True)
+        self.ui.clients_list.setDropIndicatorShown(True)
+        self.ui.clients_list.setDragDropMode(QAbstractItemView.InternalMove)
+
+        # Restore the state of the QTreeWidget
+        self.restore_clients_list_state()
+
+        # Ensure save state on close
+        self.ui.close_button.clicked.connect(self.save_clients_list_state)
+        self.ui.resize_button.clicked.connect(self.save_clients_list_state)
     def initialize_buttons(self):
         button_names = [
             "offline_sync",
@@ -1785,7 +1800,6 @@ class MainWindow(QMainWindow):
             "install",
             "history_24h",
             "hide",
-            "help"
         ]
 
         commands = {
@@ -1800,50 +1814,74 @@ class MainWindow(QMainWindow):
             "install": "install-updates",
             "history_24h": "get-update-history-24h",
             "hide": "hide-update",
-            "help": "show-help"
         }
 
         for button_name in button_names:
             button = getattr(self.ui, f"{button_name}")
-            button.clicked.connect(lambda cmd=commands[button_name]: self.send_command(cmd))
-
-
+            button.clicked.connect(partial(self.send_command, commands[button_name]))
+        self.ui.help.clicked.connect(self.show_help)
     def send_command(self, command):
+        print(f"full_command: {command}")
         args = self.ui.args.text().strip()
         full_command = command
         if args:
             full_command += f" {args}"
         client_name = self.current_client_name
-        print(f"full_command: {full_command}")
-        self.server.send_command(client_name, full_command)
+
+        self.server.data_send(full_command,client_name,"powershell_command" )
 
     def handle_update_data(self, command, data, client_name):
-        print(f"Name of the client: {client_name}")
+        print(f"handle_update_data called with command: {command}, data: {data}, client_name: {client_name}")
+
         self.update_ui_signal.emit(command, data, client_name)
         if command == "hardware":
             self.handle_hardware_info_response(client_name)
-        elif command in ["get-update-history", "check-updates"]:
-            self.display_response_in_table(data)
-        elif command == "show-help":
-            self.display_help_in_table(data)
+        elif command == "powershell_result":
+            self.handle_powershell_result(data)
 
-    def display_response_in_table(self, response):
+    def handle_powershell_result(self, response):
         self.ui.updates_table.clear()
-        lines = response.splitlines()
 
-        if not lines:
+        # Assuming response is a plain text string
+        response_text = response.strip()
+        lines = response_text.splitlines()
+
+        # Debugging line to inspect lines
+        print(f"lines: {lines}")
+
+        if not lines or len(lines) < 2:
             return
 
-        headers = lines[1].split()
+        # Extract headers dynamically
+        headers_line = lines[0].strip()
+        headers = headers_line.split()
+
+        # Calculate start positions of each column based on header line
+        header_positions = []
+        last_pos = 0
+        for header in headers:
+            header_start = headers_line.index(header, last_pos)
+            header_positions.append(header_start)
+            last_pos = header_start + len(header)
+        header_positions.append(len(headers_line))  # Add end position of the last column
+
+        # Debugging lines to inspect headers and their positions
+        print(f"headers: {headers}")
+        print(f"header_positions: {header_positions}")
+
         self.ui.updates_table.setColumnCount(len(headers))
         self.ui.updates_table.setHorizontalHeaderLabels(headers)
-
-        col_indices = [lines[1].index(header) for header in headers] + [len(lines[0])]
 
         self.ui.updates_table.setRowCount(len(lines) - 2)
         for row_idx, line in enumerate(lines[2:]):
             for col_idx in range(len(headers)):
-                item_text = line[col_indices[col_idx]:col_indices[col_idx + 1]].strip()
+                col_start = header_positions[col_idx]
+                if col_idx == len(headers) - 1:
+                    # For the last column, take the rest of the line
+                    item_text = line[col_start:].strip()
+                else:
+                    col_end = header_positions[col_idx + 1]
+                    item_text = line[col_start:col_end].strip()
                 self.ui.updates_table.setItem(row_idx, col_idx, QTableWidgetItem(item_text))
 
         self.ui.updates_table.resizeColumnsToContents()
@@ -1940,7 +1978,8 @@ class MainWindow(QMainWindow):
             'grp': {},
             'set_hwid': {},
             'hardware': {},
-            'installed_programs': {}
+            'installed_programs': {},
+            'PSH':{}
         }
 
     def setup_ui_elements(self):
@@ -1960,16 +1999,18 @@ class MainWindow(QMainWindow):
         self.clickPosition = QPoint()
         self.ui.header_frame.mousePressEvent = self.mousePressEvent
         self.ui.header_frame.mouseMoveEvent = self.moveWindow
-
+        self.restore_clients_list_state()
         self.populate_clients_list()
         self.ui.clients_list.itemSelectionChanged.connect(self.client_selection_changed)
-
-        self.restore_clients_list_state()
-
+        self.ui.clients_list.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.ui.clients_list.customContextMenuRequested.connect(self.open_menu)
+        self.ui.interval_avg.currentIndexChanged.connect(self.update_info_label)
+        self.ui.update_int.currentIndexChanged.connect(self.update_csv_timer)
+        self.ui.update_int.currentTextChanged.connect(self.update_info_label)
         self.status_update_timer = QTimer(self)
         self.status_update_timer.timeout.connect(self.update_client_status)
         self.status_update_timer.start(5000)
-
+        self.start_csv_timer()
     def connect_buttons(self):
         button_connections = {
             self.ui.Domain: self.ui.Domain_tab,
@@ -1994,15 +2035,186 @@ class MainWindow(QMainWindow):
     def make_tab_switcher(self, tab):
         return lambda: self.ui.stackedWidget.setCurrentWidget(tab)
 
+    def remove_client(self, index):
+        client_name = self.ui.clients_list.itemFromIndex(index).text(0)
+        print(f"Remove {client_name}")
+    def delete_client(self, index):
+        item = self.ui.clients_list.itemFromIndex(index)
+        client_name = item.text(0)
+        self.server.data_send("shutdown", client_name, "shutdown")
+        self.server.cleanup_client(self.server.clients[client_name], client_name)
+        self.ui.clients_list.takeTopLevelItem(self.ui.clients_list.indexOfTopLevelItem(item))
+        print(f"Deleted {client_name}")
+
+    def open_menu(self, position):
+        indexes = self.ui.clients_list.selectedIndexes()
+        if not indexes:
+            return
+
+        menu = QMenu()
+        actions = [
+            ("Delete", self.delete_client)
+        ]
+
+        for action_text, action_method in actions:
+            action = QAction(action_text, self)
+            action.triggered.connect(partial(action_method, indexes[0]))
+            menu.addAction(action)
+
+        menu.exec_(self.ui.clients_list.viewport().mapToGlobal(position))
     def start_threads(self):
         self.threadpool.start(self.network_worker)
         self.threadpool.start(self.sorter)
 
+    def handle_power(self, response):
+
+        self.update_ui_element(self.ui.cpu_consume, response["cpu_power"])
+        if response["igpu_power"] > 0:
+            self.update_ui_element(self.ui.igpu_consume, response["igpu_power"])
+        self.update_ui_element(self.ui.gpu_consume, response["dgpu_power"])
+        avg = (response["dgpu_power"] + response["cpu_power"]) / 2
+        self.update_ui_element(self.ui.avg_consumed, avg)
+        self.update_split_progress_bar(self.ui.power_progress, (100, 100, 300),
+                                       (response["cpu_power"], response["dgpu_power"], avg),
+                                       ((6, 233, 38), (6, 201, 233), (233, 6, 201)),
+                                       ('West', 'West', 'West'))
+
+    def update_info_label(self):
+        time_range = self.ui.interval_avg.currentText()
+        interval = self.ui.update_int.currentText()
+        avg_power = self.calculate_avg_power_from_csv()
+        self.ui.intervals.setText(f"Avg power consumed in the past {time_range} is: {avg_power:.2f} W. "
+                                   f"Power Consumption results will be saved in {interval}.")
+
+    def calculate_avg_power_from_csv(self):
+        client_name = self.current_client_name
+        if not client_name:
+            return 0
+
+        power_data = self.read_power_data_from_csv(client_name)
+        time_range = self.ui.interval_avg.currentText()
+        start_date, end_date = self.get_date_range(time_range)
+        filtered_data = self.filter_power_data(power_data, start_date, end_date)
+
+        if filtered_data:
+            cpu_power_avg = sum(float(data['cpu_power']) for data in filtered_data) / len(filtered_data)
+            dgpu_power_avg = sum(float(data['dgpu_power']) for data in filtered_data) / len(filtered_data)
+            igpu_power_avg = sum(float(data['igpu_power']) for data in filtered_data) / len(filtered_data)
+            avg = (cpu_power_avg + dgpu_power_avg + igpu_power_avg) / 3
+        else:
+            avg = 0
+        return avg
+
+    def read_power_data_from_csv(self, client_name):
+        file_path = "power_data.csv"
+        if not os.path.isfile(file_path):
+            return []
+
+        power_data = []
+        with open(file_path, 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['client_name'] == client_name:
+                    power_data.append(row)
+        return power_data
+
+    def get_date_range(self, time_range):
+        end_date = datetime.datetime.now()
+        if time_range == "24h":
+            start_date = end_date - datetime.timedelta(hours=24)
+        elif time_range == "1 week":
+            start_date = end_date - datetime.timedelta(weeks=1)
+        elif time_range == "1 month":
+            start_date = end_date - datetime.timedelta(days=30)
+        else:
+            start_date = end_date - datetime.timedelta(hours=24)
+        return start_date, end_date
+
+    def filter_power_data(self, data, start_date, end_date):
+        filtered_data = [entry for entry in data if
+                         start_date <= datetime.datetime.strptime(entry['timestamp'], "%Y-%m-%d %H:%M:%S") <= end_date]
+        return filtered_data
+
+    def update_csv_timer(self):
+        interval = self.ui.update_int.currentText()
+        if interval == "every minute":
+            self.csv_timer.start(60 * 1000)
+        elif interval == "5 minutes":
+            self.csv_timer.start(5 * 60 * 1000)
+        elif interval == "10 minutes":
+            self.csv_timer.start(10 * 60 * 1000)
+        elif interval == "30 minutes":
+            self.csv_timer.start(30 * 60 * 1000)
+        elif interval == "1 hour":
+            self.csv_timer.start(60 * 60 * 1000)
+
+    def start_csv_timer(self):
+        self.csv_timer = QTimer(self)
+        self.csv_timer.timeout.connect(self.write_data_to_csv)
+        self.update_csv_timer()
+
+    def write_data_to_csv(self):
+        client_name = self.current_client_name
+        if client_name is None:
+            return
+
+        # Assuming we are writing the current power data to CSV
+        power_data = self.data['power_com'].get(client_name, [])
+        if not power_data:
+            return
+
+        file_path = "power_data.csv"
+        file_exists = os.path.isfile(file_path)
+        client_item = self.ui.clients_list.findItems(client_name, Qt.MatchExactly)[0]
+        client_path = self.get_item_path(client_item)
+
+        with open(file_path, mode='a', newline='') as file:
+            writer = csv.DictWriter(file,
+                                    fieldnames=["client_path", "client_name", "cpu_power", "dgpu_power", "igpu_power",
+                                                "timestamp"])
+            if not file_exists:
+                print("i get here")
+                writer.writeheader()
+            for entry in power_data:
+                entry['client_name'] = client_name
+                entry['client_path'] = client_path
+                entry['timestamp'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                writer.writerow({
+                    "client_path": entry['client_path'],
+                    "client_name": entry['client_name'],
+                    "cpu_power": entry['cpu_power'],
+                    "dgpu_power": entry['dgpu_power'],
+                    "igpu_power": entry['igpu_power'],
+                    "timestamp": entry['timestamp']
+                })
+
+    def start_clean_csv_timer(self):
+        self.clean_csv_timer = QTimer(self)
+        self.clean_csv_timer.timeout.connect(self.clean_csv_file)
+        self.clean_csv_timer.start(24 * 60 * 60 * 1000)  # Clean CSV file every 24 hours
+
+    def clean_csv_file(self):
+        file_path = "power_data.csv"
+        if not os.path.isfile(file_path):
+            return
+
+        with open(file_path, 'r') as file:
+            rows = list(csv.DictReader(file))
+
+        cutoff_date = datetime.datetime.now() - datetime.timedelta(days=60)
+        rows = [row for row in rows if datetime.datetime.strptime(row['timestamp'], "%Y-%m-%d %H:%M:%S") > cutoff_date]
+
+        with open(file_path, 'w', newline='') as file:
+            writer = csv.DictWriter(file,
+                                    fieldnames=["client_path", "client_name", "cpu_power", "dgpu_power", "igpu_power",
+                                                "timestamp"])
+            writer.writeheader()
+            writer.writerows(rows)
     @Slot()
     def populate_clients_list(self):
         self.ui.clients_list.clear()
         for client_name in self.server.clients.keys():
-            item = QTreeWidgetItem([client_name])
+            item = QTreeWidgetItem([client_name, "offline"])
             self.ui.clients_list.addTopLevelItem(item)
 
     def update_client_status(self):
@@ -2012,13 +2224,23 @@ class MainWindow(QMainWindow):
                 client_socket.sendall(b'ping\1')
                 response = client_socket.recv(1024)
                 if response.decode() == 'pong':
+                    self.set_client_status(client_name, 'online')
                     print(f"{client_name} is online")
                 else:
+                    self.set_client_status(client_name, 'offline')
                     print(f"{client_name} did not respond correctly")
             except Exception as e:
+                self.set_client_status(client_name, 'offline')
                 print(f"Error checking status of {client_name}: {e}")
                 self.server.cleanup_client(client_socket, client_name)
                 self.populate_clients_list()
+
+    def set_client_status(self, client_name, status):
+        for index in range(self.ui.clients_list.topLevelItemCount()):
+            item = self.ui.clients_list.topLevelItem(index)
+            if item.text(0) == client_name:
+                item.setText(1, status)
+                break
 
     def client_selection_changed(self):
         selected_items = self.ui.clients_list.selectedItems()
@@ -2030,6 +2252,7 @@ class MainWindow(QMainWindow):
             "selected_items": [item.text(0) for item in self.ui.clients_list.selectedItems()],
             "expanded_items": self.get_expanded_items(self.ui.clients_list)
         }
+        print(state)
         with open("clients_list_state.pkl", "wb") as f:
             pickle.dump(state, f)
 
@@ -2089,7 +2312,8 @@ class MainWindow(QMainWindow):
             "is_in_domain": self.handle_set_domain,
             "fetch_all_user_info": self.handle_set_users,
             "get_group": self.grupe,
-            "installed_programs": self.installed_programs
+            "installed_programs": self.installed_programs,
+            "powershell_result": self.handle_powershell_result,
         }
 
         if command in command_map:
@@ -2119,18 +2343,14 @@ class MainWindow(QMainWindow):
                                        (response['available_ram'], response['used_ram'], response['ram_free']),
                                        ((6, 233, 38), (6, 201, 233), (233, 6, 201)), ('West', 'West', 'West'))
 
-    def handle_power(self, response):
-        self.update_ui_element(self.ui.cpu_consume, response["cpu_power"])
-        if response["igpu_power"] > 0:
-            self.update_ui_element(self.ui.igpu_consume, response["igpu_power"])
-        self.update_ui_element(self.ui.gpu_consume, response["dgpu_power"])
-        avg = (response["dgpu_power"] + response["cpu_power"]) / 2
-        self.update_ui_element(self.ui.avg_consumed, avg)
-        self.update_split_progress_bar(self.ui.power_progress, (100, 100, 300),
-                                       (response["cpu_power"], response["dgpu_power"], avg),
-                                       ((6, 233, 38), (6, 201, 233), (233, 6, 201)),
-                                       ('West', 'West', 'West'))
 
+
+    def get_item_path(self, item):
+        path = []
+        while item is not None:
+            path.append(item.text(0))
+            item = item.parent()
+        return ' > '.join(reversed(path))
     def handle_storage(self, storage_infos):
         scroll_bar_value = self.ui.storageTable.verticalScrollBar().value()
         self.ui.storageTable.setRowCount(0)
@@ -2562,10 +2782,20 @@ class MainWindow(QMainWindow):
         progress_bar.spb_lineCap(line_caps)
         progress_bar.spb_setPathHidden(path_hidden)
 
-    def closer(self):
+    def closer(self,event):
         self.server.stop()
+        self.save_clients_list_state()
+        if event:
+            event.accept()
         self.close()
 
+    def dropEvent(self, event):
+        source_item = self.ui.clients_list.currentItem()
+        if source_item:
+            event.accept()
+        else:
+            event.ignore()
+        super().dropEvent(event)
 
 ######################################  ##################################
 ## EXECUTE APP
@@ -2580,11 +2810,12 @@ if __name__ == "__main__":
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())
-    # TODO:INSTALLER
+    # TODO:DB
     # WIDGET PT BAZA DE DATE DE ADAUGAT LOCATII
-    # BUTON INVENTAR(pe viitor de adaugat locatii),BUTON RAPORT CURENT consumat
-    # update-uri
-    # sa salvez treewidged-ul
+    # BUTON INVENTAR(pe viitor de adaugat locatii)
+    # sa salvez treewidged-ul(need to fix,after db work)
+    # adaugare imprimante
+    # INSTALLER
 ########################################################################
 ## END===>
 ########################################################################

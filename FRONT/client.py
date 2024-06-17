@@ -81,6 +81,8 @@ class Client:
                 json_response = json.loads(response_str)
                 if isinstance(json_response, dict):
                     for command, data in json_response.items():
+                        print(data)
+                        print(command)
                         return command, data
             except json.JSONDecodeError as e:
                 print(f"JSON decode error: {e}")
@@ -143,13 +145,12 @@ class Client:
             print(f"Unknown command: {command}")
 
     def handle_powershell_command(self, data):
-        command = data.get("command")
         prerequisite_check = self.ps_server.check_and_install_components()
         self.send_data("prerequisite_check", prerequisite_check)
         if "Failed" in prerequisite_check:
             return
 
-        result = self.ps_server.handle_client_command(command)
+        result = self.ps_server.handle_client_command(data)
         self.send_data("powershell_result", result)
 
     def handle_ping(self):
