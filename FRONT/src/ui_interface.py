@@ -22,7 +22,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1132, 850)
+        MainWindow.resize(1217, 850)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -30,7 +30,6 @@ class Ui_MainWindow(object):
         MainWindow.setSizePolicy(sizePolicy)
         MainWindow.setStyleSheet(u"*{\n"
 "border: none;\n"
-"\n"
 "}\n"
 "")
         self.centralwidget = QWidget(MainWindow)
@@ -535,7 +534,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 569, 281))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 105, 105))
         self.horizontalLayout_19 = QHBoxLayout(self.scrollAreaWidgetContents_2)
         self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
         self.frame_20 = QFrame(self.scrollAreaWidgetContents_2)
@@ -1244,7 +1243,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 588, 1076))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 244, 1076))
         self.verticalLayout_11 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_11.setSpacing(20)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
@@ -1701,33 +1700,71 @@ class Ui_MainWindow(object):
         self.frame_35.setFrameShadow(QFrame.Raised)
         self.verticalLayout_38 = QVBoxLayout(self.frame_35)
         self.verticalLayout_38.setObjectName(u"verticalLayout_38")
+        self.frame_40 = QFrame(self.frame_35)
+        self.frame_40.setObjectName(u"frame_40")
+        self.frame_40.setFrameShape(QFrame.StyledPanel)
+        self.frame_40.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_37 = QVBoxLayout(self.frame_40)
+        self.verticalLayout_37.setObjectName(u"verticalLayout_37")
+        self.db_table = QTableWidget(self.frame_40)
+        self.db_table.setObjectName(u"db_table")
+
+        self.verticalLayout_37.addWidget(self.db_table)
+
+
+        self.verticalLayout_38.addWidget(self.frame_40)
+
+        self.frame_41 = QFrame(self.frame_35)
+        self.frame_41.setObjectName(u"frame_41")
+        self.frame_41.setFrameShape(QFrame.StyledPanel)
+        self.frame_41.setFrameShadow(QFrame.Raised)
+        self.gridLayout_13 = QGridLayout(self.frame_41)
+        self.gridLayout_13.setObjectName(u"gridLayout_13")
+        self.load_clienti = QPushButton(self.frame_41)
+        self.load_clienti.setObjectName(u"load_clienti")
+
+        self.gridLayout_13.addWidget(self.load_clienti, 0, 0, 1, 1, Qt.AlignLeft)
+
+        self.load_locatii = QPushButton(self.frame_41)
+        self.load_locatii.setObjectName(u"load_locatii")
+
+        self.gridLayout_13.addWidget(self.load_locatii, 0, 1, 1, 1)
+
+        self.load_incaperi = QPushButton(self.frame_41)
+        self.load_incaperi.setObjectName(u"load_incaperi")
+
+        self.gridLayout_13.addWidget(self.load_incaperi, 0, 2, 1, 1)
+
+
+        self.verticalLayout_38.addWidget(self.frame_41)
+
         self.frame_37 = QFrame(self.frame_35)
         self.frame_37.setObjectName(u"frame_37")
         self.frame_37.setFrameShape(QFrame.StyledPanel)
         self.frame_37.setFrameShadow(QFrame.Raised)
         self.gridLayout_11 = QGridLayout(self.frame_37)
         self.gridLayout_11.setObjectName(u"gridLayout_11")
-        self.label_67 = QLabel(self.frame_37)
-        self.label_67.setObjectName(u"label_67")
-        self.label_67.setFont(font2)
-
-        self.gridLayout_11.addWidget(self.label_67, 0, 0, 1, 1)
-
-        self.lineEdit_2 = QLineEdit(self.frame_37)
-        self.lineEdit_2.setObjectName(u"lineEdit_2")
-
-        self.gridLayout_11.addWidget(self.lineEdit_2, 0, 1, 1, 1)
-
         self.label_68 = QLabel(self.frame_37)
         self.label_68.setObjectName(u"label_68")
         self.label_68.setFont(font2)
 
         self.gridLayout_11.addWidget(self.label_68, 1, 0, 1, 1)
 
-        self.lineEdit_3 = QLineEdit(self.frame_37)
-        self.lineEdit_3.setObjectName(u"lineEdit_3")
+        self.label_67 = QLabel(self.frame_37)
+        self.label_67.setObjectName(u"label_67")
+        self.label_67.setFont(font2)
 
-        self.gridLayout_11.addWidget(self.lineEdit_3, 1, 1, 1, 1)
+        self.gridLayout_11.addWidget(self.label_67, 0, 0, 1, 1)
+
+        self.location_input = QLineEdit(self.frame_37)
+        self.location_input.setObjectName(u"location_input")
+
+        self.gridLayout_11.addWidget(self.location_input, 0, 1, 1, 1)
+
+        self.room_input = QLineEdit(self.frame_37)
+        self.room_input.setObjectName(u"room_input")
+
+        self.gridLayout_11.addWidget(self.room_input, 1, 1, 1, 1)
 
 
         self.verticalLayout_38.addWidget(self.frame_37)
@@ -1739,14 +1776,14 @@ class Ui_MainWindow(object):
         self.frame_36.setFrameShadow(QFrame.Raised)
         self.verticalLayout_36 = QVBoxLayout(self.frame_36)
         self.verticalLayout_36.setObjectName(u"verticalLayout_36")
-        self.pushButton_5 = QPushButton(self.frame_36)
-        self.pushButton_5.setObjectName(u"pushButton_5")
-        self.pushButton_5.setFont(font2)
+        self.add_button = QPushButton(self.frame_36)
+        self.add_button.setObjectName(u"add_button")
+        self.add_button.setFont(font2)
 
-        self.verticalLayout_36.addWidget(self.pushButton_5)
+        self.verticalLayout_36.addWidget(self.add_button)
 
 
-        self.verticalLayout_38.addWidget(self.frame_36, 0, Qt.AlignHCenter)
+        self.verticalLayout_38.addWidget(self.frame_36)
 
 
         self.verticalLayout_35.addWidget(self.frame_35)
@@ -2060,7 +2097,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(11)
+        self.stackedWidget.setCurrentIndex(9)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -2319,9 +2356,12 @@ class Ui_MainWindow(object):
         self.label_28.setText(QCoreApplication.translate("MainWindow", u"Domain:", None))
         self.label_30.setText(QCoreApplication.translate("MainWindow", u"Administrator Domain Password:", None))
         self.add_domain.setText(QCoreApplication.translate("MainWindow", u"Add to domain", None))
+        self.load_clienti.setText(QCoreApplication.translate("MainWindow", u"Clienti", None))
+        self.load_locatii.setText(QCoreApplication.translate("MainWindow", u"Locatii", None))
+        self.load_incaperi.setText(QCoreApplication.translate("MainWindow", u"Incaperi", None))
+        self.label_68.setText(QCoreApplication.translate("MainWindow", u"Incapere", None))
         self.label_67.setText(QCoreApplication.translate("MainWindow", u"Locatie:", None))
-        self.label_68.setText(QCoreApplication.translate("MainWindow", u"Laborator", None))
-        self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"Add ", None))
+        self.add_button.setText(QCoreApplication.translate("MainWindow", u"Add ", None))
         ___qtablewidgetitem60 = self.installed_table.horizontalHeaderItem(0)
         ___qtablewidgetitem60.setText(QCoreApplication.translate("MainWindow", u"Name", None));
         ___qtablewidgetitem61 = self.installed_table.horizontalHeaderItem(1)

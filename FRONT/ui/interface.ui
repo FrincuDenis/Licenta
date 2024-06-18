@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1132</width>
+    <width>1217</width>
     <height>850</height>
    </rect>
   </property>
@@ -22,7 +22,6 @@
   <property name="styleSheet">
    <string notr="true">*{
 border: none;
-
 }
 </string>
   </property>
@@ -744,7 +743,7 @@ background-color:#24374B;
           <item>
            <widget class="QStackedWidget" name="stackedWidget">
             <property name="currentIndex">
-             <number>11</number>
+             <number>9</number>
             </property>
             <widget class="QWidget" name="cpu_memory">
              <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1028,8 +1027,8 @@ background-color:#24374B;
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>569</width>
-                      <height>281</height>
+                      <width>105</width>
+                      <height>105</height>
                      </rect>
                     </property>
                     <layout class="QHBoxLayout" name="horizontalLayout_19">
@@ -2517,7 +2516,7 @@ background-color:#24374B;
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>588</width>
+                   <width>244</width>
                    <height>1076</height>
                   </rect>
                  </property>
@@ -3545,6 +3544,54 @@ background-color:#24374B;
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_38">
                  <item>
+                  <widget class="QFrame" name="frame_40">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_37">
+                    <item>
+                     <widget class="QTableWidget" name="db_table"/>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="frame_41">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QGridLayout" name="gridLayout_13">
+                    <item row="0" column="0" alignment="Qt::AlignLeft">
+                     <widget class="QPushButton" name="load_clienti">
+                      <property name="text">
+                       <string>Clienti</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QPushButton" name="load_locatii">
+                      <property name="text">
+                       <string>Locatii</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="2">
+                     <widget class="QPushButton" name="load_incaperi">
+                      <property name="text">
+                       <string>Incaperi</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
                   <widget class="QFrame" name="frame_37">
                    <property name="frameShape">
                     <enum>QFrame::StyledPanel</enum>
@@ -3553,6 +3600,18 @@ background-color:#24374B;
                     <enum>QFrame::Raised</enum>
                    </property>
                    <layout class="QGridLayout" name="gridLayout_11">
+                    <item row="1" column="0">
+                     <widget class="QLabel" name="label_68">
+                      <property name="font">
+                       <font>
+                        <family>ROG Fonts</family>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Incapere</string>
+                      </property>
+                     </widget>
+                    </item>
                     <item row="0" column="0">
                      <widget class="QLabel" name="label_67">
                       <property name="font">
@@ -3566,27 +3625,15 @@ background-color:#24374B;
                      </widget>
                     </item>
                     <item row="0" column="1">
-                     <widget class="QLineEdit" name="lineEdit_2"/>
-                    </item>
-                    <item row="1" column="0">
-                     <widget class="QLabel" name="label_68">
-                      <property name="font">
-                       <font>
-                        <family>ROG Fonts</family>
-                       </font>
-                      </property>
-                      <property name="text">
-                       <string>Laborator</string>
-                      </property>
-                     </widget>
+                     <widget class="QLineEdit" name="location_input"/>
                     </item>
                     <item row="1" column="1">
-                     <widget class="QLineEdit" name="lineEdit_3"/>
+                     <widget class="QLineEdit" name="room_input"/>
                     </item>
                    </layout>
                   </widget>
                  </item>
-                 <item alignment="Qt::AlignHCenter">
+                 <item>
                   <widget class="QFrame" name="frame_36">
                    <property name="maximumSize">
                     <size>
@@ -3602,7 +3649,7 @@ background-color:#24374B;
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_36">
                     <item>
-                     <widget class="QPushButton" name="pushButton_5">
+                     <widget class="QPushButton" name="add_button">
                       <property name="font">
                        <font>
                         <family>ROG Fonts</family>

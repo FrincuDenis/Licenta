@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1132</width>
-    <height>859</height>
+    <width>1217</width>
+    <height>850</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,7 +22,6 @@
   <property name="styleSheet">
    <string notr="true">*{
 border: none;
-background-color:#1E1E1E;
 }
 </string>
   </property>
@@ -106,10 +105,10 @@ background-color:#24374B;
            <widget class="QPushButton" name="menu_bt">
             <property name="font">
              <font>
-              <family>Asus Rog</family>
+              <family>ROG Fonts</family>
               <pointsize>10</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
+              <weight>50</weight>
+              <bold>false</bold>
              </font>
             </property>
             <property name="text">
@@ -130,7 +129,7 @@ background-color:#24374B;
          </layout>
         </widget>
        </item>
-       <item>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QFrame" name="header_center">
          <property name="minimumSize">
           <size>
@@ -164,6 +163,22 @@ background-color:#24374B;
            <number>0</number>
           </property>
           <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Preferred</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
            <widget class="QLabel" name="title_icon">
             <property name="maximumSize">
              <size>
@@ -185,7 +200,7 @@ background-color:#24374B;
             </property>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignLeft">
            <widget class="QLabel" name="title">
             <property name="maximumSize">
              <size>
@@ -195,10 +210,10 @@ background-color:#24374B;
             </property>
             <property name="font">
              <font>
-              <family>Asus Rog</family>
+              <family>ROG Fonts</family>
               <pointsize>12</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
+              <weight>50</weight>
+              <bold>false</bold>
              </font>
             </property>
             <property name="text">
@@ -208,22 +223,6 @@ background-color:#24374B;
           </item>
          </layout>
         </widget>
-       </item>
-       <item>
-        <spacer name="spacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>70</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
        </item>
        <item alignment="Qt::AlignRight">
         <widget class="QFrame" name="header_right">
@@ -557,6 +556,11 @@ background-color:#24374B;
              </item>
              <item row="9" column="1">
               <widget class="QLabel" name="label_46">
+               <property name="font">
+                <font>
+                 <family>ROG Fonts</family>
+                </font>
+               </property>
                <property name="text">
                 <string>Locations</string>
                </property>
@@ -564,6 +568,11 @@ background-color:#24374B;
              </item>
              <item row="11" column="1">
               <widget class="QLabel" name="label_48">
+               <property name="font">
+                <font>
+                 <family>ROG Fonts</family>
+                </font>
+               </property>
                <property name="text">
                 <string>Programs</string>
                </property>
@@ -709,6 +718,11 @@ background-color:#24374B;
              </item>
              <item row="12" column="1">
               <widget class="QLabel" name="label_49">
+               <property name="font">
+                <font>
+                 <family>ROG Fonts</family>
+                </font>
+               </property>
                <property name="text">
                 <string>Updates</string>
                </property>
@@ -729,7 +743,7 @@ background-color:#24374B;
           <item>
            <widget class="QStackedWidget" name="stackedWidget">
             <property name="currentIndex">
-             <number>11</number>
+             <number>9</number>
             </property>
             <widget class="QWidget" name="cpu_memory">
              <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -764,7 +778,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="cpu_per">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -776,7 +790,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_11">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -788,7 +802,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="cpu_cont">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -800,7 +814,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_12">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -812,7 +826,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="cpu_main_core">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -824,7 +838,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_10">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -861,7 +875,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="total_ram">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -873,7 +887,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_14">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -886,7 +900,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_16">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -899,7 +913,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="available_ram">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -911,7 +925,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_13">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -923,7 +937,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="used_ram">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -945,7 +959,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="ram_usage">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -957,7 +971,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_15">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -970,7 +984,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_17">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -982,7 +996,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="free_ram">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -1013,8 +1027,8 @@ background-color:#24374B;
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>569</width>
-                      <height>263</height>
+                      <width>105</width>
+                      <height>105</height>
                      </rect>
                     </property>
                     <layout class="QHBoxLayout" name="horizontalLayout_19">
@@ -1030,60 +1044,120 @@ background-color:#24374B;
                            <property name="text">
                             <string>User name</string>
                            </property>
-                          </column>
-                          <column>
-                           <property name="text">
-                            <string>Full Name</string>
+                           <property name="font">
+                            <font>
+                             <family>ROG Fonts</family>
+                            </font>
                            </property>
                           </column>
                           <column>
                            <property name="text">
                             <string>Description</string>
                            </property>
+                           <property name="font">
+                            <font>
+                             <family>ROG Fonts</family>
+                            </font>
+                           </property>
+                          </column>
+                          <column>
+                           <property name="text">
+                            <string>Full Name</string>
+                           </property>
+                           <property name="font">
+                            <font>
+                             <family>ROG Fonts</family>
+                            </font>
+                           </property>
                           </column>
                           <column>
                            <property name="text">
                             <string>User comment</string>
+                           </property>
+                           <property name="font">
+                            <font>
+                             <family>ROG Fonts</family>
+                            </font>
                            </property>
                           </column>
                           <column>
                            <property name="text">
                             <string>Active</string>
                            </property>
+                           <property name="font">
+                            <font>
+                             <family>ROG Fonts</family>
+                            </font>
+                           </property>
                           </column>
                           <column>
                            <property name="text">
                             <string>Expire</string>
+                           </property>
+                           <property name="font">
+                            <font>
+                             <family>ROG Fonts</family>
+                            </font>
                            </property>
                           </column>
                           <column>
                            <property name="text">
                             <string>Group</string>
                            </property>
+                           <property name="font">
+                            <font>
+                             <family>ROG Fonts</family>
+                            </font>
+                           </property>
                           </column>
                           <column>
                            <property name="text">
                             <string>Password Last Set</string>
+                           </property>
+                           <property name="font">
+                            <font>
+                             <family>ROG Fonts</family>
+                            </font>
                            </property>
                           </column>
                           <column>
                            <property name="text">
                             <string>Password Expires</string>
                            </property>
+                           <property name="font">
+                            <font>
+                             <family>ROG Fonts</family>
+                            </font>
+                           </property>
                           </column>
                           <column>
                            <property name="text">
                             <string>Password Changeable</string>
+                           </property>
+                           <property name="font">
+                            <font>
+                             <family>ROG Fonts</family>
+                            </font>
                            </property>
                           </column>
                           <column>
                            <property name="text">
                             <string>Password Required</string>
                            </property>
+                           <property name="font">
+                            <font>
+                             <family>ROG Fonts</family>
+                            </font>
+                           </property>
                           </column>
                           <column>
                            <property name="text">
                             <string>Last Logon</string>
+                           </property>
+                           <property name="font">
+                            <font>
+                             <family>ROG Fonts</family>
+                            </font>
                            </property>
                           </column>
                          </widget>
@@ -1287,6 +1361,11 @@ background-color:#24374B;
                            <height>0</height>
                           </size>
                          </property>
+                         <property name="font">
+                          <font>
+                           <family>ROG Fonts</family>
+                          </font>
+                         </property>
                          <property name="text">
                           <string>Active</string>
                          </property>
@@ -1305,6 +1384,11 @@ background-color:#24374B;
                            <width>70</width>
                            <height>16777215</height>
                           </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>ROG Fonts</family>
+                          </font>
                          </property>
                          <item>
                           <property name="text">
@@ -1332,6 +1416,11 @@ background-color:#24374B;
                       <layout class="QHBoxLayout" name="horizontalLayout_21">
                        <item alignment="Qt::AlignLeft">
                         <widget class="QLabel" name="label_43">
+                         <property name="font">
+                          <font>
+                           <family>ROG Fonts</family>
+                          </font>
+                         </property>
                          <property name="text">
                           <string>Group</string>
                          </property>
@@ -1350,6 +1439,11 @@ background-color:#24374B;
                            <width>200</width>
                            <height>16777215</height>
                           </size>
+                         </property>
+                         <property name="font">
+                          <font>
+                           <family>ROG Fonts</family>
+                          </font>
                          </property>
                         </widget>
                        </item>
@@ -1475,27 +1569,12 @@ background-color:#24374B;
              </layout>
             </widget>
             <widget class="QWidget" name="Power">
-             <layout class="QVBoxLayout" name="verticalLayout_3">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <property name="leftMargin">
-               <number>0</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="rightMargin">
-               <number>0</number>
-              </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
+             <layout class="QVBoxLayout" name="verticalLayout_39">
               <item>
                <widget class="QLabel" name="label_39">
                 <property name="font">
                  <font>
-                  <family>Asus Rog</family>
+                  <family>ROG Fonts</family>
                   <pointsize>12</pointsize>
                   <weight>75</weight>
                   <bold>true</bold>
@@ -1522,7 +1601,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_25">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -1534,7 +1613,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_27">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -1546,7 +1625,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_26">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -1558,7 +1637,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="battery_status">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -1570,7 +1649,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="battery_plugged">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -1582,7 +1661,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_37">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -1594,7 +1673,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="battery_time_left">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -1606,7 +1685,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="battery_charge">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -1632,23 +1711,11 @@ background-color:#24374B;
                  <enum>QFrame::NoFrame</enum>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_5">
-                 <item row="3" column="1">
-                  <widget class="QLabel" name="avg_consumed">
-                   <property name="font">
-                    <font>
-                     <family>Asus Rog</family>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>N/A</string>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="label_32">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -1672,43 +1739,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="igpu_consume">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>N/A</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="label_31">
-                   <property name="font">
-                    <font>
-                     <family>Asus Rog</family>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>GPU Power</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QLabel" name="label_40">
-                   <property name="font">
-                    <font>
-                     <family>Asus Rog</family>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>IGPU Power</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QLabel" name="gpu_consume">
-                   <property name="font">
-                    <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -1720,16 +1751,206 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_33">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
-                    <string>AVG Power</string>
+                    <string>Current AVG Power</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QLabel" name="gpu_consume">
+                   <property name="font">
+                    <font>
+                     <family>ROG Fonts</family>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>N/A</string>
                    </property>
                   </widget>
                  </item>
                  <item row="0" column="2" rowspan="4">
                   <widget class="spiralProgressBar" name="power_progress" native="true" />
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_31">
+                   <property name="font">
+                    <font>
+                     <family>ROG Fonts</family>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>GPU Power</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="QLabel" name="avg_consumed">
+                   <property name="font">
+                    <font>
+                     <family>ROG Fonts</family>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>N/A</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_40">
+                   <property name="font">
+                    <font>
+                     <family>ROG Fonts</family>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>IGPU Power</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="frame_39">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_3">
+                 <item>
+                  <widget class="QFrame" name="frame_38">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QGridLayout" name="gridLayout_12">
+                    <item row="1" column="1">
+                     <widget class="QComboBox" name="interval_avg">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>ROG Fonts</family>
+                       </font>
+                      </property>
+                      <item>
+                       <property name="text">
+                        <string>24h</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>1 week</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>1 month</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QComboBox" name="update_int">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>100</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>ROG Fonts</family>
+                       </font>
+                      </property>
+                      <item>
+                       <property name="text">
+                        <string>every minute</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>5 minutes</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>10 minutes</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>30 minutes</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>1 hour</string>
+                       </property>
+                      </item>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="label_69">
+                      <property name="font">
+                       <font>
+                        <family>ROG Fonts</family>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Update interval:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QLabel" name="label_70">
+                      <property name="font">
+                       <font>
+                        <family>ROG Fonts</family>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Avg power interval:</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item alignment="Qt::AlignHCenter">
+                  <widget class="QLabel" name="intervals">
+                   <property name="font">
+                    <font>
+                     <family>ROG Fonts</family>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </widget>
@@ -1779,7 +2000,7 @@ background-color:#24374B;
                  </property>
                  <property name="font">
                   <font>
-                   <family>Asus Rog</family>
+                   <family>ROG Fonts</family>
                   </font>
                  </property>
                 </column>
@@ -1789,7 +2010,7 @@ background-color:#24374B;
                  </property>
                  <property name="font">
                   <font>
-                   <family>Asus Rog</family>
+                   <family>ROG Fonts</family>
                   </font>
                  </property>
                 </column>
@@ -1799,7 +2020,7 @@ background-color:#24374B;
                  </property>
                  <property name="font">
                   <font>
-                   <family>Asus Rog</family>
+                   <family>ROG Fonts</family>
                   </font>
                  </property>
                 </column>
@@ -1809,7 +2030,7 @@ background-color:#24374B;
                  </property>
                  <property name="font">
                   <font>
-                   <family>Asus Rog</family>
+                   <family>ROG Fonts</family>
                   </font>
                  </property>
                 </column>
@@ -1819,7 +2040,7 @@ background-color:#24374B;
                  </property>
                  <property name="font">
                   <font>
-                   <family>Asus Rog</family>
+                   <family>ROG Fonts</family>
                   </font>
                  </property>
                 </column>
@@ -1829,7 +2050,7 @@ background-color:#24374B;
                  </property>
                  <property name="font">
                   <font>
-                   <family>Asus Rog</family>
+                   <family>ROG Fonts</family>
                   </font>
                  </property>
                 </column>
@@ -1839,7 +2060,7 @@ background-color:#24374B;
                  </property>
                  <property name="font">
                   <font>
-                   <family>Asus Rog</family>
+                   <family>ROG Fonts</family>
                   </font>
                  </property>
                 </column>
@@ -1849,7 +2070,7 @@ background-color:#24374B;
                  </property>
                  <property name="font">
                   <font>
-                   <family>Asus Rog</family>
+                   <family>ROG Fonts</family>
                   </font>
                  </property>
                 </column>
@@ -1859,7 +2080,7 @@ background-color:#24374B;
                  </property>
                  <property name="font">
                   <font>
-                   <family>Asus Rog</family>
+                   <family>ROG Fonts</family>
                   </font>
                  </property>
                 </column>
@@ -2024,7 +2245,7 @@ background-color:#24374B;
                     </property>
                     <property name="font">
                      <font>
-                      <family>Asus Rog</family>
+                      <family>ROG Fonts</family>
                      </font>
                     </property>
                    </column>
@@ -2034,7 +2255,7 @@ background-color:#24374B;
                     </property>
                     <property name="font">
                      <font>
-                      <family>Asus Rog</family>
+                      <family>ROG Fonts</family>
                      </font>
                     </property>
                    </column>
@@ -2044,7 +2265,7 @@ background-color:#24374B;
                     </property>
                     <property name="font">
                      <font>
-                      <family>Asus Rog</family>
+                      <family>ROG Fonts</family>
                      </font>
                     </property>
                    </column>
@@ -2054,7 +2275,7 @@ background-color:#24374B;
                     </property>
                     <property name="font">
                      <font>
-                      <family>Asus Rog</family>
+                      <family>ROG Fonts</family>
                      </font>
                     </property>
                    </column>
@@ -2064,7 +2285,7 @@ background-color:#24374B;
                     </property>
                     <property name="font">
                      <font>
-                      <family>Asus Rog</family>
+                      <family>ROG Fonts</family>
                      </font>
                     </property>
                    </column>
@@ -2074,7 +2295,7 @@ background-color:#24374B;
                     </property>
                     <property name="font">
                      <font>
-                      <family>Asus Rog</family>
+                      <family>ROG Fonts</family>
                      </font>
                     </property>
                    </column>
@@ -2084,7 +2305,7 @@ background-color:#24374B;
                     </property>
                     <property name="font">
                      <font>
-                      <family>Asus Rog</family>
+                      <family>ROG Fonts</family>
                      </font>
                     </property>
                    </column>
@@ -2094,7 +2315,7 @@ background-color:#24374B;
                     </property>
                     <property name="font">
                      <font>
-                      <family>Asus Rog</family>
+                      <family>ROG Fonts</family>
                      </font>
                     </property>
                    </column>
@@ -2128,7 +2349,7 @@ background-color:#24374B;
                   <widget class="QPushButton" name="pushButton_12">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2140,7 +2361,7 @@ background-color:#24374B;
                   <widget class="QPushButton" name="pushButton_13">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2152,7 +2373,7 @@ background-color:#24374B;
                   <widget class="QPushButton" name="pushButton_14">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2164,7 +2385,7 @@ background-color:#24374B;
                   <widget class="QPushButton" name="pushButton_15">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2220,7 +2441,7 @@ background-color:#24374B;
                  </property>
                  <property name="font">
                   <font>
-                   <family>Asus Rog</family>
+                   <family>ROG Fonts</family>
                   </font>
                  </property>
                 </column>
@@ -2230,7 +2451,7 @@ background-color:#24374B;
                  </property>
                  <property name="font">
                   <font>
-                   <family>Asus Rog</family>
+                   <family>ROG Fonts</family>
                   </font>
                  </property>
                 </column>
@@ -2240,7 +2461,7 @@ background-color:#24374B;
                  </property>
                  <property name="font">
                   <font>
-                   <family>Asus Rog</family>
+                   <family>ROG Fonts</family>
                   </font>
                  </property>
                 </column>
@@ -2250,7 +2471,7 @@ background-color:#24374B;
                  </property>
                  <property name="font">
                   <font>
-                   <family>Asus Rog</family>
+                   <family>ROG Fonts</family>
                   </font>
                  </property>
                 </column>
@@ -2260,7 +2481,7 @@ background-color:#24374B;
                  </property>
                  <property name="font">
                   <font>
-                   <family>Asus Rog</family>
+                   <family>ROG Fonts</family>
                   </font>
                  </property>
                 </column>
@@ -2295,8 +2516,8 @@ background-color:#24374B;
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>279</width>
-                   <height>1052</height>
+                   <width>244</width>
+                   <height>1076</height>
                   </rect>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -2340,10 +2561,10 @@ background-color:#24374B;
                       <widget class="QLabel" name="label_60">
                        <property name="font">
                         <font>
-                         <family>Asus Rog</family>
+                         <family>ROG Fonts</family>
                          <pointsize>12</pointsize>
-                         <weight>75</weight>
-                         <bold>true</bold>
+                         <weight>50</weight>
+                         <bold>false</bold>
                         </font>
                        </property>
                        <property name="text">
@@ -2373,7 +2594,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2383,7 +2604,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2393,7 +2614,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2403,7 +2624,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2437,10 +2658,10 @@ background-color:#24374B;
                       <widget class="QLabel" name="label_61">
                        <property name="font">
                         <font>
-                         <family>Asus Rog</family>
+                         <family>ROG Fonts</family>
                          <pointsize>12</pointsize>
-                         <weight>75</weight>
-                         <bold>true</bold>
+                         <weight>50</weight>
+                         <bold>false</bold>
                         </font>
                        </property>
                        <property name="text">
@@ -2465,7 +2686,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2475,7 +2696,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2485,7 +2706,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2495,7 +2716,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2505,7 +2726,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2515,7 +2736,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2525,7 +2746,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2535,7 +2756,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2545,7 +2766,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2579,10 +2800,10 @@ background-color:#24374B;
                       <widget class="QLabel" name="label_62">
                        <property name="font">
                         <font>
-                         <family>Asus Rog</family>
+                         <family>ROG Fonts</family>
                          <pointsize>12</pointsize>
-                         <weight>75</weight>
-                         <bold>true</bold>
+                         <weight>50</weight>
+                         <bold>false</bold>
                         </font>
                        </property>
                        <property name="text">
@@ -2607,7 +2828,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2617,7 +2838,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2627,7 +2848,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2637,7 +2858,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2647,7 +2868,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2657,7 +2878,7 @@ background-color:#24374B;
                         </property>
                         <property name="font">
                          <font>
-                          <family>Asus Rog</family>
+                          <family>ROG Fonts</family>
                          </font>
                         </property>
                        </column>
@@ -2821,7 +3042,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_52">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2833,7 +3054,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_45">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2845,7 +3066,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_47">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2857,7 +3078,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="system_time">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2869,7 +3090,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_42">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                      <pointsize>12</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
@@ -2884,7 +3105,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="system_platform">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2896,7 +3117,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="system_system">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2908,7 +3129,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="system_machine">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2920,7 +3141,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="system_version">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2932,7 +3153,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_50">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2944,7 +3165,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="system_date">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2956,7 +3177,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_44">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2968,7 +3189,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="system_processor">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2980,7 +3201,7 @@ background-color:#24374B;
                   <widget class="QLabel" name="label_51">
                    <property name="font">
                     <font>
-                     <family>Asus Rog</family>
+                     <family>ROG Fonts</family>
                     </font>
                    </property>
                    <property name="text">
@@ -2990,6 +3211,11 @@ background-color:#24374B;
                  </item>
                  <item row="1" column="3" colspan="2">
                   <widget class="QPushButton" name="get_hardware_info">
+                   <property name="font">
+                    <font>
+                     <family>ROG Fonts</family>
+                    </font>
+                   </property>
                    <property name="text">
                     <string>Get hardware information</string>
                    </property>
@@ -3318,10 +3544,51 @@ background-color:#24374B;
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_38">
                  <item>
-                  <widget class="QLabel" name="label_66">
-                   <property name="text">
-                    <string>TextLabel</string>
+                  <widget class="QFrame" name="frame_40">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
                    </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_37">
+                    <item>
+                     <widget class="QTableWidget" name="db_table" />
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="frame_41">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QGridLayout" name="gridLayout_13">
+                    <item row="0" column="0" alignment="Qt::AlignLeft">
+                     <widget class="QPushButton" name="load_clienti">
+                      <property name="text">
+                       <string>Clienti</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QPushButton" name="load_locatii">
+                      <property name="text">
+                       <string>Locatii</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="2">
+                     <widget class="QPushButton" name="load_incaperi">
+                      <property name="text">
+                       <string>Incaperi</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
                   </widget>
                  </item>
                  <item>
@@ -3332,36 +3599,48 @@ background-color:#24374B;
                    <property name="frameShadow">
                     <enum>QFrame::Raised</enum>
                    </property>
-                   <layout class="QVBoxLayout" name="verticalLayout_37">
-                    <item>
-                     <layout class="QGridLayout" name="gridLayout_11">
-                      <item row="0" column="0">
-                       <widget class="QLabel" name="label_67">
-                        <property name="text">
-                         <string>TextLabel</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="1">
-                       <widget class="QLineEdit" name="lineEdit_2" />
-                      </item>
-                      <item row="1" column="1">
-                       <widget class="QLineEdit" name="lineEdit_3" />
-                      </item>
-                      <item row="1" column="0">
-                       <widget class="QLabel" name="label_68">
-                        <property name="text">
-                         <string>TextLabel</string>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
+                   <layout class="QGridLayout" name="gridLayout_11">
+                    <item row="1" column="0">
+                     <widget class="QLabel" name="label_68">
+                      <property name="font">
+                       <font>
+                        <family>ROG Fonts</family>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Incapere</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="label_67">
+                      <property name="font">
+                       <font>
+                        <family>ROG Fonts</family>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Locatie:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QLineEdit" name="location_input" />
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QLineEdit" name="room_input" />
                     </item>
                    </layout>
                   </widget>
                  </item>
                  <item>
                   <widget class="QFrame" name="frame_36">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>150</height>
+                    </size>
+                   </property>
                    <property name="frameShape">
                     <enum>QFrame::StyledPanel</enum>
                    </property>
@@ -3370,9 +3649,14 @@ background-color:#24374B;
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_36">
                     <item>
-                     <widget class="QPushButton" name="pushButton_5">
+                     <widget class="QPushButton" name="add_button">
+                      <property name="font">
+                       <font>
+                        <family>ROG Fonts</family>
+                       </font>
+                      </property>
                       <property name="text">
-                       <string>PushButton</string>
+                       <string>Add </string>
                       </property>
                      </widget>
                     </item>
@@ -3410,20 +3694,40 @@ background-color:#24374B;
                     <property name="text">
                      <string>Name</string>
                     </property>
+                    <property name="font">
+                     <font>
+                      <family>ROG Fonts</family>
+                     </font>
+                    </property>
                    </column>
                    <column>
                     <property name="text">
                      <string>Version</string>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <family>ROG Fonts</family>
+                     </font>
                     </property>
                    </column>
                    <column>
                     <property name="text">
                      <string>Install Date</string>
                     </property>
+                    <property name="font">
+                     <font>
+                      <family>ROG Fonts</family>
+                     </font>
+                    </property>
                    </column>
                    <column>
                     <property name="text">
                      <string>Publisher</string>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <family>ROG Fonts</family>
+                     </font>
                     </property>
                    </column>
                   </widget>
@@ -3500,6 +3804,11 @@ background-color:#24374B;
                 <layout class="QHBoxLayout" name="horizontalLayout_23">
                  <item>
                   <widget class="QPushButton" name="pushButton_2">
+                   <property name="font">
+                    <font>
+                     <family>ROG Fonts</family>
+                    </font>
+                   </property>
                    <property name="text">
                     <string>Install</string>
                    </property>
@@ -3507,6 +3816,11 @@ background-color:#24374B;
                  </item>
                  <item>
                   <widget class="QPushButton" name="pushButton_4">
+                   <property name="font">
+                    <font>
+                     <family>ROG Fonts</family>
+                    </font>
+                   </property>
                    <property name="text">
                     <string>Uninstall</string>
                    </property>
@@ -3551,6 +3865,17 @@ background-color:#24374B;
                 <layout class="QVBoxLayout" name="verticalLayout_33">
                  <item>
                   <widget class="QLabel" name="label_65">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>ROG Fonts</family>
+                    </font>
+                   </property>
                    <property name="text">
                     <string>OPTIONS</string>
                    </property>
@@ -3567,6 +3892,11 @@ background-color:#24374B;
                   <layout class="QGridLayout" name="gridLayout_10">
                    <item row="3" column="0">
                     <widget class="QPushButton" name="hide">
+                     <property name="font">
+                      <font>
+                       <family>ROG Fonts</family>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>Hide-Updates</string>
                      </property>
@@ -3574,13 +3904,23 @@ background-color:#24374B;
                    </item>
                    <item row="2" column="1">
                     <widget class="QPushButton" name="offline_sync">
+                     <property name="font">
+                      <font>
+                       <family>ROG Fonts</family>
+                      </font>
+                     </property>
                      <property name="text">
-                      <string>add-offline-sync-service &lt;FILE_PATH&gt;</string>
+                      <string>add-offline-sync-service </string>
                      </property>
                     </widget>
                    </item>
                    <item row="4" column="0">
                     <widget class="QPushButton" name="history">
+                     <property name="font">
+                      <font>
+                       <family>ROG Fonts</family>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>get-update-history</string>
                      </property>
@@ -3588,6 +3928,11 @@ background-color:#24374B;
                    </item>
                    <item row="3" column="1">
                     <widget class="QPushButton" name="settings">
+                     <property name="font">
+                      <font>
+                       <family>ROG Fonts</family>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>get-update-settings</string>
                      </property>
@@ -3595,6 +3940,11 @@ background-color:#24374B;
                    </item>
                    <item row="2" column="0">
                     <widget class="QPushButton" name="uninstall">
+                     <property name="font">
+                      <font>
+                       <family>ROG Fonts</family>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>uninstall-update</string>
                      </property>
@@ -3602,6 +3952,11 @@ background-color:#24374B;
                    </item>
                    <item row="1" column="1">
                     <widget class="QPushButton" name="update_service">
+                     <property name="font">
+                      <font>
+                       <family>ROG Fonts</family>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>add-microsoft-update-service</string>
                      </property>
@@ -3609,6 +3964,11 @@ background-color:#24374B;
                    </item>
                    <item row="4" column="1">
                     <widget class="QPushButton" name="set_target">
+                     <property name="font">
+                      <font>
+                       <family>ROG Fonts</family>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>set-target-version </string>
                      </property>
@@ -3616,6 +3976,11 @@ background-color:#24374B;
                    </item>
                    <item row="0" column="0">
                     <widget class="QPushButton" name="check">
+                     <property name="font">
+                      <font>
+                       <family>ROG Fonts</family>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>Check for updates</string>
                      </property>
@@ -3623,6 +3988,11 @@ background-color:#24374B;
                    </item>
                    <item row="0" column="1">
                     <widget class="QPushButton" name="schedule">
+                     <property name="font">
+                      <font>
+                       <family>ROG Fonts</family>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>schedule-update </string>
                      </property>
@@ -3630,6 +4000,11 @@ background-color:#24374B;
                    </item>
                    <item row="1" column="0">
                     <widget class="QPushButton" name="install">
+                     <property name="font">
+                      <font>
+                       <family>ROG Fonts</family>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>Install updates</string>
                      </property>
@@ -3637,6 +4012,11 @@ background-color:#24374B;
                    </item>
                    <item row="5" column="0">
                     <widget class="QPushButton" name="history_24h">
+                     <property name="font">
+                      <font>
+                       <family>ROG Fonts</family>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>get-update-history-24h</string>
                      </property>
@@ -3644,6 +4024,11 @@ background-color:#24374B;
                    </item>
                    <item row="5" column="1">
                     <widget class="QPushButton" name="help">
+                     <property name="font">
+                      <font>
+                       <family>ROG Fonts</family>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>Help</string>
                      </property>
@@ -3701,6 +4086,9 @@ background-color:#24374B;
           </property>
           <item>
            <widget class="QTreeWidget" name="clients_list">
+            <property name="contextMenuPolicy">
+             <enum>Qt::CustomContextMenu</enum>
+            </property>
             <property name="dragEnabled">
              <bool>true</bool>
             </property>
@@ -3713,11 +4101,6 @@ background-color:#24374B;
             <property name="defaultDropAction">
              <enum>Qt::MoveAction</enum>
             </property>
-            <column>
-             <property name="text">
-              <string notr="true">UVT</string>
-             </property>
-            </column>
            </widget>
           </item>
          </layout>
@@ -3787,6 +4170,13 @@ background-color:#24374B;
               <width>60</width>
               <height>30</height>
              </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">*{
+border: none;
+
+}
+</string>
             </property>
             <property name="text">
              <string>?</string>
