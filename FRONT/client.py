@@ -4,7 +4,6 @@ import sys
 import json
 import threading
 import psutil
-import time
 import platform
 import datetime
 import wmi
@@ -12,9 +11,8 @@ import winreg
 from hardware import HardwareInfoCollector
 from manage_pc import UserManager
 from update import PowerShellServer
+from logging_config import setup_logging
 import clr  # the pythonnet module
-from time import sleep
-
 clr.AddReference("LibreHardwareMonitorLib")
 from LibreHardwareMonitor import Hardware
 
@@ -26,7 +24,6 @@ platforms = {
     'win32': 'Windows',
 }
 
-CHUNK_SIZE = 4096
 
 class Client:
     def __init__(self, host, port):
@@ -36,17 +33,22 @@ class Client:
         self.hrd = HardwareInfoCollector()
         self.ps_server = PowerShellServer()  # Initialize PowerShellServer
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.chunk_size = CHUNK_SIZE
+        self.chunk_size = 10000
+        self.logger = setup_logging()
 
     def connect(self):
         try:
             self.client_socket.connect((self.host, self.port))
-            client_name = socket.gethostname()  # Get the client's computer name
-            self.client_socket.send(client_name.encode())  # Send the client name to the server
+            client_name = socket.gethostname()
+            self.client_socket.send(client_name.encode())
             self.client_socket.send(self.get_hwid().encode())
-            print(f"Connected to server at {self.host}:{self.port} as {client_name}")
+            self.logger.info(f"Connected to server at {self.host}:{self.port} as {client_name}")
         except Exception as e:
-            print(f"Connection error: {e}")
+            self.logger.error(f"Connection error: {e}")
+
+    def start_heartbeat(self):
+        threading.Thread(target=self.send_heartbeat).start()
+
 
     def receive_data(self):
         response = bytearray()
@@ -54,6 +56,7 @@ class Client:
         while True:
             chunk = self.client_socket.recv(self.chunk_size)
             if not chunk:
+                self.logger.error("Connection closed by client")
                 raise ConnectionError("Connection closed by client")
 
             response.extend(chunk)
@@ -81,11 +84,9 @@ class Client:
                 json_response = json.loads(response_str)
                 if isinstance(json_response, dict):
                     for command, data in json_response.items():
-                        print(data)
-                        print(command)
                         return command, data
             except json.JSONDecodeError as e:
-                print(f"JSON decode error: {e}")
+                self.logger.error(f"JSON decode error: {e}")
             return None, None
         elif end_marker == b'\1':
             return response_str, None
@@ -99,13 +100,13 @@ class Client:
                 if command:
                     threading.Thread(target=self.process_command, args=(command, data)).start()
                 else:
-                    print("No command received.")
+                    self.logger.info("No command received.")
             except socket.error as e:
                 if e.errno == 10054:
-                    print("Connection was forcibly closed by the remote host.")
+                    self.logger.error("Connection was forcibly closed by the remote host.")
                     break
             except Exception as e:
-                print(f"Error handling server request: {e}")
+                self.logger.error(f"Error handling server request: {e}")
                 break
 
     def process_command(self, command, data):
@@ -142,11 +143,12 @@ class Client:
         if command in command_map:
             command_map[command]()
         else:
-            print(f"Unknown command: {command}")
+            self.logger.info(f"Unknown command: {command}")
+
 
     def handle_powershell_command(self, data):
         prerequisite_check = self.ps_server.check_and_install_components()
-        self.send_data("prerequisite_check", prerequisite_check)
+        #self.send_data("prerequisite_check", prerequisite_check)
         if "Failed" in prerequisite_check:
             return
 
@@ -154,7 +156,10 @@ class Client:
         self.send_data("powershell_result", result)
 
     def handle_ping(self):
-        self.client_socket.sendall(b'pong')
+        message = {
+            "pong": "pong"
+        }
+        self.send_data("pong",message)
 
     def start(self):
         self.connect()
@@ -169,7 +174,7 @@ class Client:
 
     def shutdown(self):
         self.client_socket.close()
-        print("Client shutdown.")
+        self.logger.info("Client shutdown.")
 
     # Command Methods
     def connects(self):
@@ -236,7 +241,7 @@ class Client:
                                 else:
                                     total_dgpu_power += value
         except Exception as e:
-            print(f"Error collecting power data: {e}")
+            self.logger.error(f"Error collecting power data: {e}")
         finally:
             computer.Close()
 
@@ -297,7 +302,7 @@ class Client:
                 }
                 process_data.append(process_info)
             except Exception as e:
-                print(f"Error fetching process {pid}: {e}")
+                self.logger.error(f"Error fetching process {pid}: {e}")
 
         self.send_data("processes", process_data)
 
@@ -352,7 +357,7 @@ class Client:
                                                            Hardware.HardwareType.GpuNvidia):
                                 gpu_temps.setdefault(sensor_name, []).append(temp_value)
         except Exception as e:
-            print(f"Error collecting sensor data: {e}")
+            self.logger.error(f"Error collecting sensor data: {e}")
         finally:
             computer.Close()
 
@@ -475,7 +480,7 @@ class Client:
             self.send_data("kill", {"pid": pid, "status": "error", "message": str(e)})
 
     def hardware(self):
-        hardware_info = self.hrd.collect_all_info("client.ps1")
+        hardware_info = self.hrd.collect_all_info('client.ps1')
         self.send_data("hardware", hardware_info)
 
     def installed_programs(self):
@@ -535,5 +540,5 @@ class Client:
             return "Invalid Date"
 
 if __name__ == "__main__":
-    client = Client("localhost", 9000)
+    client = Client("192.168.31.162", 9000)
     client.start()

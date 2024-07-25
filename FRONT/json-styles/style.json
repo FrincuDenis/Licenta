@@ -13,7 +13,7 @@
             {
               "Background-color": "#1E1E1E",
               "Text-color": "#FFFFFF",
-              "Accent-color": "#808080",
+              "Accent-color": "#FF0000",
               "Icons-color": "#ffffff",
               "Theme-name": "Default-theme",
               "Default-Theme": true

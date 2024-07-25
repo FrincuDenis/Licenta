@@ -33,7 +33,7 @@ class HardwareInfoCollector:
 
     def run_powershell_script(self, script_path):
         try:
-            result = subprocess.run(["powershell", "-File", script_path], capture_output=True, text=True)
+            result = subprocess.run(["powershell", "-ExecutionPolicy", "Bypass", "-File", script_path], capture_output=True, text=True)
             if result.returncode != 0:
                 print(f"Error: {result.stderr}")
                 return None
@@ -56,7 +56,7 @@ class HardwareInfoCollector:
                 if hardware.HardwareType in (Hardware.HardwareType.Cpu, Hardware.HardwareType.GpuNvidia,
                                              Hardware.HardwareType.GpuAmd, Hardware.HardwareType.GpuIntel):
                     hardware.Update()
-                    device_name = hardware.Name  # Get the name of the device
+                    device_name = hardware.Name  
                     if hardware.HardwareType == Hardware.HardwareType.GpuIntel:
                         if any(keyword in device_name for keyword in
                                ["Integrated", "iGPU", "Intel Iris", "UHD Graphics"]):
@@ -91,7 +91,6 @@ class HardwareInfoCollector:
                     'part_number': mem.PartNumber,
                 })
         else:
-            # Implement for other platforms if needed
             pass
 
         self.send_data("ram_info", self.ram_data)
@@ -103,19 +102,15 @@ class HardwareInfoCollector:
         try:
             data = json.loads(powershell_output)
 
-            # Extract dgpu_names and igpu_names from hardware_data
             dgpu_names = self.hardware_data.get("gpu_names", [])
             igpu_names = self.hardware_data.get("igpu_names", [])
 
-            # Join the GPU names with semicolons if there are multiple
             dgpu_names_str = "; ".join(dgpu_names)
             igpu_names_str = "; ".join(igpu_names)
 
-            # Join the RAM details
             ram_manufacturers = "; ".join(ram['manufacturer'] for ram in self.ram_data)
             ram_part_numbers = "; ".join(ram['part_number'] for ram in self.ram_data)
 
-            # Construct new ordered data with dgpu_names, igpu_names, manufacturer, and part_number
             ordered_data = {}
             for key, value in data.items():
                 ordered_data[key] = value
@@ -123,16 +118,15 @@ class HardwareInfoCollector:
                     ordered_data["RAM_Manufacturer"] = ram_manufacturers
                     ordered_data["RAM_PartNumber"] = ram_part_numbers
                 if key == "CPUModel":
-                    ordered_data["dgpu_names"] = dgpu_names_str
-                    ordered_data["igpu_names"] = igpu_names_str
+                    ordered_data["IGPU"] = igpu_names_str
+                    ordered_data["GPU"] = dgpu_names_str
                 elif key == "OS":
                     break
 
-            # Get OS version using platform module
             os_version = platform.version()
             ordered_data["OSVersion"] = os_version
 
-            # Wrap everything in a hardware dictionary
+
 
             return ordered_data
 
@@ -141,26 +135,20 @@ class HardwareInfoCollector:
             print(f"Error parsing JSON output: {e}")
 
     def collect_all_info(self, script_path):
-        # Save the current execution policy
         original_policy = self.get_execution_policy()
         print(f"Original Execution Policy: {original_policy}")
 
-        # Set the execution policy to RemoteSigned or Unrestricted
-        self.set_execution_policy("RemoteSigned")
+        self.set_execution_policy("Unrestricted")
 
-        # Run the PowerShell script
         powershell_output = self.run_powershell_script(script_path)
 
-        # Collect power info (GPU and CPU power consumption)
         self.get_hardware_name()
 
-        # Collect RAM info
         self.collect_ram_info()
 
         if powershell_output:
            return self.parse_and_print_info(powershell_output)
 
-        # Revert the execution policy back to the original state
         if original_policy:
             self.set_execution_policy(original_policy)
             return (f"Execution Policy reverted to: {original_policy}")
